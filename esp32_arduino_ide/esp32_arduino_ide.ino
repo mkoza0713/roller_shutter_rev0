@@ -21,22 +21,52 @@ XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
 #define FONT_SIZE 2
 // Touchscreen coordinates: (x, y) and pressure (z)
 int x, y, z;
-byte lock_key_1 = 1;  //zmienna dotyku przyciskow
+byte lock_key_1 = 1;      //zmienna dotyku przyciskow
+byte screen_changer = 1;  //zmienna kolejnych ekranów w menu
+byte screen_sum = 2;      //zmienna kolejnych ekranów w menu
 
 void setup() {
   psetup();
-  ramka(0, 0);
+  screen_1(0, 0);
 }
 void loop() {
-  // // Checks if Touchscreen was touched, and prints X, Y and Pressure (Z) info on the TFT display and Serial Monitor
-  while (touchscreen.tirqTouched() && touchscreen.touched()) {
-    if (lock_key_1) {
-      lock_key_1 = 0;
-      Serial.println(touch_function());
-    }
+  //musze zrobic nav i to zawsze wyswietlac.
+  //ponizej beda ekrany screen_1, _2 etc
+  switch (screen_changer) {
+    case 1:  //screen_1
+      while (touchscreen.tirqTouched() && touchscreen.touched()) {
+        if (lock_key_1) {
+          lock_key_1 = 0;
+          if (touch_function() == "button_1") {
+            screen_changer--;
+            if (screen_changer == 0) screen_changer = screen_sum;
+            //tutaj ide w dol z ekranami
+            Serial.println("test 1");
+          } else if (touch_function() == "button_2") {
+            screen_changer++;
+            if (screen_changer > screen_sum) screen_changer = 1;
+            //tutaj ide w gore z ekranami
+            Serial.println("test 2");
+          } else if (touch_function() == "button_3") {
+            Serial.println("test 3");
+          } else if (touch_function() == "button_4") {
+            Serial.println("test 4");
+          } else if (touch_function() == "button_5") {
+            Serial.println("test 5");
+          } else if (touch_function() == "button_6") {
+            Serial.println("test 6");
+          }
+        }
+      }
+      if (lock_key_1 == 0) {
+        screen_1(0, 0);
+        lock_key_1 = 1;
+      }
+      break;
+    case 2:  //screen_2
+      tft.fillScreen(TFT_WHITE);
+
+      break;
   }
-  if (lock_key_1 == 0) {
-    ramka(0, 0);
-    lock_key_1 = 1;
-  }
+  Serial.println(screen_changer);
 }
