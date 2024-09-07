@@ -1,4 +1,4 @@
-//screen 1
+//nav
 uint32_t button_name_1 = 'button_1';
 String button_label_1 = "WSTECZ";
 int button_1[]{
@@ -21,7 +21,7 @@ int button_2[]{
 
 //kafelki
 uint32_t button_name_3 = 'button_3';
-String button_label_3_1 = "PARTER POM";
+String button_label_3_1 = "PARTER POM. ";
 String button_label_3_2 = "MIESZKALNE";
 int button_3[]{
   1,    //x
@@ -31,7 +31,7 @@ int button_3[]{
   15,   // round
 };
 uint32_t button_name_4 = 'button_4';
-String button_label_4_1 = "PARTER POM";
+String button_label_4_1 = "PARTER POM. ";
 String button_label_4_2 = "TECHNICZNE";
 int button_4[]{
   1,    //x
@@ -41,7 +41,7 @@ int button_4[]{
   15,   // round
 };
 uint32_t button_name_5 = 'button_5';
-String button_label_5_1 = "PIETRO POM";
+String button_label_5_1 = "PIETRO POM. ";
 String button_label_5_2 = "TECHNICZNE";
 int button_5[]{
   169,  //x
@@ -51,7 +51,7 @@ int button_5[]{
   15,   // round
 };
 uint32_t button_name_6 = 'button_6';
-String button_label_6_1 = "PIETRO POM";
+String button_label_6_1 = "PIETRO POM. ";
 String button_label_6_2 = "MIESZKALNE";
 int button_6[]{
   169,  //x

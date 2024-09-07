@@ -1,72 +1,87 @@
 #include <screen_elements.h>
+#include <variables.h>
 #include <SPI.h>
-/*
-  IMPORTANT: change TFT_eSPI file from link below:
-  FULL INSTRUCTIONS AVAILABLE ON HOW CONFIGURE THE LIBRARY: https://RandomNerdTutorials.com/cyd/ or https://RandomNerdTutorials.com/esp32-tft/   */
+/*TFT_eSPI file to change drom folder*/
 #include <TFT_eSPI.h>
-// Touchscreen
-#include <XPT2046_Touchscreen.h>
 TFT_eSPI tft = TFT_eSPI();
-#define XPT2046_IRQ 36   // T_IRQ
-#define XPT2046_MOSI 32  // T_DIN
-#define XPT2046_MISO 39  // T_OUT
-#define XPT2046_CLK 25   // T_CLK
-#define XPT2046_CS 33    // T_CS
-
+#include <XPT2046_Touchscreen.h>
 SPIClass touchscreenSPI = SPIClass(VSPI);
 XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
-#define FONT_SIZE 2
-// Touchscreen coordinates: (x, y) and pressure (z)
-int x, y, z;
-byte lock_key_1 = 1;      //zmienna dotyku przyciskow
-byte screen_changer = 1;  //zmienna kolejnych ekranów w menu
-byte screen_sum = 2;      //zmienna kolejnych ekranów w menu
-
 void setup() {
   psetup();
-  screen_1(0, 0);
+  nav();
+  screen_1();
 }
 void loop() {
-  //musze zrobic nav i to zawsze wyswietlac.
-  //ponizej beda ekrany screen_1, _2 etc
-  switch (screen_changer) {
-    case 1:  //screen_1
-      while (touchscreen.tirqTouched() && touchscreen.touched()) {
-        if (lock_key_1) {
-          lock_key_1 = 0;
-          if (touch_function() == "button_1") {
-            screen_changer--;
-            if (screen_changer == 0) screen_changer = screen_sum;
-            //tutaj ide w dol z ekranami
-            Serial.println("test 1");
-          } else if (touch_function() == "button_2") {
-            screen_changer++;
-            if (screen_changer > screen_sum) screen_changer = 1;
-            //tutaj ide w gore z ekranami
-            Serial.println("test 2");
-          } else if (touch_function() == "button_3") {
-            Serial.println("test 3");
-          } else if (touch_function() == "button_4") {
-            Serial.println("test 4");
-          } else if (touch_function() == "button_5") {
-            Serial.println("test 5");
-          } else if (touch_function() == "button_6") {
-            Serial.println("test 6");
-          }
-        }
-      }
-      if (lock_key_1 == 0) {
-        screen_1(0, 0);
-        lock_key_1 = 1;
-      }
-      break;
-    case 2:  //screen_2
-      tft.fillScreen(TFT_WHITE);
+  x=0;
+  y=0;
+  z=0;
+  while (touchscreen.tirqTouched() && touchscreen.touched()) {
+    if (lock_key_1) {  //f wywoluje sie tylko raz. Nie ma migotania
+      lock_key_1 = 0;
+      String touch_function_result = touch_function();
+      if (touch_function_result == "button_1") {
+        screen_changer--;
+        if (screen_changer == 0) screen_changer = screen_sum;
+        else if(screen_changer>10)screen_changer=1;
+        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        //tutaj ide w dol z ekranami
 
-      break;
+      } else if (touch_function_result == "button_2") {
+        screen_changer++;
+        if (screen_changer > screen_sum) screen_changer = 1;
+        else if(screen_changer>10)screen_changer=1;
+        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        //tutaj ide w gore z ekranami
+
+      } else if (touch_function_result == "button_3") {
+        Serial.println("b3");
+        screen_changer = 31;
+        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        //funkcje przycisku 3
+      } else if (touch_function_result == "button_4") {
+        Serial.println("b4");
+        screen_changer = 41;
+        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        //funkcje przycisku 4
+      } else if (touch_function_result == "button_5") {
+        Serial.println("b5");
+        screen_changer = 51;
+        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        //funkcje przycisku 5
+      } else if (touch_function_result == "button_6") {
+        Serial.println("b6");
+        screen_changer = 61;
+        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        //funkcje przycisku 6
+      }
+    }
+    delay(150);
   }
-  Serial.println(screen_changer);
+  if (lock_key_1 == 0) {
+    switch (screen_changer) {
+      case 1:
+        nav();
+        screen_1();
+        break;
+      case 2:
+        nav();
+        screen_2();
+        break;
+      case 31:
+        screen_31();
+        break;
+      case 41:
+        screen_41();
+        break;
+      case 51:
+        screen_51();
+        break;
+      case 61:
+        screen_61();
+        break;
+    }
+    lock_key_1 = 1;
+  }
 }

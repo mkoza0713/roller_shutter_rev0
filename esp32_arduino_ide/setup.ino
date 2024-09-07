@@ -24,4 +24,5 @@ void psetup() {
 
   // tft.drawCentreString("Hello, world!", centerX, 30, FONT_SIZE);
   // tft.drawCentreString("Touch screen to test", centerX, centerY, FONT_SIZE);
+
 }
