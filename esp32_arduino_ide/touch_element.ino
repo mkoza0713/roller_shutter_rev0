@@ -40,11 +40,9 @@ String touch_function() {
       return "";
     }
   } else if (screen_changer == 2) {
-    tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
     // Serial.println("TEST POINT FOR screen_ch value 2");
     return "";
   } else if (screen_changer > 10) {
-    tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
     // Serial.println("TEST POINT FOR screen_ch value >10");
     return "";
   } else return "";

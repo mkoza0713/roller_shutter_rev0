@@ -1,7 +1,4 @@
 void nav() {
-  tft.setTextColor(TFT_BLACK, TFT_BLACK);
-  tft.setFreeFont(&FreeSans9pt7b);
-
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
 
@@ -10,10 +7,6 @@ void nav() {
 }
 
 void screen_1() {
-  tft.setTextColor(TFT_BLACK, TFT_BLACK);
-  tft.setFreeFont(&FreeSans9pt7b);
-
-  /*********************************/
   tft.drawCentreString("Obszary budynku:", 160, 60 - fontHeigh, 1);
 
   tft.fillRoundRect(button_3[0], button_3[1], button_3[2], button_3[3], button_3[4], button_colour);
@@ -39,15 +32,12 @@ void screen_3() {
   tft.drawCentreString("Ustawienia:", 160, 60 - fontHeigh, 1);
 }
 void standard_back_button(){
-  tft.setTextColor(TFT_BLACK, TFT_BLACK);
-  tft.setFreeFont(&FreeSans9pt7b);
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
 }
 void screen_31() {
   standard_back_button();
   tft.drawCentreString(button_label_3_1 + button_label_3_2, 160, 60 - fontHeigh, 1);
-  //tu ma byc lista rolet. Check-box i dwa przyciski do otwierania i zamykania
 }
 void screen_41() {
   standard_back_button();
