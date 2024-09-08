@@ -36,22 +36,18 @@ void loop() {
         //tutaj ide w gore z ekranami
 
       } else if (touch_function_result == "button_3") {
-        Serial.println("b3");
         screen_changer = 31;
         tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 3
       } else if (touch_function_result == "button_4") {
-        Serial.println("b4");
         screen_changer = 41;
         tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 4
       } else if (touch_function_result == "button_5") {
-        Serial.println("b5");
         screen_changer = 51;
         tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 5
       } else if (touch_function_result == "button_6") {
-        Serial.println("b6");
         screen_changer = 61;
         tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 6
@@ -68,6 +64,10 @@ void loop() {
       case 2:
         nav();
         screen_2();
+        break;
+      case 3:
+        nav();
+        screen_3();
         break;
       case 31:
         screen_31();
