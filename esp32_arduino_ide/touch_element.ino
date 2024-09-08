@@ -36,6 +36,8 @@ String touch_function() {
       //Serial.println("button 6");
       tft.fillRoundRect(button_6[0], button_6[1], button_6[2], button_6[3], button_6[4], button_insert_colour);
       return "button_6";
+    }else{
+      return "";
     }
   } else if (screen_changer == 2) {
     tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu

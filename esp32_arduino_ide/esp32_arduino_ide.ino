@@ -14,9 +14,9 @@ void setup() {
   screen_1();
 }
 void loop() {
-  x=0;
-  y=0;
-  z=0;
+  x = 0;
+  y = 0;
+  z = 0;
   while (touchscreen.tirqTouched() && touchscreen.touched()) {
     if (lock_key_1) {  //f wywoluje sie tylko raz. Nie ma migotania
       lock_key_1 = 0;
@@ -24,38 +24,33 @@ void loop() {
       if (touch_function_result == "button_1") {
         screen_changer--;
         if (screen_changer == 0) screen_changer = screen_sum;
-        else if(screen_changer>10)screen_changer=1;
-        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        else if (screen_changer > 10) screen_changer = 1;
         //tutaj ide w dol z ekranami
 
       } else if (touch_function_result == "button_2") {
         screen_changer++;
         if (screen_changer > screen_sum) screen_changer = 1;
-        else if(screen_changer>10)screen_changer=1;
-        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
+        else if (screen_changer > 10) screen_changer = 1;
         //tutaj ide w gore z ekranami
 
       } else if (touch_function_result == "button_3") {
         screen_changer = 31;
-        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 3
       } else if (touch_function_result == "button_4") {
         screen_changer = 41;
-        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 4
       } else if (touch_function_result == "button_5") {
         screen_changer = 51;
-        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 5
       } else if (touch_function_result == "button_6") {
         screen_changer = 61;
-        tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
         //funkcje przycisku 6
       }
     }
     delay(150);
   }
   if (lock_key_1 == 0) {
+    tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
     switch (screen_changer) {
       case 1:
         nav();
