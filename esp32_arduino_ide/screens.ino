@@ -2,6 +2,12 @@ void nav() {
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
 
+  byte x1 = 136 + (12 * screen_changer);
+  tft.drawCircle(148, 15, 4, button_colour);
+  tft.drawCircle(160, 15, 4, button_colour);
+  tft.drawCircle(172, 15, 4, button_colour);
+  tft.fillCircle(x1, 15, 4, button_colour);
+
   tft.fillRoundRect(button_2[0], button_2[1], button_2[2], button_2[3], button_2[4], button_colour);
   tft.drawCentreString(button_label_2, button_2[0] + (button_2[2] / 2), button_2[1] + (button_2[3] / 2) - fontHeigh / 2, 1);
 }
@@ -31,13 +37,23 @@ void screen_2() {
 void screen_3() {
   tft.drawCentreString("Ustawienia:", 160, 60 - fontHeigh, 1);
 }
-void standard_back_button(){
+void standard_back_button() {
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
 }
 void screen_31() {
   standard_back_button();
   tft.drawCentreString(button_label_3_1 + button_label_3_2, 160, 60 - fontHeigh, 1);
+
+  byte y1 = 70;
+  byte frame1 = 20;
+
+  Serial.println(sizeOfArray);
+  for (int i = 0; i < sizeOfArray; i++) {
+    tft.drawRect(10, y1, frame1, frame1, button_colour);
+    tft.drawString(rollers[i][1], 35, y1 + 2);
+    y1 = y1 + frame1 + 5;
+  }
 }
 void screen_41() {
   standard_back_button();

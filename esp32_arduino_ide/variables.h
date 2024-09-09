@@ -15,3 +15,15 @@ int screen_sum = 3;      //zmienna kolejnych ekranów w menu - suma max
 
 byte fontHeigh = 10;  //dodałem wiecej aby zrobic padding pom tekstem
 uint32_t button_colour = '0x7BEF';
+uint32_t button_insert_colour = '0x867D';
+
+byte liczba_kolumn = 5;
+String rollers[6][5]{
+  { "1", "Roleta 1", "AREA_1", "0", "15" },
+  { "2", "Roleta 2", "AREA_1", "0", "16" },
+  { "3", "Roleta 3", "AREA_1", "0", "17" },
+  { "4", "Roleta 4", "AREA_1", "0", "12" },
+  { "5", "Roleta 5", "AREA_1", "0", "12" },
+  { "6", "Roleta 6", "AREA_1", "0", "12" }
+};
+int sizeOfArray = (sizeof(rollers) / sizeof(rollers[0][0])) / liczba_kolumn;

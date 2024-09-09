@@ -6,7 +6,6 @@ String touch_function() {
   y = map(p.y, 240, 3800, 1, SCREEN_HEIGHT);
   z = p.z;
 
-
   uint32_t button_insert_colour;
   button_insert_colour = '0x867D';
   if (x >= button_1[0] && x <= button_1[2] + button_1[0] && y >= button_1[1] && y <= button_1[3] + button_1[1]) {
