@@ -19,8 +19,27 @@ int button_2[]{
   15,   // round
 };
 
-//kafelki
-uint32_t button_name_3 = 'button_3';
+
+//Panele:
+int buttons_positions[6][5]{  //max 6 elements
+  /*{x0, y0, wide, heigh, round}*/
+  { 1, 71, 150, 50, 15 },
+  { 169, 71, 150, 50, 15 },
+  { 1, 131, 150, 50, 15 },
+  { 169, 131, 150, 50, 15 },
+  { 1, 191, 150, 50, 15 },
+  { 169, 191, 150, 50, 15 }
+} ;
+// int buttons_positions[6][5]{  //max 6 elements
+//   /*{x0, y0, wide, heigh, round}*/
+//   { 1, 71, 150, 60, 15 },
+//   { 169, 71, 150, 60, 15 },
+//   { 1, 146, 150, 60, 15 },
+//   { 169, 146, 150, 60, 15 },
+//   { 1, 221, 150, 60, 15 },
+//   { 169, 221, 150, 60, 15 }
+// } ;
+
 String button_label_3_1 = "PARTER POM. ";
 String button_label_3_2 = "MIESZKALNE";
 int button_3[]{
@@ -30,7 +49,6 @@ int button_3[]{
   60,   //height
   15,   // round
 };
-uint32_t button_name_4 = 'button_4';
 String button_label_4_1 = "PARTER POM. ";
 String button_label_4_2 = "TECHNICZNE";
 int button_4[]{
@@ -40,7 +58,6 @@ int button_4[]{
   60,   //height
   15,   // round
 };
-uint32_t button_name_5 = 'button_5';
 String button_label_5_1 = "PIETRO POM. ";
 String button_label_5_2 = "TECHNICZNE";
 int button_5[]{
@@ -50,7 +67,6 @@ int button_5[]{
   60,   //height
   15,   // round
 };
-uint32_t button_name_6 = 'button_6';
 String button_label_6_1 = "PIETRO POM. ";
 String button_label_6_2 = "MIESZKALNE";
 int button_6[]{
@@ -60,3 +76,8 @@ int button_6[]{
   60,   //height
   15,   // round
 };
+
+//check-box
+byte cb_y1 = 70;                 //pozycja checkboxa na lcd w osi y
+byte frame1 = 20;                //rozmiar check boxa
+byte cb_row_space = frame1 + 5;  //odleglosc pomiedzy wierszami

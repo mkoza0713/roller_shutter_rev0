@@ -12,24 +12,33 @@ void nav() {
   tft.drawCentreString(button_label_2, button_2[0] + (button_2[2] / 2), button_2[1] + (button_2[3] / 2) - fontHeigh / 2, 1);
 }
 
+
 void screen_1() {
   tft.drawCentreString("Obszary budynku:", 160, 60 - fontHeigh, 1);
 
-  tft.fillRoundRect(button_3[0], button_3[1], button_3[2], button_3[3], button_3[4], button_colour);
-  tft.drawCentreString(button_label_3_1, button_3[0] + (button_3[2] / 2), button_3[1] + (button_3[3] / 2) - (fontHeigh + fontHeigh / 2), 1);
-  tft.drawCentreString(button_label_3_2, button_3[0] + (button_3[2] / 2), button_3[1] + (button_3[3] / 2), 1);
+  for (byte i = 0; i < sizeOfArray_object_areas; i++) {  //tu mam ile mam miec przyciskow - obszarów
+    String pomocnicza1 = object_areas[i][1];
+    //********************************tutaj mam rozbicie nazwy na przycisku na dwa wiersze
+    String text_row_1 = "";
+    String text_row_2 = "";
+    if (pomocnicza1.length() >= 10) {
+      for (byte j = 0; j < 11; j++) {
+        text_row_1 = text_row_1 + pomocnicza1[j];  //iteracja po ciagu znaków
+      }
+      for (byte j = 11; j < pomocnicza1.length(); j++) {
+        text_row_2 = text_row_2 + pomocnicza1[j];  //iteracja po ciagu znaków
+      }
+    } else {
+      text_row_1 = pomocnicza1;
+      text_row_2 = "";
+    }
+    /**********************************************/
+    //********************************tutaj mam ukladanie kafelkow w petli for
+    tft.fillRoundRect(buttons_positions[i][0], buttons_positions[i][1], buttons_positions[i][2], buttons_positions[i][3], buttons_positions[i][4], button_colour);  //0
+    tft.drawCentreString(text_row_1, buttons_positions[i][0] + (buttons_positions[i][2] / 2), buttons_positions[i][1] + (buttons_positions[i][3] / 2) - (fontHeigh + fontHeigh / 2), 1);
+    tft.drawCentreString(text_row_2, buttons_positions[i][0] + (buttons_positions[i][2] / 2), buttons_positions[i][1] + (buttons_positions[i][3] / 2), 1);
+  }
 
-  tft.fillRoundRect(button_4[0], button_4[1], button_4[2], button_4[3], button_4[4], button_colour);
-  tft.drawCentreString(button_label_4_1, button_4[0] + (button_4[2] / 2), button_4[1] + (button_4[3] / 2) - (fontHeigh + fontHeigh / 2), 1);
-  tft.drawCentreString(button_label_4_2, button_4[0] + (button_4[2] / 2), button_4[1] + (button_4[3] / 2), 1);
-
-  tft.fillRoundRect(button_5[0], button_5[1], button_5[2], button_5[3], button_5[4], button_colour);
-  tft.drawCentreString(button_label_5_1, button_5[0] + (button_5[2] / 2), button_5[1] + (button_5[3] / 2) - (fontHeigh + fontHeigh / 2), 1);
-  tft.drawCentreString(button_label_5_2, button_5[0] + (button_5[2] / 2), button_5[1] + (button_5[3] / 2), 1);
-
-  tft.fillRoundRect(button_6[0], button_6[1], button_6[2], button_6[3], button_6[4], button_colour);
-  tft.drawCentreString(button_label_6_1, button_6[0] + (button_6[2] / 2), button_6[1] + (button_6[3] / 2) - (fontHeigh + fontHeigh / 2), 1);
-  tft.drawCentreString(button_label_6_2, button_6[0] + (button_6[2] / 2), button_6[1] + (button_6[3] / 2), 1);
 }
 void screen_2() {
   tft.drawCentreString("Dane z serwera:", 160, 60 - fontHeigh, 1);
@@ -41,23 +50,35 @@ void standard_back_button() {
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
 }
+
+
 void screen_31() {
   standard_back_button();
   tft.drawCentreString(button_label_3_1 + button_label_3_2, 160, 60 - fontHeigh, 1);
 
-  byte y1 = 70;
-  byte frame1 = 20;
-
-  Serial.println(sizeOfArray);
-  for (int i = 0; i < sizeOfArray; i++) {
-    tft.drawRect(10, y1, frame1, frame1, button_colour);
-    tft.drawString(rollers[i][1], 35, y1 + 2);
-    y1 = y1 + frame1 + 5;
+  cb_y1 = 70;  //zeruje zmienna
+  //Serial.println(sizeOfArray_rollers);
+  for (int i = 0; i < sizeOfArray_rollers; i++) {
+    if (rollers[i][2] == "AREA_1") {
+      tft.drawRect(10, cb_y1, frame1, frame1, button_colour);
+      tft.drawString(rollers[i][1], 35, cb_y1 + 2);
+      cb_y1 = cb_y1 + cb_row_space;
+    }
   }
 }
 void screen_41() {
   standard_back_button();
   tft.drawCentreString(button_label_4_1 + button_label_4_2, 160, 60 - fontHeigh, 1);
+
+  cb_y1 = 70;  //zeruje zmienna
+  //Serial.println(sizeOfArray_rollers);
+  for (int i = 0; i < sizeOfArray_rollers; i++) {
+    if (rollers[i][2] == "AREA_2") {
+      tft.drawRect(10, cb_y1, frame1, frame1, button_colour);
+      tft.drawString(rollers[i][1], 35, cb_y1 + 2);
+      cb_y1 = cb_y1 + cb_row_space;
+    }
+  }
 }
 void screen_51() {
   standard_back_button();

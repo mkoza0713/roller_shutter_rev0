@@ -12,6 +12,7 @@ void setup() {
   psetup();
   nav();
   screen_1();
+  led_test();
 }
 void loop() {
   x = 0;
@@ -79,4 +80,28 @@ void loop() {
     }
     lock_key_1 = 1;
   }
+}
+void led_test() {
+  pinMode(16, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(17, OUTPUT);
+  delay(1000);
+  digitalWrite(16, HIGH);
+  digitalWrite(4, HIGH);
+  digitalWrite(17, HIGH);
+
+  delay(100);
+  digitalWrite(16, LOW);
+  delay(100);
+  digitalWrite(16, HIGH);
+  delay(100);
+  digitalWrite(4, LOW);
+  delay(100);
+  digitalWrite(4, HIGH);
+  delay(100);
+  digitalWrite(17, LOW);
+  delay(100);
+  digitalWrite(17, HIGH);
+
+  Serial.println(analogRead(34));
 }
