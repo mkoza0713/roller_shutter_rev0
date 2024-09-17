@@ -30,12 +30,15 @@ int sizeOfArray_object_areas = (sizeof(object_areas) / sizeof(object_areas[0][0]
 
 //tablica obiektów typu roleta
 byte cn_rollers = 5;
-String rollers[6][5]{
+String rollers[9][5]{
   { "1", "Roleta 1", "AREA_1", "0", "15" },
   { "2", "Roleta 2", "AREA_2", "0", "16" },
   { "3", "Roleta 3", "AREA_1", "0", "17" },
   { "4", "Roleta 4", "AREA_1", "0", "12" },
   { "5", "Roleta 5", "AREA_1", "0", "12" },
-  { "6", "Roleta 6", "AREA_1", "0", "12" }
+  { "6", "Roleta 6", "AREA_1", "0", "12" },
+  { "7", "Roleta 6", "AREA_6", "0", "12" },
+  { "8", "Roleta 6", "AREA_6", "0", "12" },
+  { "9", "Roleta 6", "AREA_6", "0", "12" }
 };
 int sizeOfArray_rollers = (sizeof(rollers) / sizeof(rollers[0][0])) / cn_rollers;

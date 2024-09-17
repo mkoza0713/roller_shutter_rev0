@@ -46,6 +46,12 @@ void loop() {
       } else if (touch_function_result == "button_6") {
         screen_changer = 61;
         //funkcje przycisku 6
+      }else if (touch_function_result == "button_7") {
+        screen_changer = 71;
+        //funkcje przycisku 6
+      }else if (touch_function_result == "button_8") {
+        screen_changer = 81;
+        //funkcje przycisku 6
       }
     }
     delay(150);
@@ -76,6 +82,12 @@ void loop() {
         break;
       case 61:
         screen_61();
+        break;
+      case 71:
+        screen_71();
+        break;
+      case 81:
+        screen_81();
         break;
     }
     lock_key_1 = 1;

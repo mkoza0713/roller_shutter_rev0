@@ -11,8 +11,6 @@ void nav() {
   tft.fillRoundRect(button_2[0], button_2[1], button_2[2], button_2[3], button_2[4], button_colour);
   tft.drawCentreString(button_label_2, button_2[0] + (button_2[2] / 2), button_2[1] + (button_2[3] / 2) - fontHeigh / 2, 1);
 }
-
-
 void screen_1() {
   tft.drawCentreString("Obszary budynku:", 160, 60 - fontHeigh, 1);
 
@@ -51,10 +49,10 @@ void standard_back_button() {
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
 }
 
-
+//ekranay do przerobki
 void screen_31() {
   standard_back_button();
-  tft.drawCentreString(button_label_3_1 + button_label_3_2, 160, 60 - fontHeigh, 1);
+  tft.drawCentreString(object_areas[0][1], 160, 60 - fontHeigh, 1);
 
   cb_y1 = 70;  //zeruje zmienna
   //Serial.println(sizeOfArray_rollers);
@@ -68,7 +66,7 @@ void screen_31() {
 }
 void screen_41() {
   standard_back_button();
-  tft.drawCentreString(button_label_4_1 + button_label_4_2, 160, 60 - fontHeigh, 1);
+  tft.drawCentreString(object_areas[1][1], 160, 60 - fontHeigh, 1);
 
   cb_y1 = 70;  //zeruje zmienna
   //Serial.println(sizeOfArray_rollers);
@@ -82,11 +80,19 @@ void screen_41() {
 }
 void screen_51() {
   standard_back_button();
-  tft.drawCentreString(button_label_5_1 + button_label_5_2, 160, 60 - fontHeigh, 1);
+  tft.drawCentreString(object_areas[2][1], 160, 60 - fontHeigh, 1);
 }
 void screen_61() {
   standard_back_button();
-  tft.drawCentreString(button_label_6_1 + button_label_6_2, 160, 60 - fontHeigh, 1);
+  tft.drawCentreString(object_areas[3][1], 160, 60 - fontHeigh, 1);
+}
+void screen_71(){
+  standard_back_button();
+  tft.drawCentreString(object_areas[4][1], 160, 60 - fontHeigh, 1);
+}
+void screen_81(){
+  standard_back_button();
+  tft.drawCentreString(object_areas[5][1], 160, 60 - fontHeigh, 1);
 }
 
 //fonts

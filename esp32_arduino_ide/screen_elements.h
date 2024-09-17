@@ -30,51 +30,13 @@ int buttons_positions[6][5]{  //max 6 elements
   { 1, 191, 150, 50, 15 },
   { 169, 191, 150, 50, 15 }
 } ;
-// int buttons_positions[6][5]{  //max 6 elements
-//   /*{x0, y0, wide, heigh, round}*/
-//   { 1, 71, 150, 60, 15 },
-//   { 169, 71, 150, 60, 15 },
-//   { 1, 146, 150, 60, 15 },
-//   { 169, 146, 150, 60, 15 },
-//   { 1, 221, 150, 60, 15 },
-//   { 169, 221, 150, 60, 15 }
-// } ;
-
-String button_label_3_1 = "PARTER POM. ";
-String button_label_3_2 = "MIESZKALNE";
-int button_3[]{
-  1,    //x
-  71,   //y
-  150,  //wide
-  60,   //height
-  15,   // round
-};
-String button_label_4_1 = "PARTER POM. ";
-String button_label_4_2 = "TECHNICZNE";
-int button_4[]{
-  1,    //x
-  146,  //y
-  150,  //wide
-  60,   //height
-  15,   // round
-};
-String button_label_5_1 = "PIETRO POM. ";
-String button_label_5_2 = "TECHNICZNE";
-int button_5[]{
-  169,  //x
-  71,   //y
-  150,  //wide
-  60,   //height
-  15,   // round
-};
-String button_label_6_1 = "PIETRO POM. ";
-String button_label_6_2 = "MIESZKALNE";
-int button_6[]{
-  169,  //x
-  146,  //y
-  150,  //wide
-  60,   //height
-  15,   // round
+String buttons_names[6]{
+  {"button_3"},
+  {"button_4"},
+  {"button_5"},
+  {"button_6"},
+  {"button_7"},
+  {"button_8"}
 };
 
 //check-box
