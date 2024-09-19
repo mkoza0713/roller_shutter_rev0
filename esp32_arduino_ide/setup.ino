@@ -5,11 +5,11 @@ void psetup() {
   touchscreen.begin(touchscreenSPI);
   // Set the Touchscreen rotation in landscape mode
   // Note: in some displays, the touchscreen might be upside down, so you might need to set the rotation to 3: touchscreen.setRotation(3);
-  touchscreen.setRotation(1);
+  touchscreen.setRotation(3);
   // Start the tft display
   tft.init();
   // Set the TFT display rotation in landscape mode
-  tft.setRotation(1);
+  tft.setRotation(3);
   tft.invertDisplay(true);  //odwrocenie kolorow
 
   // Clear the screen before writing to it

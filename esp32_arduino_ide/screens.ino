@@ -36,7 +36,6 @@ void screen_1() {
     tft.drawCentreString(text_row_1, buttons_positions[i][0] + (buttons_positions[i][2] / 2), buttons_positions[i][1] + (buttons_positions[i][3] / 2) - (fontHeigh + fontHeigh / 2), 1);
     tft.drawCentreString(text_row_2, buttons_positions[i][0] + (buttons_positions[i][2] / 2), buttons_positions[i][1] + (buttons_positions[i][3] / 2), 1);
   }
-
 }
 void screen_2() {
   tft.drawCentreString("Dane z serwera:", 160, 60 - fontHeigh, 1);
@@ -49,50 +48,24 @@ void standard_back_button() {
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
 }
 
-//ekranay do przerobki
-void screen_31() {
+void screen_level_2() {
   standard_back_button();
-  tft.drawCentreString(object_areas[0][1], 160, 60 - fontHeigh, 1);
+  int screen_changer_position = screen_changer - 10;
+  //zabezpieczenie;
+  if (screen_changer_position < 0) screen_changer_position = 0;
+  else if (screen_changer_position > 5) screen_changer_position = 5;
+
+  tft.drawCentreString(object_areas[screen_changer_position][1], 160, 60 - fontHeigh, 1);
 
   cb_y1 = 70;  //zeruje zmienna
-  //Serial.println(sizeOfArray_rollers);
   for (int i = 0; i < sizeOfArray_rollers; i++) {
-    if (rollers[i][2] == "AREA_1") {
+    if (rollers[i][2] == object_areas[screen_changer_position][0]) {
       tft.drawRect(10, cb_y1, frame1, frame1, button_colour);
       tft.drawString(rollers[i][1], 35, cb_y1 + 2);
+      if (rollers[i][5] == "checked") tft.fillRect(10, cb_y1, frame1, frame1, button_insert_colour);
       cb_y1 = cb_y1 + cb_row_space;
     }
   }
-}
-void screen_41() {
-  standard_back_button();
-  tft.drawCentreString(object_areas[1][1], 160, 60 - fontHeigh, 1);
-
-  cb_y1 = 70;  //zeruje zmienna
-  //Serial.println(sizeOfArray_rollers);
-  for (int i = 0; i < sizeOfArray_rollers; i++) {
-    if (rollers[i][2] == "AREA_2") {
-      tft.drawRect(10, cb_y1, frame1, frame1, button_colour);
-      tft.drawString(rollers[i][1], 35, cb_y1 + 2);
-      cb_y1 = cb_y1 + cb_row_space;
-    }
-  }
-}
-void screen_51() {
-  standard_back_button();
-  tft.drawCentreString(object_areas[2][1], 160, 60 - fontHeigh, 1);
-}
-void screen_61() {
-  standard_back_button();
-  tft.drawCentreString(object_areas[3][1], 160, 60 - fontHeigh, 1);
-}
-void screen_71(){
-  standard_back_button();
-  tft.drawCentreString(object_areas[4][1], 160, 60 - fontHeigh, 1);
-}
-void screen_81(){
-  standard_back_button();
-  tft.drawCentreString(object_areas[5][1], 160, 60 - fontHeigh, 1);
 }
 
 //fonts

@@ -19,26 +19,28 @@ uint32_t button_insert_colour = '0x867D';
 
 byte cn_object_areas = 2;
 String object_areas[6][2]{
-  {"AREA_1", "PARTER POM. MIESZKALNE"},
-  {"AREA_2", "PARTER POM. TECHNICZNE"},
-  {"AREA_3", "PIETRO POM. MIESZKALNE"},
-  {"AREA_4", "PIETRO POM. TECHNICZNE"},
-  {"AREA_5", "TEST 1"},
-  {"AREA_6", "TEST 2"}
+  { "AREA_1", "PARTER POM. MIESZKALNE" },
+  { "AREA_2", "PARTER POM. TECHNICZNE" },
+  { "AREA_3", "PIETRO POM. MIESZKALNE" },
+  { "AREA_4", "PIETRO POM. TECHNICZNE" },
+  { "AREA_5", "TEST 1" },
+  { "AREA_6", "TEST 2" }
 };
-int sizeOfArray_object_areas = (sizeof(object_areas) / sizeof(object_areas[0][0])) / cn_object_areas;
+int sizeOfArray_object_areas = (sizeof(object_areas) / sizeof(object_areas[0][0])) / cn_object_areas;  //liczba wierszy
 
 //tablica obiektów typu roleta
-byte cn_rollers = 5;
-String rollers[9][5]{
-  { "1", "Roleta 1", "AREA_1", "0", "15" },
-  { "2", "Roleta 2", "AREA_2", "0", "16" },
-  { "3", "Roleta 3", "AREA_1", "0", "17" },
-  { "4", "Roleta 4", "AREA_1", "0", "12" },
-  { "5", "Roleta 5", "AREA_1", "0", "12" },
-  { "6", "Roleta 6", "AREA_1", "0", "12" },
-  { "7", "Roleta 6", "AREA_6", "0", "12" },
-  { "8", "Roleta 6", "AREA_6", "0", "12" },
-  { "9", "Roleta 6", "AREA_6", "0", "12" }
+byte cn_rollers = 6;
+String rollers[11][6]{  //id, name, area, start position, stop poition, if checkbox checked
+  { "1", "Roleta 1", "AREA_1", "0", "15", "0" },
+  { "2", "Roleta 2", "AREA_2", "0", "16", "0" },
+  { "3", "Roleta 3", "AREA_1", "0", "17", "0" },
+  { "4", "Roleta 4", "AREA_1", "0", "12", "0" },
+  { "5", "Roleta 5", "AREA_1", "0", "12", "0" },
+  { "6", "Roleta 6", "AREA_1", "0", "12", "0" },
+  { "7", "Roleta 7", "AREA_3", "0", "12", "0" },
+  { "8", "Roleta 8", "AREA_3", "0", "12", "0" },
+  { "9", "Roleta 9", "AREA_4", "0", "12", "0" },
+  { "10", "Roleta 10", "AREA_4", "0", "12", "0" },
+  { "11", "Roleta 11", "AREA_5", "0", "12", "0" }
 };
-int sizeOfArray_rollers = (sizeof(rollers) / sizeof(rollers[0][0])) / cn_rollers;
+int sizeOfArray_rollers = (sizeof(rollers) / sizeof(rollers[0][0])) / cn_rollers;  //liczba wierszy

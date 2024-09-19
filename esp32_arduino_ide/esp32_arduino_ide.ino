@@ -12,7 +12,7 @@ void setup() {
   psetup();
   nav();
   screen_1();
-  led_test();
+  // led_test();
 }
 void loop() {
   x = 0;
@@ -25,36 +25,36 @@ void loop() {
       if (touch_function_result == "button_1") {
         screen_changer--;
         if (screen_changer == 0) screen_changer = screen_sum;
-        else if (screen_changer > 10) screen_changer = 1;
+        else if (screen_changer > screen_sum) screen_changer = 1;
         //tutaj ide w dol z ekranami
 
       } else if (touch_function_result == "button_2") {
         screen_changer++;
         if (screen_changer > screen_sum) screen_changer = 1;
-        else if (screen_changer > 10) screen_changer = 1;
+        else if (screen_changer > screen_sum) screen_changer = 1;
         //tutaj ide w gore z ekranami
 
       } else if (touch_function_result == "button_3") {
-        screen_changer = 31;
+        screen_changer = 10;
         //funkcje przycisku 3
       } else if (touch_function_result == "button_4") {
-        screen_changer = 41;
+        screen_changer = 11;
         //funkcje przycisku 4
       } else if (touch_function_result == "button_5") {
-        screen_changer = 51;
+        screen_changer = 12;
         //funkcje przycisku 5
       } else if (touch_function_result == "button_6") {
-        screen_changer = 61;
+        screen_changer = 13;
         //funkcje przycisku 6
       }else if (touch_function_result == "button_7") {
-        screen_changer = 71;
+        screen_changer = 14;
         //funkcje przycisku 6
       }else if (touch_function_result == "button_8") {
-        screen_changer = 81;
+        screen_changer = 15;
         //funkcje przycisku 6
       }
     }
-    delay(150);
+    delay(200);
   }
   if (lock_key_1 == 0) {
     tft.fillScreen(TFT_WHITE);  //moment czyszczenia ekranu
@@ -71,23 +71,23 @@ void loop() {
         nav();
         screen_3();
         break;
-      case 31:
-        screen_31();
+      case 10:
+        screen_level_2();
         break;
-      case 41:
-        screen_41();
+      case 11:
+        screen_level_2();
         break;
-      case 51:
-        screen_51();
+      case 12:
+        screen_level_2();
         break;
-      case 61:
-        screen_61();
+      case 13:
+        screen_level_2();
         break;
-      case 71:
-        screen_71();
+      case 14:
+        screen_level_2();
         break;
-      case 81:
-        screen_81();
+      case 15:
+        screen_level_2();
         break;
     }
     lock_key_1 = 1;
