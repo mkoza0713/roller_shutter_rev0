@@ -30,17 +30,19 @@ int sizeOfArray_object_areas = (sizeof(object_areas) / sizeof(object_areas[0][0]
 
 //tablica obiektów typu roleta
 byte cn_rollers = 6;
-String rollers[11][6]{  //id, name, area, start position, stop poition, if checkbox checked
-  { "1", "Roleta 1", "AREA_1", "0", "15", "0" },
-  { "2", "Roleta 2", "AREA_2", "0", "16", "0" },
-  { "3", "Roleta 3", "AREA_1", "0", "17", "0" },
-  { "4", "Roleta 4", "AREA_1", "0", "12", "0" },
-  { "5", "Roleta 5", "AREA_1", "0", "12", "0" },
-  { "6", "Roleta 6", "AREA_1", "0", "12", "0" },
-  { "7", "Roleta 7", "AREA_3", "0", "12", "0" },
-  { "8", "Roleta 8", "AREA_3", "0", "12", "0" },
-  { "9", "Roleta 9", "AREA_4", "0", "12", "0" },
-  { "10", "Roleta 10", "AREA_4", "0", "12", "0" },
-  { "11", "Roleta 11", "AREA_5", "0", "12", "0" }
+String rollers[11][6]{  //id, name, area, start time ms, stop time ms, if checkbox checked
+  { "1", "Roleta 1", "AREA_1", "0", "9000", "0" },
+  { "2", "Roleta 2", "AREA_2", "0", "16000", "0" },
+  { "3", "Roleta 3", "AREA_1", "0", "10000", "0" },
+  { "4", "Roleta 4", "AREA_1", "0", "6000", "0" },
+  { "5", "Roleta 5", "AREA_1", "0", "5000", "0" },
+  { "6", "Roleta 6", "AREA_1", "0", "2000", "0" },
+  { "7", "Roleta 7", "AREA_3", "0", "12000", "0" },
+  { "8", "Roleta 8", "AREA_3", "0", "12000", "0" },
+  { "9", "Roleta 9", "AREA_4", "0", "12000", "0" },
+  { "10", "Roleta 10", "AREA_4", "0", "12000", "0" },
+  { "11", "Roleta 11", "AREA_5", "0", "12000", "0" }
 };
 int sizeOfArray_rollers = (sizeof(rollers) / sizeof(rollers[0][0])) / cn_rollers;  //liczba wierszy
+
+unsigned long start_millis_time=0;  //start odliczania czasu do dzaialnia przekaznika

@@ -66,6 +66,15 @@ void screen_level_2() {
       cb_y1 = cb_y1 + cb_row_space;
     }
   }
+
+  //przycisk góra/dół
+  
+  tft.fillRoundRect(button_up[0], button_up[1], button_up[2], button_up[3], button_up[4], button_colour);
+  tft.drawCentreString(button_label_3, button_up[0]+(button_up[2]/2), button_up[1]+(button_up[3]/2)- fontHeigh / 2, 1);
+
+  tft.fillRoundRect(button_down[0], button_down[1], button_down[2], button_down[3], button_down[4], button_colour);
+  tft.drawCentreString(button_label_4, button_down[0]+(button_down[2]/2), button_down[1]+(button_down[3]/2)- fontHeigh / 2, 1);
+
 }
 
 //fonts
