@@ -36,7 +36,7 @@ String touch_function() {
     if (output_variable != "") return output_variable;
     else return "";
 
-  } else if (screen_changer >= 10 && screen_changer <= 15) {
+  } else if (screen_changer >= 10 && screen_changer <= 15) {  //jestem w obszarze kafelków AREA
     //check boxy
     cb_y1 = 70;  //zeruje zmienna
     //trzeba ograniczyc sizeofarray_roller
@@ -53,57 +53,76 @@ String touch_function() {
     //przyciski gora/dol
     if (x >= button_up[0] && x <= button_up[0] + button_up[2] && y >= button_up[1] && y <= button_up[1] + button_up[3]) {
       tft.fillRoundRect(button_up[0], button_up[1], button_up[2], button_up[3], button_up[4], button_insert_colour);
-      //teraz tak. Musze wiedziec ktore checkboxy mam zaznaczone i czekam az sie wszystkie pootwieraja
       Serial.println("Przycisk UP");
-      // object_areas[screen_changer_position][0];  //obszar jaki obecenie mamy na ekranie
-      //int lower_work_time = 500;  ////////////////////////UWAGA UWAGA - zmienić albo zabezpieczyc!
+      //takie samo dla up i down
       int higher_work_time = 0;
       for (byte i = 0; i < sizeOfArray_rollers; i++) {
-        if (rollers[i][5] == "checked") {  //stad mam zaznaczone rolety do pracy
-          //tutaj dam digitalWrite(przekaznik, HIGH);
-          //szukam najwiekszego czasu dzialania
+        if (rollers[i][5] == "checked" && rollers[i][6] == "0") {  //stad mam zaznaczone rolety do pracy
+          //tutaj dam digitalWrite(przekaznik, HIGH);////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
           if (rollers[i][4].toInt() > higher_work_time) higher_work_time = rollers[i][4].toInt();
         }
       }
-      Serial.print("Najwiekszy czas działania to: ");
-      Serial.println(higher_work_time);
-
       start_millis_time = millis();
-      while (millis() <= start_millis_time + higher_work_time) {  //petla bedzie dzialala zgodnie z najdluzszym czasem dzialnia zaznacoznej rolety
+      while (millis() <= start_millis_time + higher_work_time) {
+        //petla bedzie dzialala zgodnie z najdluzszym czasem dzialnia zaznacoznej rolety
         //tutaj przechodze po wszystkich roletach, czy czas juz został przekroczony
         for (byte i = 0; i < sizeOfArray_rollers; i++) {
-          if (rollers[i][5] == "checked") {  //stad mam zaznaczone rolety do pracy
-            if(millis() >= start_millis_time+rollers[i][4].toInt()){
-              //tutaj dam digitalWrite(przekaznik, LOw)
-              Serial.print("Przekaznik od rolety: ");
+          if (rollers[i][5] == "checked" && rollers[i][6] == "0") {
+            //stad mam zaznaczone rolety do pracy
+            //tworze bar o wielkosci 50 zmapowany na czas do otwarcia. Co step zmeinia sie wartosc wide
+            rollers[i][7] = map(millis() - start_millis_time, 0, rollers[i][4].toInt(), 0, 100);
+            tft.fillRect(151, rollers[i][8].toInt() + 1, (rollers[i][7].toInt() / 2) - 2, frame1 - 2, TFT_WHITE);  //ramka jest pomnijeszona aby "czyscic" kolor
+
+
+            if (millis() >= start_millis_time + rollers[i][4].toInt()) {
+              Serial.print("Roleta ");
               Serial.print(rollers[i][1]);
-              Serial.println(" zakonczyl prace.");
+              Serial.println(" zakonczyla prace.");
+              rollers[i][6] = "1";  //zapisuje w tablicy, że roleta zamknieta
+              rollers[i][7] = "0";  //zapisuje w tablicy na ile zostala zamknieta 
+              //tutaj dam digitalWrite(przekaznik, LOw) ////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
             }
           }
         }
-
       }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     if (x >= button_down[0] && x <= button_down[0] + button_down[2] && y >= button_down[1] && y <= button_down[1] + button_down[3]) {
       tft.fillRoundRect(button_down[0], button_down[1], button_down[2], button_down[3], button_down[4], button_insert_colour);
       Serial.println("Przycisk DOWN");
+      //szukam najwiekszego, zaznaczonego czasu pracy
+      //szukam ile elementow mamy w danym obszarze
+      //takie samo dla up i down
+      int higher_work_time = 0;
+      for (byte i = 0; i < sizeOfArray_rollers; i++) {
+        if (rollers[i][5] == "checked" && rollers[i][6] == "1") {  //stad mam zaznaczone rolety do pracy
+          //tutaj dam digitalWrite(przekaznik, HIGH);////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
+          if (rollers[i][4].toInt() > higher_work_time) higher_work_time = rollers[i][4].toInt();
+        }
+      }
+
+      start_millis_time = millis();
+      while (millis() <= start_millis_time + higher_work_time) {
+        //petla bedzie dzialala zgodnie z najdluzszym czasem dzialnia zaznacoznej rolety
+        //tutaj przechodze po wszystkich roletach, czy czas juz został przekroczony
+        for (byte i = 0; i < sizeOfArray_rollers; i++) {
+          if (rollers[i][5] == "checked" && rollers[i][6] == "1") {
+            //stad mam zaznaczone rolety do pracy
+            //tworze bar o wielkosci 50 zmapowany na czas do otwarcia. Co step zmeinia sie wartosc wide
+            rollers[i][7] = map(millis() - start_millis_time, 0, rollers[i][4].toInt(), 0, 100);
+            tft.fillRect(201-(rollers[i][7].toInt() / 2), rollers[i][8].toInt() + 1, (rollers[i][7].toInt() / 2) - 2, frame1 - 2, button_insert_colour);  //ramka jest pomnijeszona aby "czyscic" kolor
+
+            if (millis() >= start_millis_time + rollers[i][4].toInt()) {
+              Serial.print("Roleta ");
+              Serial.print(rollers[i][1]);
+              Serial.println(" zakonczyla prace.");
+              rollers[i][6] = "0";  //zapisuje w tablicy, że roleta zamknieta
+              rollers[i][7] = "100";  //zapisuje w tablicy na ile zostala zamknieta 
+              //tutaj dam digitalWrite(przekaznik, LOw) ////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
+            }
+          }
+        }
+      }
     }
 
 

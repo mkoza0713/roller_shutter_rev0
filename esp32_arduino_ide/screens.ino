@@ -59,10 +59,16 @@ void screen_level_2() {
 
   cb_y1 = 70;  //zeruje zmienna
   for (int i = 0; i < sizeOfArray_rollers; i++) {
+    //wyswietlam wnetrza kafelkow
     if (rollers[i][2] == object_areas[screen_changer_position][0]) {
-      tft.drawRect(10, cb_y1, frame1, frame1, button_colour);
-      tft.drawString(rollers[i][1], 35, cb_y1 + 2);
+      //zaznacznie check boxow
+      tft.drawRect(10, cb_y1, frame1, frame1, button_colour);  //check box
       if (rollers[i][5] == "checked") tft.fillRect(10, cb_y1, frame1, frame1, button_insert_colour);
+      tft.drawString(rollers[i][1], 35, cb_y1 + 2);
+      //zaznaczania loading bar
+      tft.drawRect(150,cb_y1, 50, frame1, button_colour);  //loading bar 
+      if (rollers[i][6] == "0") tft.fillRect(150, cb_y1, 50, frame1, button_insert_colour); //1 to otwarta wiec pusty
+      rollers[i][8] = cb_y1;  //zapisuje pozycje bara do otwarcia na ekranie
       cb_y1 = cb_y1 + cb_row_space;
     }
   }
