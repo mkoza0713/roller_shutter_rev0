@@ -47,6 +47,7 @@ String rollers[11][9]{  //id/ name/ area/ start time ms/ stop time ms/ if checkb
 };
 int sizeOfArray_rollers = (sizeof(rollers) / sizeof(rollers[0][0])) / cn_rollers;  //liczba wierszy
 
+int wifiConnectionStatus =0;
 String deviceData[]{
   "UPC7AA1BAF",  //ssid
   "Ra5xvvsxcpdj", //ssid_pass
@@ -56,5 +57,6 @@ String deviceData[]{
   "button",  //bell button or just button
 };
 
-
 unsigned long start_millis_time=0;  //start odliczania czasu do dzaialnia przekaznika
+
+int countOfI2cDevices = 0;

@@ -1,5 +1,5 @@
 void psetup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   /***********HTML**************/
   String ssid_read_1 = deviceData[0];
@@ -20,6 +20,7 @@ void psetup() {
     delay(500);
     Serial.print(".");
   }
+  wifiConnectionStatus=1;  //polaczono
   Serial.print("IP:");
   Serial.println(WiFi.localIP());
   /***********HTML**************/

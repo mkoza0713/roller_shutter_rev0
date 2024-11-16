@@ -40,8 +40,15 @@ void screen_1() {
 void screen_2() {
   tft.drawCentreString("Dane z serwera:", 160, 60 - fontHeigh, 1);
   getRequest();
+
   cb_y1 = 70;
-  String stringToWrite = "Czas z serwera: "+ String(serverTimeH) + ':' + String(serverTimeM) + ':' + String(serverTimeS);
+  String stringToWrite="";
+  if(wifiConnectionStatus)stringToWrite = "Status polaczenia: polaczono";
+  else stringToWrite = "Status polaczenia: nie polaczono";
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
+
+  cb_y1 = cb_y1 + cb_row_space;
+  stringToWrite = "Czas z serwera: "+ String(serverTimeH) + ':' + String(serverTimeM) + ':' + String(serverTimeS);
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 }
 void screen_3() {
@@ -65,7 +72,7 @@ void screen_3() {
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 
   cb_y1 = cb_y1 + cb_row_space;
-  stringToWrite = "Ekspandery ";
+  stringToWrite = "Ekspandery :"+String(countOfI2cDevices);
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 }
 void standard_back_button() {

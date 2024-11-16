@@ -1,3 +1,4 @@
+#include <Wire.h>
 #include <screen_elements.h>
 #include <variables.h>
 #include <SPI.h>
@@ -26,7 +27,7 @@ void setup() {
   psetup();
   nav();
   screen_1();
-  //getRequest();
+  i2c_scanner();
   //led_test();
 }
 void loop() {
