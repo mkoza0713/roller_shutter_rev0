@@ -45,7 +45,16 @@ String rollers[11][9]{  //id/ name/ area/ start time ms/ stop time ms/ if checkb
   { "10", "Roleta 10", "AREA_4", "0", "12000", "0" , "0", "100", "0"},
   { "11", "Roleta 11", "AREA_5", "0", "12000", "0" , "1", "0", "0"}
 };
-
 int sizeOfArray_rollers = (sizeof(rollers) / sizeof(rollers[0][0])) / cn_rollers;  //liczba wierszy
+
+String deviceData[]{
+  "UPC7AA1BAF",  //ssid
+  "Ra5xvvsxcpdj", //ssid_pass
+  "https://pivvwsrxfv.cfolks.pl",//host name
+  "/connectEspDbIdDevice.php",//php file name
+  "did000001", //device_id
+  "button",  //bell button or just button
+};
+
 
 unsigned long start_millis_time=0;  //start odliczania czasu do dzaialnia przekaznika

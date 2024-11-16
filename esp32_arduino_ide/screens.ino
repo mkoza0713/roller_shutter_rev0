@@ -39,12 +39,34 @@ void screen_1() {
 }
 void screen_2() {
   tft.drawCentreString("Dane z serwera:", 160, 60 - fontHeigh, 1);
-
+  getRequest();
+  cb_y1 = 70;
+  String stringToWrite = "Czas z serwera: "+ String(serverTimeH) + ':' + String(serverTimeM) + ':' + String(serverTimeS);
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
 }
 void screen_3() {
   tft.drawCentreString("Ustawienia:", 160, 60 - fontHeigh, 1);
-  cb_y1=70;
-  tft.drawString("Tryb pracy przycisku: ", 35, cb_y1 + 2);
+  cb_y1 = 70;
+  String stringToWrite = "";
+
+  stringToWrite = "Tryb pracy przycisku: " + deviceData[5];
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
+
+  cb_y1 = cb_y1 + cb_row_space;
+  stringToWrite = "Czasy dzialania rolet ";
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
+
+  cb_y1 = cb_y1 + cb_row_space;
+  stringToWrite = "Siec: " + deviceData[0];
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
+
+  cb_y1 = cb_y1 + cb_row_space;
+  stringToWrite = "ID: " + deviceData[4];
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
+
+  cb_y1 = cb_y1 + cb_row_space;
+  stringToWrite = "Ekspandery ";
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
 }
 void standard_back_button() {
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);
@@ -69,21 +91,20 @@ void screen_level_2() {
       if (rollers[i][5] == "checked") tft.fillRect(10, cb_y1, frame1, frame1, button_insert_colour);
       tft.drawString(rollers[i][1], 35, cb_y1 + 2);
       //zaznaczania loading bar
-      tft.drawRect(150,cb_y1, 50, frame1, button_colour);  //loading bar 
-      if (rollers[i][6] == "0") tft.fillRect(150, cb_y1, 50, frame1, button_insert_colour); //1 to otwarta wiec pusty
-      rollers[i][8] = cb_y1;  //zapisuje pozycje bara do otwarcia na ekranie
+      tft.drawRect(150, cb_y1, 50, frame1, button_colour);                                   //loading bar
+      if (rollers[i][6] == "0") tft.fillRect(150, cb_y1, 50, frame1, button_insert_colour);  //1 to otwarta wiec pusty
+      rollers[i][8] = cb_y1;                                                                 //zapisuje pozycje bara do otwarcia na ekranie
       cb_y1 = cb_y1 + cb_row_space;
     }
   }
 
   //przycisk góra/dół
-  
+
   tft.fillRoundRect(button_up[0], button_up[1], button_up[2], button_up[3], button_up[4], button_colour);
-  tft.drawCentreString(button_label_3, button_up[0]+(button_up[2]/2), button_up[1]+(button_up[3]/2)- fontHeigh / 2, 1);
+  tft.drawCentreString(button_label_3, button_up[0] + (button_up[2] / 2), button_up[1] + (button_up[3] / 2) - fontHeigh / 2, 1);
 
   tft.fillRoundRect(button_down[0], button_down[1], button_down[2], button_down[3], button_down[4], button_colour);
-  tft.drawCentreString(button_label_4, button_down[0]+(button_down[2]/2), button_down[1]+(button_down[3]/2)- fontHeigh / 2, 1);
-
+  tft.drawCentreString(button_label_4, button_down[0] + (button_down[2] / 2), button_down[1] + (button_down[3] / 2) - fontHeigh / 2, 1);
 }
 
 //fonts

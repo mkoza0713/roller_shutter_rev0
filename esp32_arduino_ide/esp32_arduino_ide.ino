@@ -8,10 +8,25 @@ TFT_eSPI tft = TFT_eSPI();
 SPIClass touchscreenSPI = SPIClass(VSPI);
 XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
 
+
+/***********HTML**************/
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// String tempQuery1 = "?deviceWorkingState=";
+// String tempValue1 = "3";
+String tempQuery1 = "";
+String tempValue1 = "";
+unsigned int serverTime;
+int serverTimeH;
+int serverTimeM;
+int serverTimeS;
+
 void setup() {
   psetup();
   nav();
   screen_1();
+  //getRequest();
   //led_test();
 }
 void loop() {
@@ -46,10 +61,10 @@ void loop() {
       } else if (touch_function_result == "button_6") {
         screen_changer = 13;
         //funkcje przycisku 6
-      }else if (touch_function_result == "button_7") {
+      } else if (touch_function_result == "button_7") {
         screen_changer = 14;
         //funkcje przycisku 6
-      }else if (touch_function_result == "button_8") {
+      } else if (touch_function_result == "button_8") {
         screen_changer = 15;
         //funkcje przycisku 6
       }
@@ -171,6 +186,4 @@ void led_test() {
   delay(500);
   tft.fillRect(150, 150, 100, 100, 0x915C);
   delay(500);
-
-
 }
