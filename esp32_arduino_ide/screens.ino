@@ -13,7 +13,7 @@ void nav() {
 }
 void screen_1() {
   tft.drawCentreString("Obszary budynku:", 160, 60 - fontHeigh, 1);
-
+  //wypisuje na ekranie kafelki z obszarami budynku
   for (byte i = 0; i < sizeOfArray_object_areas; i++) {  //tu mam ile mam miec przyciskow - obszarów
     String pomocnicza1 = object_areas[i][1];
     //********************************tutaj mam rozbicie nazwy na przycisku na dwa wiersze
@@ -39,9 +39,12 @@ void screen_1() {
 }
 void screen_2() {
   tft.drawCentreString("Dane z serwera:", 160, 60 - fontHeigh, 1);
+
 }
 void screen_3() {
   tft.drawCentreString("Ustawienia:", 160, 60 - fontHeigh, 1);
+  cb_y1=70;
+  tft.drawString("Tryb pracy przycisku: ", 35, cb_y1 + 2);
 }
 void standard_back_button() {
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);

@@ -1,0 +1,1 @@
+https://github.com/kecajtop/esp32_blinds_controller/tree/main/pcb/gerber/V0.2

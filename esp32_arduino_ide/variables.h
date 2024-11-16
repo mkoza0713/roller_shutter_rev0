@@ -19,20 +19,20 @@ uint32_t button_insert_colour = '0x867D';
 uint32_t empty_colour = 'TFT_WHITE';
 
 
-byte cn_object_areas = 3;//columns
-String object_areas[6][3]{  //area/name of area/ no of rollers in area (counted by f())
-  { "AREA_1", "PARTER POM. MIESZKALNE",  "0"},
-  { "AREA_2", "PARTER POM. TECHNICZNE",  "0"},
-  { "AREA_3", "PIETRO POM. MIESZKALNE",  "0"},
-  { "AREA_4", "PIETRO POM. TECHNICZNE",  "0"},
-  { "AREA_5", "TEST 1", "0"},
-  { "AREA_6", "TEST 2",  "0"}
+byte cn_object_areas = 2;//columns
+String object_areas[6][2]{  //area/name of area/
+  { "AREA_1", "PARTER POM. MIESZKALNE"},
+  { "AREA_2", "PARTER POM. TECHNICZNE"},
+  { "AREA_3", "PIETRO POM. MIESZKALNE"},
+  { "AREA_4", "PIETRO POM. TECHNICZNE"},
+  { "AREA_5", "TEST 1"},
+  { "AREA_6", "TEST 2"}
 };
 int sizeOfArray_object_areas = (sizeof(object_areas) / sizeof(object_areas[0][0])) / cn_object_areas;  //liczba wierszy
 
 //tablica obiektów typu roleta
 byte cn_rollers = 9;  //columns
-String rollers[11][9]{  //id, name, area, start time ms, stop time ms, if checkbox checked, open/close stage(1 open 0 close), poziom otwarcia 0 otwarty,100, zamkniety,pozycja na ekranie
+String rollers[11][9]{  //id/ name/ area/ start time ms/ stop time ms/ if checkbox checked/ open/close stage(1 open 0 close)/ poziom otwarcia 0 otwarty,100, zamkniety/pozycja na ekranie
   { "1", "Roleta 1", "AREA_1", "0", "9000", "0" , "1", "0", "0"},
   { "2", "Roleta 2", "AREA_2", "0", "16000", "0" , "0", "100", "0"},
   { "3", "Roleta 3", "AREA_1", "0", "10000", "0" , "0", "100", "0"},

@@ -58,6 +58,9 @@ String touch_function() {
       int higher_work_time = 0;
       for (byte i = 0; i < sizeOfArray_rollers; i++) {
         if (rollers[i][5] == "checked" && rollers[i][6] == "0") {  //stad mam zaznaczone rolety do pracy
+          Serial.print("Roleta ");
+          Serial.print(rollers[i][1]);
+          Serial.println(" rozpoczela prace.");
           //tutaj dam digitalWrite(przekaznik, HIGH);////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
           if (rollers[i][4].toInt() > higher_work_time) higher_work_time = rollers[i][4].toInt();
         }
@@ -78,8 +81,8 @@ String touch_function() {
               Serial.print("Roleta ");
               Serial.print(rollers[i][1]);
               Serial.println(" zakonczyla prace.");
-              rollers[i][6] = "1";  //zapisuje w tablicy, że roleta zamknieta
-              rollers[i][7] = "0";  //zapisuje w tablicy na ile zostala zamknieta 
+              rollers[i][6] = "1";  //zapisuje w tablicy, że roleta otwarta
+              rollers[i][7] = "0";  //zapisuje w tablicy na ile zostala otwarta
               //tutaj dam digitalWrite(przekaznik, LOw) ////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
             }
           }
@@ -96,6 +99,9 @@ String touch_function() {
       int higher_work_time = 0;
       for (byte i = 0; i < sizeOfArray_rollers; i++) {
         if (rollers[i][5] == "checked" && rollers[i][6] == "1") {  //stad mam zaznaczone rolety do pracy
+          Serial.print("Roleta ");
+          Serial.print(rollers[i][1]);
+          Serial.println(" rozpoczela prace.");
           //tutaj dam digitalWrite(przekaznik, HIGH);////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
           if (rollers[i][4].toInt() > higher_work_time) higher_work_time = rollers[i][4].toInt();
         }
@@ -110,14 +116,14 @@ String touch_function() {
             //stad mam zaznaczone rolety do pracy
             //tworze bar o wielkosci 50 zmapowany na czas do otwarcia. Co step zmeinia sie wartosc wide
             rollers[i][7] = map(millis() - start_millis_time, 0, rollers[i][4].toInt(), 0, 100);
-            tft.fillRect(201-(rollers[i][7].toInt() / 2), rollers[i][8].toInt() + 1, (rollers[i][7].toInt() / 2) - 2, frame1 - 2, button_insert_colour);  //ramka jest pomnijeszona aby "czyscic" kolor
+            tft.fillRect(201 - (rollers[i][7].toInt() / 2), rollers[i][8].toInt() + 1, (rollers[i][7].toInt() / 2) - 2, frame1 - 2, button_insert_colour);  //ramka jest pomnijeszona aby "czyscic" kolor
 
             if (millis() >= start_millis_time + rollers[i][4].toInt()) {
               Serial.print("Roleta ");
               Serial.print(rollers[i][1]);
               Serial.println(" zakonczyla prace.");
-              rollers[i][6] = "0";  //zapisuje w tablicy, że roleta zamknieta
-              rollers[i][7] = "100";  //zapisuje w tablicy na ile zostala zamknieta 
+              rollers[i][6] = "0";    //zapisuje w tablicy, że roleta zamknieta
+              rollers[i][7] = "100";  //zapisuje w tablicy na ile zostala zamknieta
               //tutaj dam digitalWrite(przekaznik, LOw) ////////////////////////////////////////////////////////////////////UWAGA UWAGA UWAGA
             }
           }

@@ -20,12 +20,5 @@ void psetup() {
 
   int centerX = SCREEN_WIDTH / 2;
   int centerY = SCREEN_HEIGHT / 2;
-  for (int i = 0; i < sizeOfArray_object_areas; i++) {  //przechodze  po petli i zliczam rolety w areas
-    for (int j = 0; j < sizeOfArray_rollers; j++) {
-      if (rollers[j][2] == object_areas[i][0]) {
-        object_areas[i][2] = object_areas[i][2].toInt() + 1;
-      }
-    }
-  }
 
 }
