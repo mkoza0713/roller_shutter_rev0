@@ -1,6 +1,5 @@
 void psetup() {
   Serial.begin(9600);
-
   /***********HTML**************/
   String ssid_read_1 = deviceData[0];
   String pass_read_1 = deviceData[1];
@@ -13,18 +12,25 @@ void psetup() {
 
   const char* ssid_client = ssid_eeprom_read;
   const char* password_client = pass_eeprom_read;
-
+  int connection_time = 0;
   WiFi.begin(ssid_client, password_client);
   Serial.println("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    if(connection_time>=20){
+      wifiConnectionStatus=0;
+      break;
+    }
+    Serial.println(connection_time);
+    connection_time++;
   }
-  wifiConnectionStatus=1;  //polaczono
-  Serial.print("IP:");
-  Serial.println(WiFi.localIP());
+  if(wifiConnectionStatus){
+    wifiConnectionStatus=1;  //polaczono
+    Serial.print("IP:");
+    Serial.println(WiFi.localIP());
+  }
   /***********HTML**************/
-
 
   /***********LCD+TFT**************/
   // Start the SPI for the touchscreen and init the touchscreen
@@ -47,4 +53,26 @@ void psetup() {
 
   int centerX = SCREEN_WIDTH / 2;
   int centerY = SCREEN_HEIGHT / 2;
+  /***********LCD+TFT**************/
+  /***********MPC**************/
+  Wire.begin();
+  bool test_mpc_1 = MCP_1.begin();
+  bool test_mpc_2 = MCP_2.begin();
+
+  Serial.print("ekspander 1:");if(test_mpc_1)Serial.println("polaczono");else(Serial.println("nie polaczono"));
+  Serial.print("ekspander 2:");if(test_mpc_2)Serial.println("polaczono");else(Serial.println("nie polaczono"));
+
+  for (int pin = 4; pin <= 7; pin++)
+  {
+    MCP_1.pinMode1(pin, INPUT);
+    MCP_2.pinMode1(pin, INPUT);
+  }
+  for (int pin = 0; pin <= 3; pin++)
+  {
+    MCP_1.pinMode1(pin, OUTPUT);
+    MCP_2.pinMode1(pin, OUTPUT);
+  }
+  /***********MPC**************/
+
+  
 }

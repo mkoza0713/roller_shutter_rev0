@@ -46,6 +46,7 @@ int buttons_positions[6][5]{ //max 6 elements
                              { 1, 191, 150, 50, 15 },
                              { 169, 191, 150, 50, 15 }
 };
+//przyciski obszarow - nazwy bierze z tablicy
 String buttons_names[6]{
   { "button_3" },
   { "button_4" },

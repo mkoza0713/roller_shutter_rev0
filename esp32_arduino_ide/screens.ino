@@ -42,25 +42,31 @@ void screen_2() {
   getRequest();
 
   cb_y1 = 70;
-  String stringToWrite="";
-  if(wifiConnectionStatus)stringToWrite = "Status polaczenia: polaczono";
+  String stringToWrite = "";
+  if (wifiConnectionStatus) stringToWrite = "Status polaczenia: polaczono";
   else stringToWrite = "Status polaczenia: nie polaczono";
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 
   cb_y1 = cb_y1 + cb_row_space;
-  stringToWrite = "Czas z serwera: "+ String(serverTimeH) + ':' + String(serverTimeM) + ':' + String(serverTimeS);
+  stringToWrite = "Z siecia: " + deviceData[0];
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
+
+  cb_y1 = cb_y1 + cb_row_space;
+  stringToWrite = "Czas z serwera: " + String(serverTimeH) + ':' + String(serverTimeM) + ':' + String(serverTimeS);
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 }
 void screen_3() {
+  //screen_changer = 3
+
   tft.drawCentreString("Ustawienia:", 160, 60 - fontHeigh, 1);
   cb_y1 = 70;
   String stringToWrite = "";
 
-  stringToWrite = "Tryb pracy przycisku: " + deviceData[5];
+  stringToWrite = "Tryb pracy przycisku: -->" + deviceData[5];
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 
   cb_y1 = cb_y1 + cb_row_space;
-  stringToWrite = "Czasy dzialania rolet ";
+  stringToWrite = "Czasy dzialania rolet -->";
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 
   cb_y1 = cb_y1 + cb_row_space;
@@ -72,12 +78,65 @@ void screen_3() {
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 
   cb_y1 = cb_y1 + cb_row_space;
-  stringToWrite = "Ekspandery :"+String(countOfI2cDevices);
+  stringToWrite = "Ekspandery :" + String(countOfI2cDevices) + "-->";
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
 }
+void screen_4() {  //ekran listy rolet z czasami dzialania
+
+  //NIE GOTOWE
+  standard_back_button();
+  standard_updown_button();
+  //przycisk gora dol
+  tft.fillRoundRect(400, 300, 200, 200, 10, button_colour);
+  tft.fillRoundRect(400, 600, 200, 200, 10, button_colour);
+  tft.drawCentreString("GORA", 400, 300, 1);
+  tft.drawCentreString("DOL", 700, 300, 1);
+  cb_y1 = 50;
+
+  String stringToWrite = "";
+  byte zakres_petli = 0;
+  //liczba ekranow do przewijania:
+  liczba_ekranow = sizeOfArray_rollers / 8;
+  if (sizeOfArray_rollers % 8 > 0) liczba_ekranow++;
+  // z tego wiem ze mam np dwa ekrany do wyswietlenia
+
+
+  if (screen_scroll_1 == 0) zakres_petli = 0;
+  else zakres_petli = screen_scroll_1 * 8;
+
+  for (byte i = zakres_petli; i < sizeOfArray_rollers; i++) {
+    stringToWrite = String(rollers[i][1]) + " : " + String(rollers[i][4]);
+
+    Serial.println(stringToWrite);
+    tft.drawString(stringToWrite, 5, cb_y1 + 2);
+    rollers[i][8] = cb_y1;  //zapisuje pozycje na ekranie aby dodac +/-
+    cb_y1 = cb_y1 + 22;
+
+    if (i == 7) break;
+  }
+}
+void screen_5() {  //USTAWIENIA ekran z lista ekspanderow
+  standard_back_button();
+  cb_y1 = 50;
+  for (byte i = 0; i < 10; i++) {
+    if (i2cDevices[i] != 0) {
+      String stringToWrite = "Ekspander :" + String(i) + ", adres: 0x" + String(i2cDevices[i], HEX);
+      tft.drawString(stringToWrite, 5, cb_y1 + 2);
+      cb_y1 = cb_y1 + 22;
+    }
+  }
+}
+
 void standard_back_button() {
   tft.fillRoundRect(button_1[0], button_1[1], button_1[2], button_1[3], button_1[4], button_colour);
   tft.drawCentreString(button_label_1, button_1[0] + (button_1[2] / 2), button_1[1] + (button_1[3] / 2) - fontHeigh / 2, 1);
+}
+void standard_updown_button() {
+  tft.fillRoundRect(button_up[0], button_up[1], button_up[2], button_up[3], button_up[4], button_colour);
+  tft.drawCentreString(button_label_3, button_up[0] + (button_up[2] / 2), button_up[1] + (button_up[3] / 2) - fontHeigh / 2, 1);
+
+  tft.fillRoundRect(button_down[0], button_down[1], button_down[2], button_down[3], button_down[4], button_colour);
+  tft.drawCentreString(button_label_4, button_down[0] + (button_down[2] / 2), button_down[1] + (button_down[3] / 2) - fontHeigh / 2, 1);
 }
 
 void screen_level_2() {
@@ -106,13 +165,9 @@ void screen_level_2() {
   }
 
   //przycisk góra/dół
-
-  tft.fillRoundRect(button_up[0], button_up[1], button_up[2], button_up[3], button_up[4], button_colour);
-  tft.drawCentreString(button_label_3, button_up[0] + (button_up[2] / 2), button_up[1] + (button_up[3] / 2) - fontHeigh / 2, 1);
-
-  tft.fillRoundRect(button_down[0], button_down[1], button_down[2], button_down[3], button_down[4], button_colour);
-  tft.drawCentreString(button_label_4, button_down[0] + (button_down[2] / 2), button_down[1] + (button_down[3] / 2) - fontHeigh / 2, 1);
+  standard_updown_button();
 }
+
 
 //fonts
 // tft.setFreeFont(&FreeMono9pt7b);

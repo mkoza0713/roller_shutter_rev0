@@ -3,7 +3,8 @@ void i2c_scanner() {
   byte error, address;
   int nDevices;
 
-  Serial.println("Scanning...");
+  //Serial.println("Scanning i2c devices...");
+  Serial.println("Magistrala I2C:");
 
   nDevices = 0;
   for (address = 1; address < 127; address++) {
@@ -14,11 +15,10 @@ void i2c_scanner() {
     error = Wire.endTransmission();
 
     if (error == 0) {
-      Serial.print("I2C device found at address 0x");
-      if (address < 16)
-        Serial.print("0");
-      Serial.print(address, HEX);
-      Serial.println("  !");
+      Serial.print("I2C znalezione pod adresem: 0x");
+      if (address < 16)Serial.print("0");
+      Serial.println(address, HEX);
+      i2cDevices[nDevices]=address;  //tablica ze znalezionymi adresami
 
       nDevices++;
     } else if (error == 4) {
@@ -31,9 +31,7 @@ void i2c_scanner() {
   if (nDevices == 0)
     Serial.println("No I2C devices found\n");
   else
-    Serial.println("done\n");
-
-  delay(5000);  // wait 5 seconds for next scan
-
+    Serial.println("koniec\n");
   countOfI2cDevices = nDevices;
+
 }

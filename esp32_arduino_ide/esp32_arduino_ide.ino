@@ -22,15 +22,27 @@ unsigned int serverTime;
 int serverTimeH;
 int serverTimeM;
 int serverTimeS;
+/***********HTML**************/
+
+/***********MPC**************/
+#include "MCP23008.h"
+MCP23008 MCP_1(0x20);
+MCP23008 MCP_2(0x21);
+
+/***********MPC**************/
+
+
 
 void setup() {
-  psetup();
+  psetup();  //funkcje setup()
+  i2c_scanner();  //skanowanie urzadzen i2c
   nav();
   screen_1();
-  i2c_scanner();
   //led_test();
 }
 void loop() {
+  input_switch();  //reakcja na przycisk w pomieszczeniu
+  screensaver();  //wygaszanie ekranu
   x = 0;
   y = 0;
   z = 0;
@@ -68,6 +80,12 @@ void loop() {
       } else if (touch_function_result == "button_8") {
         screen_changer = 15;
         //funkcje przycisku 6
+      } else if (touch_function_result == "setting_button_1") {
+        screen_changer = 30;
+        //funkcje z ustawien
+      } else if (touch_function_result == "setting_button_2") {
+        screen_changer = 31;
+        //funkcje z ustawien
       }
     }
     delay(200);
@@ -105,86 +123,13 @@ void loop() {
       case 15:
         screen_level_2();
         break;
+      case 30:
+        screen_4();
+        break;
+      case 31:
+        screen_5();
+        break;
     }
     lock_key_1 = 1;
   }
-}
-void led_test() {
-  pinMode(16, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(17, OUTPUT);
-  delay(1000);
-  digitalWrite(16, HIGH);
-  digitalWrite(4, HIGH);
-  digitalWrite(17, HIGH);
-
-  delay(100);
-  digitalWrite(16, LOW);
-  delay(100);
-  digitalWrite(16, HIGH);
-  delay(100);
-  digitalWrite(4, LOW);
-  delay(100);
-  digitalWrite(4, HIGH);
-  delay(100);
-  digitalWrite(17, LOW);
-  delay(100);
-  digitalWrite(17, HIGH);
-
-  Serial.println(analogRead(34));
-
-  tft.fillRect(150, 150, 100, 100, 0x0000);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x000F);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x03E0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x03EF);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x7800);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x780F);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x7BE0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xD69A);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x7BEF);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x001F);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x07E0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x07FF);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xF800);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xF81F);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xFFE0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xFFFF);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xFDA0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xB7E0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xFE19);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x9A60);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xFEA0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xFE19);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x9A60);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xFEA0);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0xC618);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x867D);
-  delay(500);
-  tft.fillRect(150, 150, 100, 100, 0x915C);
-  delay(500);
 }

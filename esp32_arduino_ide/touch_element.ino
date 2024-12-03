@@ -35,8 +35,47 @@ String touch_function() {
     }
     if (output_variable != "") return output_variable;
     else return "";
+  }
+  /**************************************ustawienia***************************************************/
+  else if (screen_changer == 3) {
+    //x = 10 i y = 70
+    Serial.print(x);
+    Serial.print(":");
+    Serial.println(y);
+    //tryb dzialania przycisku na scianie
+    if (x >= 0 && x <= 300 && y >= 70 && y <= 85) {
+      if (deviceData[5] == "button") deviceData[5] = "bell";
+      else if (deviceData[5] == "bell") deviceData[5] = "button";
+      return "";
+    }
+    //lista czasow dzialania - globalnie
+    if (x >= 0 && x <= 300 && y >= 90 && y <= 115) {
+      return "setting_button_1";
+    } 
+    //lista ekspanderow
+    if (x >= 0 && x <= 300 && y >= 170 && y <= 195) {
+      return "setting_button_2";
+    } 
+    return "";
 
-  } else if (screen_changer >= 10 && screen_changer <= 15) {  //jestem w obszarze kafelków AREA
+    /************************************lista rolet z czasami**************************************************/
+  } else if (screen_changer == 30) {
+    //przycisk gora przewijanie strony
+    if (x >= button_up[0] && x <= button_up[0] + button_up[2] && y >= button_up[1] && y <= button_up[1] + button_up[3]) {
+        Serial.println("test 1");
+        // screen_scroll_1--;
+        // if(screen_scroll_1<=0)screen_scroll_1=0;
+    }
+    //przcysik dol przewijanie strony
+    if (x >= button_down[0] && x <= button_down[0] + button_down[2] && y >= button_down[1] && y <= button_down[1] + button_down[3]) {
+        Serial.println("test 2");
+        // screen_scroll_1++;
+        // if(screen_scroll_1>=liczba_ekranow-1)screen_scroll_1=liczba_ekranow-1;
+    }
+
+  }
+  /**************************************wewnatrz obszarow***************************************************/
+  else if (screen_changer >= 10 && screen_changer <= 15) {  //jestem w obszarze kafelków AREA
     //check boxy
     cb_y1 = 70;  //zeruje zmienna
     //trzeba ograniczyc sizeofarray_roller

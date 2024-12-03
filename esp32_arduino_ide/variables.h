@@ -12,6 +12,8 @@ int x, y, z;
 int lock_key_1 = 1;      //zmienna dotyku przyciskow
 int screen_changer = 1;  //zmienna kolejnych ekranów w menu
 int screen_sum = 3;      //zmienna kolejnych ekranów w menu - suma max
+int screen_scroll_1 = 0;  //ekrany do przewijania w liscie rolet z czasami pozycja na ekranie
+int liczba_ekranow = 1;   //ekrany do przewijania w liscie rolet z czasami  
 
 byte fontHeigh = 10;  //dodałem wiecej aby zrobic padding pom tekstem
 uint32_t button_colour = '0x7BEF';
@@ -47,16 +49,17 @@ String rollers[11][9]{  //id/ name/ area/ start time ms/ stop time ms/ if checkb
 };
 int sizeOfArray_rollers = (sizeof(rollers) / sizeof(rollers[0][0])) / cn_rollers;  //liczba wierszy
 
-int wifiConnectionStatus =0;
+int wifiConnectionStatus =1;  //status podlaczenia do sieci wifi
 String deviceData[]{
   "UPC7AA1BAF",  //ssid
   "Ra5xvvsxcpdj", //ssid_pass
   "https://pivvwsrxfv.cfolks.pl",//host name
   "/connectEspDbIdDevice.php",//php file name
-  "did000001", //device_id
+  "EePWQTG2C8ec", //device_id
   "button",  //bell button or just button
 };
 
 unsigned long start_millis_time=0;  //start odliczania czasu do dzaialnia przekaznika
 
-int countOfI2cDevices = 0;
+int countOfI2cDevices = 0;//liczba urzadzen i2c
+int i2cDevices[10];  //tablica zeskanowanych adresow
