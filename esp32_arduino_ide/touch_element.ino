@@ -56,6 +56,12 @@ String touch_function() {
     if (x >= 0 && x <= 300 && y >= 170 && y <= 195) {
       return "setting_button_2";
     } 
+    //reset urzadzenia
+    if (x >= 0 && x <= 300 && y >= 200 && y <= 225) {
+      
+      tft.fillScreen(TFT_BLACK);
+      resetFunc();
+    } 
     return "";
 
     /************************************lista rolet z czasami**************************************************/

@@ -1,26 +1,72 @@
 void input_switch() {
-  byte mnoznik = 1;  //do lokalizowania ekspandera
-  for (int i = 4; i <= 7; i++) {
-    int val1 = MCP_1.read1(i);
-    int val2 = MCP_2.read1(i);
-    if(!val1 || !val2){
-      if(!val1){
-        mnoznik=1;
-        MCP_1.write1(i-4, 1);
-      }
-      else if(!val2){
-        mnoznik=2;
-        MCP_2.write1(i-4, 1);
-      }
+  /*
+    Zalozenia:
+      1.Nie mogę blokowac mozliwosci wciskania kilku rolet na raz
+      2.Muszę zablokować możliwość wciśniecia dwóch przyciskó na raz: gora i dol
+      3. Pętla nie może stanąć na czas działania rolety
+        3.1 Dla dzialania automatu z czasem. Uruchamiam funkcje i w millis odczytuje ciagle czy zadany czas uplynał. Taka sama historia jak dla lcd
+        3.2 Dla dzialania gdzie trzymam przycisk i roleta jedzie, muszę uwzględnić przypadek, że jedzie kilka rolet na raz...
+          Dla tego przypadku nie powinienem zerowac tablicy za kazdym obiegiem petli.
 
-      String stringToWrite = "Ekspander: "+String(mnoznik)+", input:"+String(i);
-      Serial.println(stringToWrite);
-
-
+  */
+  /*****************odczyt stanow z wejsc programowalnych****************/
+  //tworze tablice i wypalniam ja wartosciami domyslnymi, czyli 1. Wartosc 1 to odczytany pullup, 0 to odczytany przycisk
+  //tablica w petli jest cały czas zerowana.
+  int value_of_input[9][4];
+  //zerowanie tablicy tylko raz przy uruchomieniu programu.
+  if (value_of_input_lock) {
+    for (byte i = 0; i < 9; i++) {
+      value_of_input[i][0] = 1;
+      value_of_input[i][1] = 1;
+      value_of_input[i][2] = 1;
+      value_of_input[i][3] = 1;
     }
-    else{
-        MCP_1.write1(i-4, 0);
-        MCP_2.write1(i-4, 0);
+    value_of_input_lock = false;  //wyswietlam tablice
+  }
+  bool is_get_input = false;
+  //odczytuje gdzie wystapil stan 1 dla wszystkich wejsc
+  for (byte i = 4; i < 8; i++) {
+    if (test_mpc_1) {
+      value_of_input[1][i - 4] = MCP_1.digitalRead(i);
+      if (!MCP_1.digitalRead(i)) is_get_input = true;
+    }
+    if (test_mpc_2) {
+      value_of_input[2][i - 4] = MCP_2.digitalRead(i);
+      if (!MCP_2.digitalRead(i)) is_get_input = true;
+    }
+    if (test_mpc_3) {
+      value_of_input[3][i - 4] = MCP_3.digitalRead(i);
+      if (!MCP_3.digitalRead(i)) is_get_input = true;
+    }
+    if (test_mpc_4) {
+      value_of_input[4][i - 4] = MCP_4.digitalRead(i);
+      if (!MCP_4.digitalRead(i)) is_get_input = true;
+    }
+    if (test_mpc_5) {
+      value_of_input[5][i - 4] = MCP_5.digitalRead(i);
+      if (!MCP_5.digitalRead(i)) is_get_input = true;
+    }
+    if (test_mpc_6) {
+      value_of_input[6][i - 4] = MCP_6.digitalRead(i);
+      if (!MCP_6.digitalRead(i)) is_get_input = true;
+    }
+    if (test_mpc_7) {
+      value_of_input[7][i - 4] = MCP_7.digitalRead(i);
+      if (!MCP_7.digitalRead(i)) is_get_input = true;
+    }
+    if (test_mpc_8) {
+      value_of_input[8][i - 4] = MCP_8.digitalRead(i);
+      if (!MCP_8.digitalRead(i)) is_get_input = true;
+    }
+  }
+
+  //wyswietlam tablice
+  if (is_get_input) {
+    for (byte i = 1; i <= 8; i++) {
+      Serial.print(value_of_input[i][0]);
+      Serial.print(value_of_input[i][1]);
+      Serial.print(value_of_input[i][2]);
+      Serial.println(value_of_input[i][3]);
     }
   }
 }

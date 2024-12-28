@@ -18,15 +18,15 @@ void psetup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-    if(connection_time>=20){
-      wifiConnectionStatus=0;
+    if (connection_time >= 20) {
+      wifiConnectionStatus = 0;
       break;
     }
     Serial.println(connection_time);
     connection_time++;
   }
-  if(wifiConnectionStatus){
-    wifiConnectionStatus=1;  //polaczono
+  if (wifiConnectionStatus) {
+    wifiConnectionStatus = 1;  //polaczono
     Serial.print("IP:");
     Serial.println(WiFi.localIP());
   }
@@ -56,23 +56,84 @@ void psetup() {
   /***********LCD+TFT**************/
   /***********MPC**************/
   Wire.begin();
-  bool test_mpc_1 = MCP_1.begin();
-  bool test_mpc_2 = MCP_2.begin();
+  // inicjalizacja mcp23008 pod katem biblioteki adafruit
+  test_mpc_1 = MCP_1.begin(MCP1_ADDRESS);
+  test_mpc_2 = MCP_2.begin(MCP2_ADDRESS);
+  test_mpc_3 = MCP_3.begin();
+  test_mpc_4 = MCP_4.begin();
+  test_mpc_5 = MCP_5.begin();
+  test_mpc_6 = MCP_6.begin();
+  test_mpc_7 = MCP_7.begin();
+  test_mpc_8 = MCP_8.begin();
 
-  Serial.print("ekspander 1:");if(test_mpc_1)Serial.println("polaczono");else(Serial.println("nie polaczono"));
-  Serial.print("ekspander 2:");if(test_mpc_2)Serial.println("polaczono");else(Serial.println("nie polaczono"));
+  Serial.print("ekspander 1:");
+  if (test_mpc_1) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
+  Serial.print("ekspander 2:");
+  if (test_mpc_2) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
+  Serial.print("ekspander 3:");
+  if (test_mpc_3) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
+  Serial.print("ekspander 4:");
+  if (test_mpc_4) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
+  Serial.print("ekspander 5:");
+  if (test_mpc_5) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
+  Serial.print("ekspander 6:");
+  if (test_mpc_6) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
+  Serial.print("ekspander 7:");
+  if (test_mpc_7) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
+  Serial.print("ekspander 8:");
+  if (test_mpc_8) Serial.println("polaczono");
+  else (Serial.println("nie polaczono"));
 
-  for (int pin = 4; pin <= 7; pin++)
-  {
-    MCP_1.pinMode1(pin, INPUT);
-    MCP_2.pinMode1(pin, INPUT);
+  for (int pin = 4; pin <= 7; pin++) {
+    if (test_mpc_1) MCP_1.pinMode(pin, INPUT);
+    if (test_mpc_2) MCP_2.pinMode(pin, INPUT);
+    if (test_mpc_3) MCP_3.pinMode(pin, INPUT);
+    if (test_mpc_4) MCP_4.pinMode(pin, INPUT);
+    if (test_mpc_5) MCP_5.pinMode(pin, INPUT);
+    if (test_mpc_6) MCP_6.pinMode(pin, INPUT);
+    if (test_mpc_7) MCP_7.pinMode(pin, INPUT);
+    if (test_mpc_8) MCP_8.pinMode(pin, INPUT);
   }
-  for (int pin = 0; pin <= 3; pin++)
-  {
-    MCP_1.pinMode1(pin, OUTPUT);
-    MCP_2.pinMode1(pin, OUTPUT);
+  for (int pin = 0; pin <= 3; pin++) {
+    if (test_mpc_1) MCP_1.pinMode(pin, OUTPUT);
+    if (test_mpc_2) MCP_2.pinMode(pin, OUTPUT);
+    if (test_mpc_3) MCP_3.pinMode(pin, OUTPUT);
+    if (test_mpc_4) MCP_4.pinMode(pin, OUTPUT);
+    if (test_mpc_5) MCP_5.pinMode(pin, OUTPUT);
+    if (test_mpc_6) MCP_6.pinMode(pin, OUTPUT);
+    if (test_mpc_7) MCP_7.pinMode(pin, OUTPUT);
+    if (test_mpc_8) MCP_8.pinMode(pin, OUTPUT);
   }
   /***********MPC**************/
 
-  
+  /***********interrupts*****************/
+
+  //   // Konfiguracja MCP1
+  //   writeRegister(MCP1_ADDRESS, 0x00, 0xF0); // IODIR: Piny GP4-GP7 jako wejścia
+  //   writeRegister(MCP1_ADDRESS, 0x06, 0xF0); // GPPU: Włącz podciąganie dla GP4-GP7
+  //   writeRegister(MCP1_ADDRESS, 0x04, 0xF0); // GPINTEN: Włącz przerwania na pinach GP4-GP7
+  //   writeRegister(MCP1_ADDRESS, 0x02, 0xF0); // DEFVAL: Wartość domyślna HIGH
+  //   writeRegister(MCP1_ADDRESS, 0x03, 0xF0); // INTCON: Porównuj z DEFVAL
+  //   writeRegister(MCP1_ADDRESS, 0x05, 0x00); // IOCON: INT jako otwarty dren, aktywny niski
+  //   // Konfiguracja MCP2
+  //   writeRegister(MCP2_ADDRESS, 0x00, 0xF0); // IODIR: Piny GP4-GP7 jako wejścia
+  //   writeRegister(MCP2_ADDRESS, 0x06, 0xF0); // GPPU: Włącz podciąganie dla GP4-GP7
+  //   writeRegister(MCP2_ADDRESS, 0x04, 0xF0); // GPINTEN: Włącz przerwania na pinach GP4-GP7
+  //   writeRegister(MCP2_ADDRESS, 0x02, 0xF0); // DEFVAL: Wartość domyślna HIGH
+  //   writeRegister(MCP2_ADDRESS, 0x03, 0xF0); // INTCON: Porównuj z DEFVAL
+  //   writeRegister(MCP2_ADDRESS, 0x05, 0x00); // IOCON: INT jako otwarty dren, aktywny niski
+
+
+  // //inicjacja pinu w esp32 do reakcji na przerwanie przychodzace z mcp23008
+  // pinMode(MCP23008_INT_PIN, INPUT_PULLUP);
+
+  // //przerwanie w ESP32. Funkcja wykonawcza interruptFunction.
+  // attachInterrupt(digitalPinToInterrupt(MCP23008_INT_PIN), interruptFunction, RISING);
 }

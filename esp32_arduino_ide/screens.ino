@@ -80,6 +80,10 @@ void screen_3() {
   cb_y1 = cb_y1 + cb_row_space;
   stringToWrite = "Ekspandery :" + String(countOfI2cDevices) + "-->";
   tft.drawString(stringToWrite, 10, cb_y1 + 2);
+
+  cb_y1 = cb_y1 + cb_row_space;
+  stringToWrite = "Restart urzadzenia -->";
+  tft.drawString(stringToWrite, 10, cb_y1 + 2);
 }
 void screen_4() {  //ekran listy rolet z czasami dzialania
 

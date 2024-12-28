@@ -14,6 +14,10 @@ int screen_changer = 1;  //zmienna kolejnych ekranów w menu
 int screen_sum = 3;      //zmienna kolejnych ekranów w menu - suma max
 int screen_scroll_1 = 0;  //ekrany do przewijania w liscie rolet z czasami pozycja na ekranie
 int liczba_ekranow = 1;   //ekrany do przewijania w liscie rolet z czasami  
+unsigned long time_to_screen_black=0;  //start odliczania czasu do wygaszania ekranu
+int screensaver_time = 200000;  //czas wygaszacza ekranu
+byte screeensaver_lock = 1;
+
 
 byte fontHeigh = 10;  //dodałem wiecej aby zrobic padding pom tekstem
 uint32_t button_colour = '0x7BEF';
@@ -63,3 +67,15 @@ unsigned long start_millis_time=0;  //start odliczania czasu do dzaialnia przeka
 
 int countOfI2cDevices = 0;//liczba urzadzen i2c
 int i2cDevices[10];  //tablica zeskanowanych adresow
+//zmienne odczytanych MCP. Musi byc globalnie
+  bool test_mpc_1 = false;
+  bool test_mpc_2 = false;
+  bool test_mpc_3 = false;
+  bool test_mpc_4 = false;
+  bool test_mpc_5 = false;
+  bool test_mpc_6 = false;
+  bool test_mpc_7 = false;
+  bool test_mpc_8 = false;
+
+//klucz do zerowania tablicy stanow z wejsc
+  bool value_of_input_lock = true;
