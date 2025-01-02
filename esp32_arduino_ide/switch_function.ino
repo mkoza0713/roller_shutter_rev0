@@ -23,6 +23,8 @@ void input_switch() {
     }
     value_of_input_lock = false;  //wyswietlam tablice
   }
+
+
   bool is_get_input = false;
   //odczytuje gdzie wystapil stan 1 dla wszystkich wejsc
   for (byte i = 4; i < 8; i++) {
@@ -60,13 +62,21 @@ void input_switch() {
     }
   }
 
-  //wyswietlam tablice
   if (is_get_input) {
     for (byte i = 1; i <= 8; i++) {
-      Serial.print(value_of_input[i][0]);
-      Serial.print(value_of_input[i][1]);
-      Serial.print(value_of_input[i][2]);
-      Serial.println(value_of_input[i][3]);
+      //wyswietlam tablice
+      for (byte j = 0; j <= 3; j++) {
+        // Serial.print(value_of_input[i][j]);
+        // Serial.print(value_of_input[i][j]);
+        // Serial.print(value_of_input[i][j]);
+        // Serial.println(value_of_input[i][j]);
+        //zalaczam przekazniki
+        if (value_of_input[i][j] == 0) {
+          String stringToWrite = "Wyjscie:" + String(i) + "."+String(j+1)+" rozpoczyna prace";
+          Serial.println(stringToWrite);
+        }
+      }
     }
+    Serial.println("----------------");
   }
 }

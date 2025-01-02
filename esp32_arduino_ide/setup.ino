@@ -114,26 +114,23 @@ void psetup() {
   /***********MPC**************/
 
   /***********interrupts*****************/
+  pinMode(esp_int_pin, INPUT_PULLUP);
 
-  //   // Konfiguracja MCP1
-  //   writeRegister(MCP1_ADDRESS, 0x00, 0xF0); // IODIR: Piny GP4-GP7 jako wejścia
-  //   writeRegister(MCP1_ADDRESS, 0x06, 0xF0); // GPPU: Włącz podciąganie dla GP4-GP7
-  //   writeRegister(MCP1_ADDRESS, 0x04, 0xF0); // GPINTEN: Włącz przerwania na pinach GP4-GP7
-  //   writeRegister(MCP1_ADDRESS, 0x02, 0xF0); // DEFVAL: Wartość domyślna HIGH
-  //   writeRegister(MCP1_ADDRESS, 0x03, 0xF0); // INTCON: Porównuj z DEFVAL
-  //   writeRegister(MCP1_ADDRESS, 0x05, 0x00); // IOCON: INT jako otwarty dren, aktywny niski
-  //   // Konfiguracja MCP2
-  //   writeRegister(MCP2_ADDRESS, 0x00, 0xF0); // IODIR: Piny GP4-GP7 jako wejścia
-  //   writeRegister(MCP2_ADDRESS, 0x06, 0xF0); // GPPU: Włącz podciąganie dla GP4-GP7
-  //   writeRegister(MCP2_ADDRESS, 0x04, 0xF0); // GPINTEN: Włącz przerwania na pinach GP4-GP7
-  //   writeRegister(MCP2_ADDRESS, 0x02, 0xF0); // DEFVAL: Wartość domyślna HIGH
-  //   writeRegister(MCP2_ADDRESS, 0x03, 0xF0); // INTCON: Porównuj z DEFVAL
-  //   writeRegister(MCP2_ADDRESS, 0x05, 0x00); // IOCON: INT jako otwarty dren, aktywny niski
-
-
-  // //inicjacja pinu w esp32 do reakcji na przerwanie przychodzace z mcp23008
-  // pinMode(MCP23008_INT_PIN, INPUT_PULLUP);
+  // //   // Konfiguracja MCP1
+  // writeRegister(MCP1_ADDRESS, 0x00, 0xF0);  // IODIR: Piny GP4-GP7 jako wejścia
+  // writeRegister(MCP1_ADDRESS, 0x06, 0xF0);  // GPPU: Włącz podciąganie dla GP4-GP7
+  // writeRegister(MCP1_ADDRESS, 0x04, 0xF0);  // GPINTEN: Włącz przerwania na pinach GP4-GP7
+  // writeRegister(MCP1_ADDRESS, 0x02, 0xF0);  // DEFVAL: Wartość domyślna HIGH
+  // writeRegister(MCP1_ADDRESS, 0x03, 0xF0);  // INTCON: Porównuj z DEFVAL
+  // writeRegister(MCP1_ADDRESS, 0x05, 0x00);  // IOCON: INT jako otwarty dren, aktywny niski
+  // // Konfiguracja MCP2
+  // writeRegister(MCP2_ADDRESS, 0x00, 0xF0);  // IODIR: Piny GP4-GP7 jako wejścia
+  // writeRegister(MCP2_ADDRESS, 0x06, 0xF0);  // GPPU: Włącz podciąganie dla GP4-GP7
+  // writeRegister(MCP2_ADDRESS, 0x04, 0xF0);  // GPINTEN: Włącz przerwania na pinach GP4-GP7
+  // writeRegister(MCP2_ADDRESS, 0x02, 0xF0);  // DEFVAL: Wartość domyślna HIGH
+  // writeRegister(MCP2_ADDRESS, 0x03, 0xF0);  // INTCON: Porównuj z DEFVAL
+  // writeRegister(MCP2_ADDRESS, 0x05, 0x00);  // IOCON: INT jako otwarty dren, aktywny niski
 
   // //przerwanie w ESP32. Funkcja wykonawcza interruptFunction.
-  // attachInterrupt(digitalPinToInterrupt(MCP23008_INT_PIN), interruptFunction, RISING);
+  // attachInterrupt(digitalPinToInterrupt(esp_int_pin), interruptFunction, RISING);
 }

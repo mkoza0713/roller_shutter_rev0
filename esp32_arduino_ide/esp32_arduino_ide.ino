@@ -26,8 +26,8 @@ int serverTimeS;
 
 /***********MPC**************/
 #include <Adafruit_MCP23008.h>
-#define MCP1_ADDRESS 0x20 // Adres I2C MCP23008 (domyślnie 0x20)
-#define MCP2_ADDRESS 0x21 // Adres I2C MCP23008 (domyślnie 0x20)
+#define MCP1_ADDRESS 0x20  // Adres I2C MCP23008 (domyślnie 0x20)
+#define MCP2_ADDRESS 0x21  // Adres I2C MCP23008 (domyślnie 0x20)
 
 
 Adafruit_MCP23008 MCP_1;
@@ -41,36 +41,34 @@ Adafruit_MCP23008 MCP_8;
 
 /***********MPC**************/
 /***********PRZERWANIE**************/
-// #define MCP23008_INT_PIN 35 // Pin ESP32, do którego podłączony jest sygnał INT
+#define esp_int_pin 35
 
-// // Funkcja do zapisu rejestrów MCP23008
+// Funkcja do zapisu rejestrów MCP23008
 // void writeRegister(uint8_t address, uint8_t reg, uint8_t value) {
-//     Wire.beginTransmission(address);
-//     Wire.write(reg);
-//     Wire.write(value);
-//     Wire.endTransmission();
+//   Wire.beginTransmission(address);
+//   Wire.write(reg);
+//   Wire.write(value);
+//   Wire.endTransmission();
 // }
 
 // // Funkcja do odczytu rejestrów MCP23008
 // uint8_t readRegister(uint8_t address, uint8_t reg) {
-//     Wire.beginTransmission(address);
-//     Wire.write(reg);
-//     Wire.endTransmission();
-
-//     Wire.requestFrom(address, (uint8_t)1);
-//     return Wire.read();
+//   Wire.beginTransmission(address);
+//   Wire.write(reg);
+//   Wire.endTransmission();
+//   Wire.requestFrom(address, (uint8_t)1);
+//   return Wire.read();
 // }
 // void IRAM_ATTR interruptFunction() {
-//   Serial.println("test przerwania pnkt 1");
-//   interruptFunctionCode();
-//     // Odczytaj GPIO, aby zresetować flagę przerwania dla MCP1
-//     readRegister(MCP1_ADDRESS, 0x09);
+//   Serial.println("test przerwania");
+//   // Odczytaj GPIO, aby zresetować flagę przerwania dla MCP1
+//   readRegister(MCP1_ADDRESS, 0x09);
 // }
 /***********PRZERWANIE**************/
 
 
 void setup() {
-  psetup();  //funkcje setup()
+  psetup();       //funkcje setup()
   i2c_scanner();  //skanowanie urzadzen i2c
   //led_test();
   //relay_test();
@@ -79,7 +77,7 @@ void setup() {
 }
 void loop() {
   input_switch();  //reakcja na przycisk w pomieszczeniu
-  screensaver();  //wygaszanie ekranu
+  screensaver();   //wygaszanie ekranu
   x = 0;
   y = 0;
   z = 0;
