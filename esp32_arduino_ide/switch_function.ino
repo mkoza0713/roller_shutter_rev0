@@ -21,46 +21,54 @@ void input_switch() {
       value_of_input[i][2] = 1;
       value_of_input[i][3] = 1;
     }
-    value_of_input_lock = false;  //wyswietlam tablice
+    value_of_input_lock = false;  //blokuje ponowne zerowanie
   }
 
 
   bool is_get_input = false;
-  //odczytuje gdzie wystapil stan 1 dla wszystkich wejsc
-  for (byte i = 4; i < 8; i++) {
-    if (test_mpc_1) {
-      value_of_input[1][i - 4] = MCP_1.digitalRead(i);
-      if (!MCP_1.digitalRead(i)) is_get_input = true;
-    }
-    if (test_mpc_2) {
-      value_of_input[2][i - 4] = MCP_2.digitalRead(i);
-      if (!MCP_2.digitalRead(i)) is_get_input = true;
-    }
-    if (test_mpc_3) {
-      value_of_input[3][i - 4] = MCP_3.digitalRead(i);
-      if (!MCP_3.digitalRead(i)) is_get_input = true;
-    }
-    if (test_mpc_4) {
-      value_of_input[4][i - 4] = MCP_4.digitalRead(i);
-      if (!MCP_4.digitalRead(i)) is_get_input = true;
-    }
-    if (test_mpc_5) {
-      value_of_input[5][i - 4] = MCP_5.digitalRead(i);
-      if (!MCP_5.digitalRead(i)) is_get_input = true;
-    }
-    if (test_mpc_6) {
-      value_of_input[6][i - 4] = MCP_6.digitalRead(i);
-      if (!MCP_6.digitalRead(i)) is_get_input = true;
-    }
-    if (test_mpc_7) {
-      value_of_input[7][i - 4] = MCP_7.digitalRead(i);
-      if (!MCP_7.digitalRead(i)) is_get_input = true;
-    }
-    if (test_mpc_8) {
-      value_of_input[8][i - 4] = MCP_8.digitalRead(i);
-      if (!MCP_8.digitalRead(i)) is_get_input = true;
-    }
-  }
+  // //odczytuje gdzie wystapil stan 1 dla wszystkich wejsc
+  // for (byte i = 4; i < 8; i++) {
+  //   if (test_mpc_1) {
+  //     bool input_state = MCP_1.digitalRead(i);
+  //     value_of_input[1][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  //   if (test_mpc_2) {
+  //     bool input_state = MCP_2.digitalRead(i);
+  //     value_of_input[2][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  //   if (test_mpc_3) {
+  //     bool input_state = MCP_3.digitalRead(i);
+  //     value_of_input[3][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  //   if (test_mpc_4) {
+  //     bool input_state = MCP_4.digitalRead(i);
+  //     value_of_input[4][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  //   if (test_mpc_5) {
+  //     bool input_state = MCP_5.digitalRead(i);
+  //     value_of_input[5][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  //   if (test_mpc_6) {
+  //     bool input_state = MCP_6.digitalRead(i);
+  //     value_of_input[6][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  //   if (test_mpc_7) {
+  //     bool input_state = MCP_7.digitalRead(i);
+  //     value_of_input[7][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  //   if (test_mpc_8) {
+  //     bool input_state = MCP_8.digitalRead(i);
+  //     value_of_input[8][i - 4] = input_state;
+  //     if (!input_state) is_get_input = true;
+  //   }
+  // }
 
   if (is_get_input) {
     for (byte i = 1; i <= 8; i++) {
@@ -72,7 +80,7 @@ void input_switch() {
         // Serial.println(value_of_input[i][j]);
         //zalaczam przekazniki
         if (value_of_input[i][j] == 0) {
-          String stringToWrite = "Wyjscie:" + String(i) + "."+String(j+1)+" rozpoczyna prace";
+          String stringToWrite = "Wyjscie:" + String(i) + "." + String(j + 1) + " rozpoczyna prace";
           Serial.println(stringToWrite);
         }
       }
