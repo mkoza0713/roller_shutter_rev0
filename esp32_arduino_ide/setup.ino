@@ -55,7 +55,6 @@ void psetup() {
   int centerY = SCREEN_HEIGHT / 2;
   /***********LCD+TFT**************/
   /***********MPC**************/
-  Wire.begin();
   // inicjalizacja mcp23008 pod katem biblioteki adafruit
   test_mpc_1 = MCP_1.begin(MCP1_ADDRESS);
   test_mpc_2 = MCP_2.begin(MCP2_ADDRESS);
@@ -92,14 +91,38 @@ void psetup() {
   else (Serial.println("nie polaczono"));
 
   for (int pin = 4; pin <= 7; pin++) {
-    if (test_mpc_1) MCP_1.pinMode(pin, INPUT);
-    if (test_mpc_2) MCP_2.pinMode(pin, INPUT);
-    if (test_mpc_3) MCP_3.pinMode(pin, INPUT);
-    if (test_mpc_4) MCP_4.pinMode(pin, INPUT);
-    if (test_mpc_5) MCP_5.pinMode(pin, INPUT);
-    if (test_mpc_6) MCP_6.pinMode(pin, INPUT);
-    if (test_mpc_7) MCP_7.pinMode(pin, INPUT);
-    if (test_mpc_8) MCP_8.pinMode(pin, INPUT);
+    if (test_mpc_1) {
+      MCP_1.pinMode(pin, INPUT);
+      MCP_1.pullUp(pin, HIGH);
+    }
+    if (test_mpc_2) {
+      MCP_2.pinMode(pin, INPUT);
+      MCP_2.pullUp(pin, HIGH);
+    }
+    if (test_mpc_3) {
+      MCP_3.pinMode(pin, INPUT);
+      MCP_3.pullUp(pin, HIGH);
+    }
+    if (test_mpc_4) {
+      MCP_4.pinMode(pin, INPUT);
+      MCP_4.pullUp(pin, HIGH);
+    }
+    if (test_mpc_5) {
+      MCP_5.pinMode(pin, INPUT);
+      MCP_5.pullUp(pin, HIGH);
+    }
+    if (test_mpc_6) {
+      MCP_6.pinMode(pin, INPUT);
+      MCP_6.pullUp(pin, HIGH);
+    }
+    if (test_mpc_7) {
+      MCP_7.pinMode(pin, INPUT);
+      MCP_7.pullUp(pin, HIGH);
+    }
+    if (test_mpc_8) {
+      MCP_8.pinMode(pin, INPUT);
+      MCP_8.pullUp(pin, HIGH);
+    }
   }
   for (int pin = 0; pin <= 3; pin++) {
     if (test_mpc_1) MCP_1.pinMode(pin, OUTPUT);
@@ -114,23 +137,47 @@ void psetup() {
   /***********MPC**************/
 
   /***********interrupts*****************/
+    // Konfiguracja przerwań MCP23008 tylko dla pinów 4-7
+    Serial.println("Konfiguracja rejestrow MCP23008:");
+  Wire.beginTransmission(MCP1_ADDRESS);
+  Wire.write(0x02); // MCP23008_GPINTEN
+  Wire.write(0xF0); // Włączenie przerwań na pinach 4-7 (bity 4-7 ustawione na 1)
+  Wire.endTransmission();
+  Serial.println("GPINTEN configured");
+
+  Wire.beginTransmission(MCP1_ADDRESS);
+  Wire.write(0x04); // MCP23008_INTCON
+  Wire.write(0x00); // Ustawienie przerwań na zmianę stanu
+  Wire.endTransmission();
+  Serial.println("INTCON configured");
+
+  Wire.beginTransmission(MCP1_ADDRESS);
+  Wire.write(0x03); // MCP23008_DEFVAL
+  Wire.write(0x00); // Domyślna wartość dla porównań (nieistotna przy INTCON = 0x00)
+  Wire.endTransmission();
+  Serial.println("DEFVAL configured");
+
+
+  // Konfiguracja przerwań MCP23008 tylko dla pinów 4-7
+  Wire.beginTransmission(MCP2_ADDRESS);
+  Wire.write(0x02); // MCP23008_GPINTEN
+  Wire.write(0xF0); // Włączenie przerwań na pinach 4-7 (bity 4-7 ustawione na 1)
+  Wire.endTransmission();
+
+  Wire.beginTransmission(MCP2_ADDRESS);
+  Wire.write(0x04); // MCP23008_INTCON
+  Wire.write(0x00); // Ustawienie przerwań na zmianę stanu
+  Wire.endTransmission();
+
+  Wire.beginTransmission(MCP2_ADDRESS);
+  Wire.write(0x03); // MCP23008_DEFVAL
+  Wire.write(0x00); // Domyślna wartość dla porównań (nieistotna przy INTCON = 0x00)
+  Wire.endTransmission();
+
+
+  // Konfiguracja przerwania na Arduino
+  Serial.print("Konfiguracja przerwania:");
   pinMode(esp_int_pin, INPUT_PULLUP);
-
-  // //   // Konfiguracja MCP1
-  // writeRegister(MCP1_ADDRESS, 0x00, 0xF0);  // IODIR: Piny GP4-GP7 jako wejścia
-  // writeRegister(MCP1_ADDRESS, 0x06, 0xF0);  // GPPU: Włącz podciąganie dla GP4-GP7
-  // writeRegister(MCP1_ADDRESS, 0x04, 0xF0);  // GPINTEN: Włącz przerwania na pinach GP4-GP7
-  // writeRegister(MCP1_ADDRESS, 0x02, 0xF0);  // DEFVAL: Wartość domyślna HIGH
-  // writeRegister(MCP1_ADDRESS, 0x03, 0xF0);  // INTCON: Porównuj z DEFVAL
-  // writeRegister(MCP1_ADDRESS, 0x05, 0x00);  // IOCON: INT jako otwarty dren, aktywny niski
-  // // Konfiguracja MCP2
-  // writeRegister(MCP2_ADDRESS, 0x00, 0xF0);  // IODIR: Piny GP4-GP7 jako wejścia
-  // writeRegister(MCP2_ADDRESS, 0x06, 0xF0);  // GPPU: Włącz podciąganie dla GP4-GP7
-  // writeRegister(MCP2_ADDRESS, 0x04, 0xF0);  // GPINTEN: Włącz przerwania na pinach GP4-GP7
-  // writeRegister(MCP2_ADDRESS, 0x02, 0xF0);  // DEFVAL: Wartość domyślna HIGH
-  // writeRegister(MCP2_ADDRESS, 0x03, 0xF0);  // INTCON: Porównuj z DEFVAL
-  // writeRegister(MCP2_ADDRESS, 0x05, 0x00);  // IOCON: INT jako otwarty dren, aktywny niski
-
-  // //przerwanie w ESP32. Funkcja wykonawcza interruptFunction.
-  // attachInterrupt(digitalPinToInterrupt(esp_int_pin), interruptFunction, RISING);
+  attachInterrupt(digitalPinToInterrupt(esp_int_pin), handleInterrupt, FALLING);
+  Serial.println(" gotowe");
 }
