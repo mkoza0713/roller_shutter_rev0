@@ -42,30 +42,9 @@ Adafruit_MCP23008 MCP_8;
 /***********MPC**************/
 /***********PRZERWANIE**************/
 #define esp_int_pin 35
+volatile bool interrupt_flag = false;
 
-// Funkcja do zapisu rejestrów MCP23008
-// void writeRegister(uint8_t address, uint8_t reg, uint8_t value) {
-//   Wire.beginTransmission(address);
-//   Wire.write(reg);
-//   Wire.write(value);
-//   Wire.endTransmission();
-// }
-
-// // Funkcja do odczytu rejestrów MCP23008
-// uint8_t readRegister(uint8_t address, uint8_t reg) {
-//   Wire.beginTransmission(address);
-//   Wire.write(reg);
-//   Wire.endTransmission();
-//   Wire.requestFrom(address, (uint8_t)1);
-//   return Wire.read();
-// }
-// void IRAM_ATTR interruptFunction() {
-//   Serial.println("test przerwania");
-//   // Odczytaj GPIO, aby zresetować flagę przerwania dla MCP1
-//   readRegister(MCP1_ADDRESS, 0x09);
-// }
 /***********PRZERWANIE**************/
-
 
 void setup() {
   psetup();       //funkcje setup()
@@ -76,8 +55,31 @@ void setup() {
   screen_1();
 }
 void loop() {
-  input_switch();  //reakcja na przycisk w pomieszczeniu
-  screensaver();   //wygaszanie ekranu
+  // Sprawdzanie flagi przerwania
+  if (interrupt_flag) {
+    interrupt_flag = false;
+    Serial.println("Przerwanie zostało wywołane!");
+
+    // Obsługa przerwania - odczyt wejść z pinów 4-7
+    for (byte i = 4; i < 8; i++) {
+      bool state = MCP_1.digitalRead(i);
+      bool state2 = MCP_2.digitalRead(i);
+      Serial.print("Pin ");
+      Serial.print(i);
+      Serial.print(" state1: ");
+      Serial.println(state);
+      Serial.print(" state2: ");
+      Serial.println(state2);
+    }
+
+    // Odczyt MCP23008 INTCAP, aby wyczyścić przerwanie
+    MCP_1.readGPIO();
+    MCP_2.readGPIO();
+  }
+
+
+  //input_switch();  //reakcja na przycisk w pomieszczeniu
+  screensaver();  //wygaszanie ekranu
   x = 0;
   y = 0;
   z = 0;
@@ -167,4 +169,9 @@ void loop() {
     }
     lock_key_1 = 1;
   }
+}
+// Funkcja obsługi przerwania
+void IRAM_ATTR handleInterrupt() {
+  Serial.println("Przerwanie");
+  interrupt_flag = true;
 }
