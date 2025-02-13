@@ -128,6 +128,27 @@ void inputStateRead()
           case 1: // przypadek dla mpc1
             rollerid_1 = 1;
             rollerid_2 = 2;
+            if (j == 0 && rollers[rollerid_1][4] == "1" && startTimeForShutter[rollerid_1] == 0) // zakładam ze jest otwarta
+            {
+              MCP_1.digitalWrite(j, HIGH);
+              startTimeForShutter[rollerid_1] = currentTime; // czas startu pomiaru czasu dla danego we/wy
+            }
+            else if (j == 1 && rollers[rollerid_1][4] == "0" && startTimeForShutter[rollerid_1] == 0) // zakładam ze jest zamknieta
+            {
+              MCP_1.digitalWrite(j, HIGH);
+              startTimeForShutter[3] = currentTime; // czas startu pomiaru czasu dla danego we/wy
+            }
+            /******************************************************************** */
+            if (j == 2 && rollers[rollerid_2][4] == "1" && startTimeForShutter[rollerid_2] == 0)
+            {
+              MCP_1.digitalWrite(j, HIGH);
+              startTimeForShutter[rollerid_2] = currentTime;
+            }
+            else if (j == 3 && rollers[rollerid_2][4] == "0" && startTimeForShutter[rollerid_2] == 0)
+            {
+              MCP_1.digitalWrite(j, HIGH);
+              startTimeForShutter[rollerid_2] = currentTime;
+            }
             break;
           case 2: // przypadek dla mpc2
             rollerid_1 = 3;
