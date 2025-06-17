@@ -1,8 +1,8 @@
 #include "Arduino.h"
 #include "Adafruit_MCP23008.h"
 #include "global_variables.h"
-#include "functions.h"
 
+// Deklaracje obiektów MCP (w main.cpp je tworzysz i inicjujesz)
 extern Adafruit_MCP23008 MCP_1;
 extern Adafruit_MCP23008 MCP_2;
 extern Adafruit_MCP23008 MCP_3;
@@ -12,195 +12,90 @@ extern Adafruit_MCP23008 MCP_6;
 extern Adafruit_MCP23008 MCP_7;
 extern Adafruit_MCP23008 MCP_8;
 
+// Tablice wskaźników i flag do iteracji
+Adafruit_MCP23008* MCPs[8] = { &MCP_1, &MCP_2, &MCP_3, &MCP_4, &MCP_5, &MCP_6, &MCP_7, &MCP_8 };
+bool* test_mpc_flags[8] = { &test_mpc_1, &test_mpc_2, &test_mpc_3, &test_mpc_4, &test_mpc_5, &test_mpc_6, &test_mpc_7, &test_mpc_8 };
+
+// Mapowanie MPC do rolet
+const int roller_map[8][2] = {
+  {1, 2}, {3, 4}, {5, 6}, {7, 8},
+  {9, 10}, {11, 12}, {13, 14}, {15, 16}
+};
+
 void inputStateRead()
 {
-  /*****************odczyt stanow z wejsc programowalnych****************/
-  // tworze tablice i wypalniam ja wartosciami domyslnymi, czyli 1. Wartosc 1 to odczytany pullup, 0 to odczytany przycisk
-  // tablica w petli jest cały czas zerowana.
-  int value_of_input[9][4];
-  // zerowanie tablicy tylko raz przy uruchomieniu programu.
   bool is_get_input = false;
-  bool first_input_table_look = true;
-  if (first_input_table_look)
-  {
-    for (byte i = 0; i < 9; i++)
-    {
-      value_of_input[i][0] = 0;
-      value_of_input[i][1] = 0;
-      value_of_input[i][2] = 0;
-      value_of_input[i][3] = 0;
-    }
-    first_input_table_look = false; // blokuje ponowne zerowanie
-  }
 
-  // odczytuje gdzie wystapil stan 1 dla wszystkich wejsc
-  for (byte i = 4; i < 8; i++)
-  {
-    if (test_mpc_1)
-    {
-      bool input_state = !MCP_1.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[1][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-    if (test_mpc_2)
-    {
-      bool input_state = !MCP_2.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[2][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-    if (test_mpc_3)
-    {
-      bool input_state = !MCP_3.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[3][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-    if (test_mpc_4)
-    {
-      bool input_state = !MCP_4.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[4][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-    if (test_mpc_5)
-    {
-      bool input_state = !MCP_5.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[5][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-    if (test_mpc_6)
-    {
-      bool input_state = !MCP_6.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[6][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-    if (test_mpc_7)
-    {
-      bool input_state = !MCP_7.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[7][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-    if (test_mpc_8)
-    {
-      bool input_state = !MCP_8.digitalRead(i);
-      if (input_state)
-      {
-        value_of_input[8][i - 4] = input_state;
-        is_get_input = true;
-      }
-    }
-  }
+  // Zerowanie tablicy stanów wejść
+  for (byte i = 0; i < 9; i++)
+    for (byte j = 0; j < 4; j++)
+      value_of_input[i][j] = 0;
 
-  if (is_get_input)
+  // Odczyt stanów wejść dla każdego MCP
+  for (byte mpc_index = 0; mpc_index < 8; mpc_index++)
   {
-    for (byte i = 1; i <= 8; i++)
+    if (*test_mpc_flags[mpc_index])
     {
-      for (byte j = 0; j <= 3; j++)
+      Adafruit_MCP23008* mcp = MCPs[mpc_index];
+      byte mpc_id = mpc_index + 1;
+
+      for (byte pin = 4; pin < 8; pin++)
       {
-        if (value_of_input[i][j] == 1)
+        bool input_state = !mcp->digitalRead(pin);
+        if (input_state)
         {
-          // zalaczam przekazniki
-          unsigned long currentTime = millis();
-          int rollerid_1;
-          int rollerid_2;
-
-          switch (i)
-          {
-          case 1: // przypadek dla mpc1
-            rollerid_1 = 1;
-            rollerid_2 = 2;
-            if (j == 0 && rollers[rollerid_1][4] == "1" && startTimeForShutter[rollerid_1] == 0) // zakładam ze jest otwarta
-            {
-              MCP_1.digitalWrite(j, HIGH);
-              startTimeForShutter[rollerid_1] = currentTime; // czas startu pomiaru czasu dla danego we/wy
-            }
-            else if (j == 1 && rollers[rollerid_1][4] == "0" && startTimeForShutter[rollerid_1] == 0) // zakładam ze jest zamknieta
-            {
-              MCP_1.digitalWrite(j, HIGH);
-              startTimeForShutter[3] = currentTime; // czas startu pomiaru czasu dla danego we/wy
-            }
-            /******************************************************************** */
-            if (j == 2 && rollers[rollerid_2][4] == "1" && startTimeForShutter[rollerid_2] == 0)
-            {
-              MCP_1.digitalWrite(j, HIGH);
-              startTimeForShutter[rollerid_2] = currentTime;
-            }
-            else if (j == 3 && rollers[rollerid_2][4] == "0" && startTimeForShutter[rollerid_2] == 0)
-            {
-              MCP_1.digitalWrite(j, HIGH);
-              startTimeForShutter[rollerid_2] = currentTime;
-            }
-            break;
-          case 2: // przypadek dla mpc2
-            rollerid_1 = 3;
-            rollerid_2 = 4;
-            if (j == 0 && rollers[rollerid_1][4] == "1" && startTimeForShutter[rollerid_1] == 0) // zakładam ze jest otwarta
-            {
-              MCP_2.digitalWrite(j, HIGH);
-              startTimeForShutter[rollerid_1] = currentTime; // czas startu pomiaru czasu dla danego we/wy
-            }
-            else if (j == 1 && rollers[rollerid_1][4] == "0" && startTimeForShutter[rollerid_1] == 0) // zakładam ze jest zamknieta
-            {
-              MCP_2.digitalWrite(j, HIGH);
-              startTimeForShutter[3] = currentTime; // czas startu pomiaru czasu dla danego we/wy
-            }
-            /******************************************************************** */
-            if (j == 2 && rollers[rollerid_2][4] == "1" && startTimeForShutter[rollerid_2] == 0)
-            {
-              MCP_2.digitalWrite(j, HIGH);
-              startTimeForShutter[rollerid_2] = currentTime;
-            }
-            else if (j == 3 && rollers[rollerid_2][4] == "0" && startTimeForShutter[rollerid_2] == 0)
-            {
-              MCP_2.digitalWrite(j, HIGH);
-              startTimeForShutter[rollerid_2] = currentTime;
-            }
-            break;
-          case 3:
-            rollerid_1 = 5;
-            rollerid_2 = 6;
-            break;
-          case 4:
-            rollerid_1 = 7;
-            rollerid_2 = 8;
-            break;
-          case 5:
-            rollerid_1 = 9;
-            rollerid_2 = 10;
-            break;
-          case 6:
-            rollerid_1 = 11;
-            rollerid_2 = 12;
-            break;
-          case 7:
-            rollerid_1 = 13;
-            rollerid_2 = 14;
-            break;
-          case 8:
-            rollerid_1 = 15;
-            rollerid_2 = 16;
-            break;
-          }
+          value_of_input[mpc_id][pin - 4] = 1;
+          is_get_input = true;
         }
+      }
+    }
+  }
+
+  if (!is_get_input) return;
+
+  unsigned long currentTime = millis();
+
+  // Przetwarzanie wykrytych wejść
+  for (byte mpc_id = 1; mpc_id <= 8; mpc_id++)
+  {
+    for (byte input_idx = 0; input_idx < 4; input_idx++)
+    {
+      if (value_of_input[mpc_id][input_idx] == 1)
+      {
+        int rollerid_1 = roller_map[mpc_id - 1][0];
+        int rollerid_2 = roller_map[mpc_id - 1][1];
+
+        Adafruit_MCP23008* mcp = MCPs[mpc_id - 1];
+
+        if ((input_idx == 0 && rollers[rollerid_1][4] == "1" && startTimeForShutter[rollerid_1] == 0) ||
+            (input_idx == 1 && rollers[rollerid_1][4] == "0" && startTimeForShutter[rollerid_1] == 0))
+        {
+          mcp->digitalWrite(input_idx, HIGH);
+          startTimeForShutter[rollerid_1] = currentTime;
+
+          Serial.print("Roleta ");
+          Serial.print(rollers[rollerid_1][1]);
+          Serial.print(" jedzie w ");
+          if (input_idx == 0) Serial.println("górę");
+          else Serial.println("dół");
+        }
+        else if ((input_idx == 2 && rollers[rollerid_2][4] == "1" && startTimeForShutter[rollerid_2] == 0) ||
+                 (input_idx == 3 && rollers[rollerid_2][4] == "0" && startTimeForShutter[rollerid_2] == 0))
+        {
+          mcp->digitalWrite(input_idx, HIGH);
+          startTimeForShutter[rollerid_2] = currentTime;
+
+          Serial.print("Roleta ");
+          Serial.print(rollers[rollerid_2][1]);
+          Serial.print(" jedzie w ");
+          if (input_idx == 2) Serial.println("górę");
+          else Serial.println("dół");
+        }
+
+        Serial.print("Wejscie ");
+        Serial.print(mpc_id);
+        Serial.print(".");
+        Serial.println(input_idx + 1);
       }
     }
   }
