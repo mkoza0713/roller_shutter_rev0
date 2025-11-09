@@ -5,39 +5,74 @@
 
 void mcp_setup()
 {
+
+    // Inicjalizacja tablic stanów i czasów zmian dla debouncae
+    for (byte mcp = 0; mcp < 8; mcp++) {
+    for (byte pin = 0; pin < 8; pin++) {
+      last_state[mcp][pin] = 1;             // domyślnie HIGH = nie wciśnięty
+      last_change_time[mcp][pin] = millis(); // ustaw aktualny czas
+    }
+  }
+
+    String messageToPrint = "Wykryte moduly:\n";
     // Inicjalizacja MCP23008
     test_mpc_1 = MCP_1.begin(MCP1_ADDRESS);
     if (test_mpc_1)
+    {
         Serial.println("MPC 1: start");
+        messageToPrint = messageToPrint + "MPC 1: 0x" + String(MCP1_ADDRESS, HEX) + "\n";
+    }
 
     test_mpc_2 = MCP_2.begin(MCP2_ADDRESS);
     if (test_mpc_2)
+    {
         Serial.println("MPC 2: start");
+        messageToPrint = messageToPrint + "MPC 2: 0x" + String(MCP2_ADDRESS, HEX) + "\n";
+    }
 
     test_mpc_3 = MCP_3.begin(MCP3_ADDRESS);
     if (test_mpc_3)
+    {
         Serial.println("MPC 3: start");
+        messageToPrint = messageToPrint + "MPC 3: 0x" + String(MCP3_ADDRESS, HEX) + "\n";
+    }
 
     test_mpc_4 = MCP_4.begin(MCP4_ADDRESS);
     if (test_mpc_4)
+    {
         Serial.println("MPC 4: start");
+        messageToPrint = messageToPrint + "MPC 4: 0x" + String(MCP4_ADDRESS, HEX) + "\n";
+    }
 
     test_mpc_5 = MCP_5.begin(MCP5_ADDRESS);
     if (test_mpc_5)
+    {
         Serial.println("MPC 5: start");
+        messageToPrint = messageToPrint + "MPC 5: 0x" + String(MCP5_ADDRESS, HEX) + "\n";
+    }
 
     test_mpc_6 = MCP_6.begin(MCP6_ADDRESS);
     if (test_mpc_6)
+    {
         Serial.println("MPC 6: start");
+        messageToPrint = messageToPrint + "MPC 6: 0x" + String(MCP6_ADDRESS, HEX) + "\n";
+    }
 
     test_mpc_7 = MCP_7.begin(MCP7_ADDRESS);
     if (test_mpc_7)
+    {
         Serial.println("MPC 7: start");
+        messageToPrint = messageToPrint + "MPC 7: 0x" + String(MCP7_ADDRESS, HEX) + "\n";
+    }
 
     test_mpc_8 = MCP_8.begin(MCP8_ADDRESS);
     if (test_mpc_8)
+    {
         Serial.println("MPC 8: start");
+        messageToPrint = messageToPrint + "MPC 8: 0x" + String(MCP8_ADDRESS, HEX) + "\n";
+    }
     Serial.println("");
+    lcdShowCenterText(messageToPrint);
 
     /**
      Dla adresów: 0x24 0x25 0x26 0x27:

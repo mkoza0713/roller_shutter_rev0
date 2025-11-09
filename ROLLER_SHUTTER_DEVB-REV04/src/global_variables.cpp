@@ -44,6 +44,10 @@ bool* test_mpc_flags[8] = {
 // Tablica stanów wejść - 9 MCP, 4 wejścia każdy
 // ---------------------------
 int value_of_input[9][4] = {0};
+int last_state[8][8];                 
+unsigned long last_change_time[8][8]; 
+
+int debonuce_time = 200; // czas drgania styków w ms
 
 // ---------------------------
 // Dane rolet: id, nazwa, strefa, czas cyklu, stan: 1 otwarta 0 zamknieta, poziom otwarcia

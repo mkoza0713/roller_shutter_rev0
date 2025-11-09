@@ -1,4 +1,6 @@
 #include "Arduino.h"
+#include "functions.h"
+#include "global_variables.h"
 
 /*TFT_eSPI file to change drom folder*/
 #define XPT2046_IRQ 36   // T_IRQ
@@ -7,9 +9,6 @@
 #define XPT2046_CLK 25   // T_CLK
 #define XPT2046_CS 33    // T_CS
 
-
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
 
 #include <TFT_eSPI.h>
 TFT_eSPI tft = TFT_eSPI();

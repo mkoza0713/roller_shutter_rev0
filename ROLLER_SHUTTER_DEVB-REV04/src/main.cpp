@@ -9,5 +9,5 @@ void setup() {
 }
 
 void loop() {
-  inputstateReadTest();
+  inputstateReadTest();  // Test odczytu stanów wejść MCP
 }
