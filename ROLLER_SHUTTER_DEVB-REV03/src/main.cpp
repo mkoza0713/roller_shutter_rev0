@@ -9,6 +9,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("test");
   inputStateRead();
   work_time_measure();
 }
