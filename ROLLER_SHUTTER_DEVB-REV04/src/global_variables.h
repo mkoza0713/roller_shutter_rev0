@@ -38,13 +38,13 @@ extern Adafruit_MCP23008 *MCPs[8];
 extern bool *test_mpc_flags[8];
 
 // Tablica stanów wejść (9 mpc, 4 wejścia na mpc)
-extern int value_of_input[9][4];
 extern int last_state[8][8];                 
 extern unsigned long last_change_time[8][8]; 
 extern int debonuce_time;
 
 // Dane rolet: id, nazwa, strefa, czas cyklu, open stage (1=open, 0=close), poziom otwarcia (0-otwarty, 100-zamknięty)
 extern String rollers[17][6];
+extern String input_id[32][2];//tablica id wejsc
 
 // Czas startu dla rolet (milisekundy)
 extern unsigned long startTimeForShutter[17];

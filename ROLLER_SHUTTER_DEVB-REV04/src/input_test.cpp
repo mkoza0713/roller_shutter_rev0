@@ -1,15 +1,13 @@
+/*Funkcja odczytuje wejścia z MCP oraz zapisuje aktualne stany w tablicy value_of_input[][] */
+
 #include "Arduino.h"
 #include "Adafruit_MCP23008.h"
 #include "global_variables.h"
 #include "functions.h"
 
-// Tablice do zapamiętania stanu i czasu ostatniej zmiany
-// int last_state[8][8];                 
-// unsigned long last_change_time[8][8]; 
-
 void inputstateReadTest()
 {
-  for (byte mcp_index = 0; mcp_index < 8; mcp_index++)
+    for (byte mcp_index = 0; mcp_index < 8; mcp_index++)
     {
         if (*test_mpc_flags[mcp_index])
         {
@@ -17,7 +15,7 @@ void inputstateReadTest()
 
             for (byte pin = 0; pin < 8; pin++)
             {
-                int state = 1;  // domyślnie HIGH = nie wciśnięty
+                int state = 1; // domyślnie HIGH = nie wciśnięty
                 bool valid_pin = false;
 
                 // MCP 0–3 -> piny 4–7
@@ -45,28 +43,54 @@ void inputstateReadTest()
                         last_change_time[mcp_index][pin] = now;
                         last_state[mcp_index][pin] = state;
 
-                        if (state == 0)  // wciśnięty
+                        if (state == 0) // wciśnięty
                         {
+                            if (pin == 0)
+                                input_id[(mcp_index * 4) + 7 - 4][1] = "1";
+                            else
+                                input_id[(mcp_index * 4) + pin - 4][1] = "1";
+
                             Serial.print("MCP 0x2");
                             Serial.print(mcp_index);
                             Serial.print(" Pin");
                             Serial.print(pin);
-                            Serial.println(": PRESSED");
+                            Serial.print(": PRESSED");
+                            Serial.print(" INPUT ID: ");
+                            String messageToLcd;
+                            for (byte i = 0; i < 32; i++)
+                            {
+                                if (input_id[i][1] != "")
+                                {
+                                    Serial.println(input_id[i][0]);
+                                    messageToLcd = "WCISNIETY\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
+                                }
+                            }
 
-                            value_of_input[mcp_index][pin] = 1;
-                            String messageToLcd = "MCP 0x2" + String(mcp_index) + " Pin" + String(pin) + ": PRESSED";
                             lcdShowCenterText(messageToLcd);
                         }
-                        else  // puszczony
+                        else // puszczony
                         {
                             Serial.print("MCP 0x2");
                             Serial.print(mcp_index);
                             Serial.print(" Pin");
                             Serial.print(pin);
-                            Serial.println(": RELEASED");
+                            Serial.print(": RELEASED");
+                            Serial.print(" INPUT ID");
+                            String messageToLcd;
+                            for (byte i = 0; i < 32; i++)
+                            {
+                                if (input_id[i][1] != "")
+                                {
+                                    Serial.println(input_id[i][0]);
+                                    messageToLcd = "PUSZCZONY\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
+                                }
+                            }
 
-                            value_of_input[mcp_index][pin] = 0;
-                            String messageToLcd = "MCP 0x2" + String(mcp_index) + " Pin" + String(pin) + ": RELEASED";
+                            if (pin == 0)
+                                input_id[(mcp_index * 4) + 7 - 4][1] = "";
+                            else
+                                input_id[(mcp_index * 4) + pin - 4][1] = "";
+
                             lcdShowCenterText(messageToLcd);
                         }
                     }
@@ -74,5 +98,4 @@ void inputstateReadTest()
             }
         }
     }
-
 }

@@ -1,3 +1,4 @@
+/*Funkcja drukuje na lcd wielowierszowy tekst przesłany w  lcdShowCenterText(tekst wielowierszowy oddzielony \n)*/
 #include "Arduino.h"
 #include "functions.h"
 #include "global_variables.h"
@@ -31,8 +32,8 @@ void lcdShowCenterText(String message){
     int y = (SCREEN_HEIGHT - totalHeight) / 2;
 
     // Wyczyść ekran i ustaw kolor tekstu
-    tft.fillScreen(TFT_WHITE);
-    tft.setTextColor(TFT_BLACK);
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
 
     // Rysowanie każdej linii
     for (int i = 0; i < lineCount; i++) {
