@@ -45,10 +45,14 @@ extern int debonuce_time;
 // Dane rolet: id, nazwa, strefa, czas cyklu, open stage (1=open, 0=close), poziom otwarcia (0-otwarty, 100-zamknięty)
 extern String rollers[17][6];
 extern String input_id[32][2];//tablica id wejsc
+extern String match_table[17][3];  //tablica dopasowań id wejść do rolet
 
 // Czas startu dla rolet (milisekundy)
 extern unsigned long startTimeForShutter[17];
 
+
+//odmierzanie czasu przyciskow (milisekundy)
+extern unsigned long buttonPressTime[32];
 
 //dane do LCD
 #define SCREEN_WIDTH 320

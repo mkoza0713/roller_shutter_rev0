@@ -9,6 +9,7 @@ void setup() {
 }
 
 void loop() {
-  inputstateReadTest();  // Test odczytu stanów wejść MCP
-  writeOutputStates(); // Funkcja do obsługi wyjść (przekaźników)
+  inputstateReadTest();  // Test odczytu stanów wejść MCP. Stany zapisywane w input_id[][]
+  input_interpretation(); // Funkcja do interpretacji wejść. Zapis działań w match_table[][]
+  writeOutputStates(); // Funkcja do obsługi wyjść (przekaźników). Wykonuje działania zapisane w match_table[][]
 }

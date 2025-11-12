@@ -75,7 +75,7 @@ void inputstateReadTest()
                             Serial.print(" Pin");
                             Serial.print(pin);
                             Serial.print(": RELEASED");
-                            Serial.print(" INPUT ID");
+                            Serial.print(" INPUT ID: ");
                             String messageToLcd;
                             for (byte i = 0; i < 32; i++)
                             {
@@ -87,9 +87,9 @@ void inputstateReadTest()
                             }
 
                             if (pin == 0)
-                                input_id[(mcp_index * 4) + 7 - 4][1] = "";
+                                input_id[(mcp_index * 4) + 7 - 4][1] = "0";
                             else
-                                input_id[(mcp_index * 4) + pin - 4][1] = "";
+                                input_id[(mcp_index * 4) + pin - 4][1] = "0";
 
                             lcdShowCenterText(messageToLcd);
                         }

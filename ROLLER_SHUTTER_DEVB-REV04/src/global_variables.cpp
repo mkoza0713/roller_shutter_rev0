@@ -71,6 +71,7 @@ String rollers[17][6] = {
   {"id16", "Roleta 16", "AREA_5", "12000", "1", "0"}
 };
 
+//id wejscia; stan wejścia (0/1/puste)
 String input_id[32][2] = {
   {"inp1_1", ""},
   {"inp1_2", ""},
@@ -106,7 +107,36 @@ String input_id[32][2] = {
   {"inp8_4", ""}
 };
 
+//id rolety; 
+//id wejscia; 
+//działanie do wykonania (1,2,3 - krótkie, długie, bardzo długie wcisniecie)
+String match_table[17][3] = {
+  {"id0", "", ""},
+  {"id1", "inp1_1", ""},
+  {"id2", "inp1_2", ""},
+  {"id3", "inp2_1", ""},
+  {"id4", "inp2_2", ""},
+  {"id5", "inp3_1", ""},
+  {"id6", "inp3_2", ""},
+  {"id7", "inp4_1", ""},
+  {"id8", "inp4_2", ""},
+  {"id9", "inp5_1", ""},
+  {"id10", "inp5_2", ""},
+  {"id11", "inp6_1", ""},
+  {"id12", "inp6_2", ""},
+  {"id13", "inp7_1", ""},
+  {"id14", "inp7_2", ""},
+  {"id15", "inp8_1", ""},
+  {"id16", "inp8_2", ""}
+};
+
 // ---------------------------
 // Czas startu dla rolet (inicjalizacja 0)
 // ---------------------------
 unsigned long startTimeForShutter[17] = {0};
+
+
+// ---------------------------
+// odmierzanie czasu przyciskow (inicjalizacja 0)
+// ---------------------------
+unsigned long buttonPressTime[32] = {0};
