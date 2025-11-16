@@ -41,11 +41,14 @@ extern bool *test_mpc_flags[8];
 extern int last_state[8][8];                 
 extern unsigned long last_change_time[8][8]; 
 extern int debonuce_time;
+extern unsigned long time_start_f0r_work[17][1];
 
 // Dane rolet: id, nazwa, strefa, czas cyklu, open stage (1=open, 0=close), poziom otwarcia (0-otwarty, 100-zamknięty)
-extern String rollers[17][6];
+extern String rollers[17][7];
 extern String input_id[32][2];//tablica id wejsc
 extern String match_table[17][3];  //tablica dopasowań id wejść do rolet
+extern String output_id[32][3]; //tablica id wyjsc
+extern String match_table_output[17][3]; //tablica id rolet do id wyjsc
 
 // Czas startu dla rolet (milisekundy)
 extern unsigned long startTimeForShutter[17];

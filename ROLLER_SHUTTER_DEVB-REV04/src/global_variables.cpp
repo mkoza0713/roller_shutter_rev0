@@ -49,29 +49,36 @@ unsigned long last_change_time[8][8];
 int debonuce_time = 200; // czas drgania styków w ms
 
 // ---------------------------
-// Dane rolet: id, nazwa, strefa, czas cyklu, stan: 1 otwarta 0 zamknieta, poziom otwarcia
+// Dane rolet: id (0), nazwa (1), strefa(2), czas cyklu ms(3), 
+//stan: 1 pracuje 0 nie pracuje(4), poziom otwarcia % 100% otwarta(5),
+//poprzedni kierunek: 1-góra, 0-dół (6)
 // ---------------------------
-String rollers[17][6] = {
-  {"id0", "n/d", "n/d", "n/d", "n/d", "n/d"},
-  {"id1", "Roleta 1", "AREA_1", "9000", "1", "0"},
-  {"id2", "Roleta 2", "AREA_2", "16000", "0", "16000"},
-  {"id3", "Roleta 3", "AREA_1", "10000", "1", "0"},
-  {"id4", "Roleta 4", "AREA_1", "6000", "1", "0"},
-  {"id5", "Roleta 5", "AREA_1", "5000", "1", "0"},
-  {"id6", "Roleta 6", "AREA_1", "2000", "0", "2000"},
-  {"id7", "Roleta 7", "AREA_3", "12000", "0", "12000"},
-  {"id8", "Roleta 8", "AREA_3", "12000", "0", "12000"},
-  {"id9", "Roleta 9", "AREA_4", "12000", "1", "0"},
-  {"id10", "Roleta 10", "AREA_4", "12000", "0", "12000"},
-  {"id11", "Roleta 11", "AREA_5", "12000", "1", "0"},
-  {"id12", "Roleta 12", "AREA_5", "12000", "1", "0"},
-  {"id13", "Roleta 13", "AREA_5", "12000", "1", "0"},
-  {"id14", "Roleta 14", "AREA_5", "12000", "1", "0"},
-  {"id15", "Roleta 15", "AREA_5", "12000", "1", "0"},
-  {"id16", "Roleta 16", "AREA_5", "12000", "1", "0"}
+String rollers[17][7] = {
+  {"id0", "n/d", "n/d", "n/d", "n/d", "n/d", "n/d"},
+  {"id1", "Roleta 1", "AREA_1", "9000", "0", "100", "1"},
+  {"id2", "Roleta 2", "AREA_2", "16000", "0", "100", "1"},
+  {"id3", "Roleta 3", "AREA_1", "10000", "0", "100", "1"},
+  {"id4", "Roleta 4", "AREA_1", "6000", "0", "100", "1"},
+  {"id5", "Roleta 5", "AREA_1", "5000", "0", "100", "1"},
+  {"id6", "Roleta 6", "AREA_1", "2000", "0", "100", "1"},
+  {"id7", "Roleta 7", "AREA_3", "12000", "0", "100", "1"},
+  {"id8", "Roleta 8", "AREA_3", "12000", "0", "100", "1"},
+  {"id9", "Roleta 9", "AREA_4", "12000", "0", "100", "1"},
+  {"id10", "Roleta 10", "AREA_4", "11000", "0", "100", "1"},
+  {"id11", "Roleta 11", "AREA_5", "12000", "0", "100", "1"},
+  {"id12", "Roleta 12", "AREA_5", "12000", "0", "100", "1"},
+  {"id13", "Roleta 13", "AREA_5", "12000", "0", "100", "1"},
+  {"id14", "Roleta 14", "AREA_5", "12000", "0", "100", "1"},
+  {"id15", "Roleta 15", "AREA_5", "12000", "0", "100", "1"},
+  {"id16", "Roleta 16", "AREA_5", "12000", "0", "100", "1"}
 };
 
-//id wejscia; stan wejścia (0/1/puste)
+//czasy start do pracy rolet
+//0 - czas startu otwierania
+unsigned long time_start_f0r_work[17][1];
+
+//id wejscia; 
+//stan wejścia (0/1/puste) 0 - puszczono, 1 - wciśnięto, puste - brak akcji
 String input_id[32][2] = {
   {"inp1_1", ""},
   {"inp1_2", ""},
@@ -107,6 +114,43 @@ String input_id[32][2] = {
   {"inp8_4", ""}
 };
 
+//id wyjscia;
+//numer mcp
+//adres wyjścia na MCP23008
+String output_id[32][3]= {
+  {"out1_1", "1", "0"},
+  {"out1_2", "1", "1"},
+  {"out1_3", "1", "2"},
+  {"out1_4", "1", "3"},
+  {"out2_1", "2", "0"},
+  {"out2_2", "2", "1"},
+  {"out2_3", "2", "2"},
+  {"out2_4", "2", "3"},
+  {"out3_1", "3", "0"},
+  {"out3_2", "3", "1"},
+  {"out3_3", "3", "2"},
+  {"out3_4", "3", "3"},
+  {"out4_1", "4", "0"},
+  {"out4_2", "4", "1"},
+  {"out4_3", "4", "2"},
+  {"out4_4", "4", "3"},
+  {"out5_1", "5", "7"},
+  {"out5_2", "5", "1"},
+  {"out5_3", "5", "2"},
+  {"out5_4", "5", "3"},
+  {"out6_1", "6", "7"},
+  {"out6_2", "6", "1"},
+  {"out6_3", "6", "2"},
+  {"out6_4", "6", "3"},
+  {"out7_1", "7", "7"},
+  {"out7_2", "7", "1"},
+  {"out7_3", "7", "2"},
+  {"out7_4", "7", "3"},
+  {"out8_1", "8", "7"},
+  {"out8_2", "8", "1"},
+  {"out8_3", "8", "2"},
+  {"out8_4", "8", "3"}
+};
 //id rolety; 
 //id wejscia; 
 //działanie do wykonania (1,2,3 - krótkie, długie, bardzo długie wcisniecie)
@@ -128,6 +172,29 @@ String match_table[17][3] = {
   {"id14", "inp7_2", ""},
   {"id15", "inp8_1", ""},
   {"id16", "inp8_2", ""}
+};
+
+//id rolety;
+//id wyjscia 1 - otwieranie
+//id wyjscia 2 - zamykanie
+String match_table_output[17][3] = {
+  {"id0", "", ""},
+  {"id1", "out1_1", "out1_2"},
+  {"id2", "out1_3", "out1_4"},
+  {"id3", "out2_1", "out2_2"},
+  {"id4", "out2_3", "out2_4"},
+  {"id5", "out3_1", "out3_2"},
+  {"id6", "out3_3", "out3_4"},
+  {"id7", "out4_1", "out4_2"},
+  {"id8", "out4_3", "out4_4"},
+  {"id9", "out5_1", "out5_2"},
+  {"id10", "out5_3", "out5_4"},
+  {"id11", "out6_1", "out6_2"},
+  {"id12", "out6_3", "out6_4"},
+  {"id13", "out7_1", "out7_2"},
+  {"id14", "out7_3", "out7_4"},
+  {"id15", "out8_1", "out8_2"},
+  {"id16", "out8_3", "out8_4"}
 };
 
 // ---------------------------

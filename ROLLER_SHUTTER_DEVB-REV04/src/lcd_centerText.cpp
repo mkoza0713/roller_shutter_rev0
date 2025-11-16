@@ -1,44 +1,52 @@
-/*Funkcja drukuje na lcd wielowierszowy tekst przesłany w  lcdShowCenterText(tekst wielowierszowy oddzielony \n)*/
 #include "Arduino.h"
 #include "functions.h"
 #include "global_variables.h"
 
-void lcdShowCenterText(String message){
-    // Policz liczbę linii
-    int lineCount = 1;
-    for (int i = 0; i < message.length(); i++) {
-        if (message[i] == '\n') lineCount++;
-    }
+int lcd_current_y = 0;  // zapamiętuje, gdzie ma się pojawić następny wiersz
 
-    // Tablica do przechowania linii
-    String lines[lineCount];
-
-    // Podział tekstu na linie
-    int currentLine = 0;
-    int start = 0;
-    for (int i = 0; i <= message.length(); i++) {
-        if (i == message.length() || message[i] == '\n') {
-            lines[currentLine] = message.substring(start, i);
-            start = i + 1;
-            currentLine++;
-        }
-    }
-
-    // Obliczenie całkowitej wysokości bloku tekstu
-    int lineHeight = tft.fontHeight();
-    int totalHeight = lineHeight * lineCount;
-
-    // Startowa pozycja Y dla centrowania pionowego
-    int y = (SCREEN_HEIGHT - totalHeight) / 2;
-
-    // Wyczyść ekran i ustaw kolor tekstu
+void lcdShowCenterText(String message) {
+    // Czyszczenie ekranu i reset pozycji
     tft.fillScreen(TFT_BLACK);
     tft.setTextColor(TFT_WHITE);
 
-    // Rysowanie każdej linii
-    for (int i = 0; i < lineCount; i++) {
-        int x = (SCREEN_WIDTH - tft.textWidth(lines[i])) / 2; // centrowanie poziome
-        tft.drawString(lines[i], x, y, 1); // 1 = font numer 1 lub ustawiony FreeFont
-        y += lineHeight;
+    int lineHeight = tft.fontHeight();
+    int topMargin = 10; // odstęp od górnej krawędzi ekranu
+    lcd_current_y = topMargin;
+
+    // Podział tekstu na linie (obsługa \n)
+    int start = 0;
+    for (int i = 0; i <= message.length(); i++) {
+        if (i == message.length() || message[i] == '\n') {
+            String line = message.substring(start, i);
+
+            // Centrowanie w poziomie
+            int x = (SCREEN_WIDTH - tft.textWidth(line)) / 2;
+            tft.drawString(line, x, lcd_current_y);
+
+            // Przesunięcie do następnej linii
+            lcd_current_y += lineHeight;
+            start = i + 1;
+        }
+    }
+}
+
+void lcdShowTopTextAdd(String message) {
+    tft.setTextColor(TFT_WHITE);
+    int lineHeight = tft.fontHeight();
+
+    // Podział tekstu na linie (obsługa \n)
+    int start = 0;
+    for (int i = 0; i <= message.length(); i++) {
+        if (i == message.length() || message[i] == '\n') {
+            String line = message.substring(start, i);
+
+            // Centrowanie w poziomie
+            int x = (SCREEN_WIDTH - tft.textWidth(line)) / 2;
+            tft.drawString(line, x, lcd_current_y);
+
+            // Następna linia niżej
+            lcd_current_y += lineHeight;
+            start = i + 1;
+        }
     }
 }

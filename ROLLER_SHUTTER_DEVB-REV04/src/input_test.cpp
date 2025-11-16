@@ -62,7 +62,7 @@ void inputstateReadTest()
                                 if (input_id[i][1] != "")
                                 {
                                     Serial.println(input_id[i][0]);
-                                    messageToLcd = "WCISNIETY\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
+                                    messageToLcd = "WCISNIETY PRZYCISK\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
                                 }
                             }
 
@@ -82,7 +82,7 @@ void inputstateReadTest()
                                 if (input_id[i][1] != "")
                                 {
                                     Serial.println(input_id[i][0]);
-                                    messageToLcd = "PUSZCZONY\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
+                                    messageToLcd = "PUSZCZONY PRZYCISK\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
                                 }
                             }
 
