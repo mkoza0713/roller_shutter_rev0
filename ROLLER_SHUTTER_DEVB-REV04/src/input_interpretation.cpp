@@ -41,7 +41,7 @@ void input_interpretation()
                         }
                     }
                 }
-                else if (pressDuration >= 300 && pressDuration < 2000)
+                else if (pressDuration >= 500 && pressDuration < 2000)
                 {
                     // Serial.println(": LONG PRESS");
                     for (byte j = 0; j < 17; j++)
@@ -53,7 +53,7 @@ void input_interpretation()
                         }
                     }
                 }
-                else if (pressDuration >= 50 && pressDuration < 300)
+                else if (pressDuration >= 50 && pressDuration < 500)
                 {
                     // Serial.println(": SHORT PRESS");
                     for (byte j = 0; j < 17; j++)
