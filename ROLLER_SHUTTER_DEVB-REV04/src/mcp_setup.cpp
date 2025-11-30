@@ -3,16 +3,40 @@
 #include "functions.h"
 #include "global_variables.h"
 
+// funkcja pomocnicza
+void out_id_active(String mpc_id)
+{
+    // dla danych expanderow przypisuje w tablicy czy są aktywne
+    for (byte i = 0; i < 32; i++)
+    {
+        if (output_id[i][1] == mpc_id)
+        {
+            // teraz wiem dla ktorych outx_x mam w drugiej tablicy dane
+            for (byte j = 0; j < 17; j++)
+            {
+                // teraz szukam w tablicy match_table_output wyjsc z ekspanderem nr 1
+                if (match_table_output[j][1] == output_id[i][0] ||
+                    match_table_output[j][2] == output_id[i][0])
+                {
+                    match_table_output[j][3] = "1"; // status że dane id aktywne
+                }
+            }
+        }
+    }
+}
+
 void mcp_setup()
 {
 
     // Inicjalizacja tablic stanów i czasów zmian dla debouncae
-    for (byte mcp = 0; mcp < 8; mcp++) {
-    for (byte pin = 0; pin < 8; pin++) {
-      last_state[mcp][pin] = 1;             // domyślnie HIGH = nie wciśnięty
-      last_change_time[mcp][pin] = millis(); // ustaw aktualny czas
+    for (byte mcp = 0; mcp < 8; mcp++)
+    {
+        for (byte pin = 0; pin < 8; pin++)
+        {
+            last_state[mcp][pin] = 1;              // domyślnie HIGH = nie wciśnięty
+            last_change_time[mcp][pin] = millis(); // ustaw aktualny czas
+        }
     }
-  }
 
     String messageToPrint = "Wykryte moduly:\n";
     // Inicjalizacja MCP23008
@@ -21,6 +45,7 @@ void mcp_setup()
     {
         Serial.println("MPC 1: start");
         messageToPrint = messageToPrint + "MPC 1: 0x" + String(MCP1_ADDRESS, HEX) + "\n";
+        out_id_active("1");
     }
 
     test_mpc_2 = MCP_2.begin(MCP2_ADDRESS);
@@ -28,6 +53,7 @@ void mcp_setup()
     {
         Serial.println("MPC 2: start");
         messageToPrint = messageToPrint + "MPC 2: 0x" + String(MCP2_ADDRESS, HEX) + "\n";
+        out_id_active("2");
     }
 
     test_mpc_3 = MCP_3.begin(MCP3_ADDRESS);
@@ -35,6 +61,7 @@ void mcp_setup()
     {
         Serial.println("MPC 3: start");
         messageToPrint = messageToPrint + "MPC 3: 0x" + String(MCP3_ADDRESS, HEX) + "\n";
+        out_id_active("3");
     }
 
     test_mpc_4 = MCP_4.begin(MCP4_ADDRESS);
@@ -42,6 +69,7 @@ void mcp_setup()
     {
         Serial.println("MPC 4: start");
         messageToPrint = messageToPrint + "MPC 4: 0x" + String(MCP4_ADDRESS, HEX) + "\n";
+        out_id_active("4");
     }
 
     test_mpc_5 = MCP_5.begin(MCP5_ADDRESS);
@@ -49,6 +77,7 @@ void mcp_setup()
     {
         Serial.println("MPC 5: start");
         messageToPrint = messageToPrint + "MPC 5: 0x" + String(MCP5_ADDRESS, HEX) + "\n";
+        out_id_active("5");
     }
 
     test_mpc_6 = MCP_6.begin(MCP6_ADDRESS);
@@ -56,6 +85,7 @@ void mcp_setup()
     {
         Serial.println("MPC 6: start");
         messageToPrint = messageToPrint + "MPC 6: 0x" + String(MCP6_ADDRESS, HEX) + "\n";
+        out_id_active("6");
     }
 
     test_mpc_7 = MCP_7.begin(MCP7_ADDRESS);
@@ -63,6 +93,7 @@ void mcp_setup()
     {
         Serial.println("MPC 7: start");
         messageToPrint = messageToPrint + "MPC 7: 0x" + String(MCP7_ADDRESS, HEX) + "\n";
+        out_id_active("7");
     }
 
     test_mpc_8 = MCP_8.begin(MCP8_ADDRESS);
@@ -70,6 +101,7 @@ void mcp_setup()
     {
         Serial.println("MPC 8: start");
         messageToPrint = messageToPrint + "MPC 8: 0x" + String(MCP8_ADDRESS, HEX) + "\n";
+        out_id_active("8");
     }
     Serial.println("");
     lcdShowCenterText(messageToPrint);

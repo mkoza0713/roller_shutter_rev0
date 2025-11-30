@@ -20,7 +20,8 @@ void output_stop(byte i) // funcja pomocnicza
     String mcp_pin_down = "";
 
     // koniec pracy
-    Serial.println("KONIEC PRACY ROLETY");
+    Serial.print("KONIEC PRACY ROLETY ");
+    Serial.println(rollers[i][0]);
     rollers[i][4] = "0"; // ustawiam ze nie pracuje
 
     // szukam na jakie wyjscia podpiete do rolety o id rollers[i][0]
@@ -99,7 +100,8 @@ void output_start_single(byte i) // funkcja pomocnicza do pracy single
                     {
                         if (rollers[s][6] == "1")
                         { // jechała w gore
-                            Serial.println("ROLETA JEDZIE W DOL");
+                            Serial.print("ROLETA JEDZIE W DOL ");
+                            Serial.println(rollers[s][0]);
                             lcdShowTopTextAdd("JAZDA W DOL");
                             rollers[s][6] = "0"; // zmieniam poprzedni kieunek
                             rollers[s][4] = "1"; // ustawiam ze pracuje
@@ -114,9 +116,10 @@ void output_start_single(byte i) // funkcja pomocnicza do pracy single
                         }
                         else if (rollers[s][6] == "0")
                         { // jechała w dol
-                            Serial.println("ROLETA JEDZIE W GORE");
+                            Serial.print("ROLETA JEDZIE W GORE ");
+                            Serial.println(rollers[s][0]);
                             lcdShowTopTextAdd("JAZDA W GORE");
-                            rollers[s][6] = "0";
+                            rollers[s][6] = "1";
                             rollers[s][4] = "1"; // ustawiam ze pracuje
 
                             Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
@@ -138,83 +141,254 @@ void output_start_single(byte i) // funkcja pomocnicza do pracy single
 }
 void output_start_areas(byte i)
 {
-    // szukam wszystkich wyjsc z takim AREA jakie kliknieto
-    // to co kliknieto
+    // Szukam AREA rolet klikniętej w match_table[i][0]
     String clickedArea = "";
     for (byte j = 0; j < 17; j++)
     {
         if (match_table[i][0] == rollers[j][0])
+        {
             clickedArea = rollers[j][2];
+            break;
+        }
     }
 
-    // szukam id z takim samym AREA Po tym muszę znaleźć ID wyjść do wysterowania
-    for(byte j = 0; j < 17; j++){
-        if(rollers[j][2]==clickedArea){
-            //tutaj mam id wszystkich rolet ze strefy rollers[j][0]
-            for(byte k=0; k<17;k++){
-                //tutaj dla kazdego ID szukam id outow    
-                if(rollers[j][0]==match_table_output[k][0]){
-                    //tutaj mam id wyjsc i musze je od razu włączyc/wylaczyc
-                    //musze jescze ograniczyc do id ktore mam podpiete do systemu
-                    //DOKONCZYCYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYC
-                    output_start_single(k);  //uruchamiam procedure jak dla single  - do testu nie wiem czy działa
+    if (clickedArea == "")
+        return; // brak przypisanego AREA
+
+    // Szukam rolet w tym AREA
+    for (byte j = 0; j < 17; j++)
+    {
+        if (rollers[j][2] == clickedArea && rollers[j][4] == "0") // tylko niepracujące
+        {
+            String kierunek_inicjujacej = "";
+            // Kierunek ustalam na podstawie "inicjującej" roletą z tego AREA
+            if (rollers[j][6] == "1")
+                kierunek_inicjujacej = "0"; // jechała w górę, teraz w dół
+            else if (rollers[j][6] == "0")
+                kierunek_inicjujacej = "1"; // jechała w dół, teraz w górę
+
+            // Szukam wyjść dla tej rolety
+            String output_up_id = "";
+            String output_down_id = "";
+            String mcp_number_up = "";
+            String mcp_pin_up = "";
+            String mcp_number_down = "";
+            String mcp_pin_down = "";
+
+            for (byte k = 0; k < 17; k++)
+            {
+                if (rollers[j][0] == match_table_output[k][0] && match_table_output[k][3] == "1")
+                {
+                    output_up_id = match_table_output[k][1];
+                    output_down_id = match_table_output[k][2];
+
+                    for (byte s = 0; s < 32; s++)
+                    {
+                        if (output_id[s][0] == output_up_id)
+                        {
+                            mcp_number_up = output_id[s][1].toInt() - 1;
+                            mcp_pin_up = output_id[s][2];
+                        }
+                        if (output_id[s][0] == output_down_id)
+                        {
+                            mcp_number_down = output_id[s][1].toInt() - 1;
+                            mcp_pin_down = output_id[s][2];
+                        }
+                    }
+
+                    // Uruchamiam roletę
+                    rollers[j][4] = "1"; // ustawiam że pracuje
+                    if (kierunek_inicjujacej == "1")
+                    {
+                        rollers[j][6] = "1"; // nowy kierunek w górę
+                        Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
+                        mcp_up->digitalWrite(mcp_pin_up.toInt(), HIGH);
+                        Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
+                        mcp_down->digitalWrite(mcp_pin_down.toInt(), LOW);
+                    }
+                    else
+                    {
+                        rollers[j][6] = "0"; // nowy kierunek w dół
+                        Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
+                        mcp_up->digitalWrite(mcp_pin_up.toInt(), LOW);
+                        Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
+                        mcp_down->digitalWrite(mcp_pin_down.toInt(), HIGH);
+                    }
+
+                    // ustawiam czas startu
+                    time_start_f0r_work[j][0] = millis();
                 }
             }
         }
     }
-    
-    match_table[i][2] = "";
 
+    match_table[i][2] = ""; // czyszczenie akcji
 }
+void output_start_all(byte i)
+{
+    // Funkcja uruchamia wszystkie rolety w kierunku zgodnym z inicjującą roletą
+
+    String kierunek_inicjujacej = "";
+    // Szukam roletę inicjującą, z której przyszło polecenie
+    for (byte j = 0; j < 17; j++)
+    {
+        if (rollers[j][0] == match_table[i][0])
+        {
+            if (rollers[j][6] == "1" && rollers[j][4] == "0")
+            {
+                kierunek_inicjujacej = "0"; // inicjująca jechała w górę, teraz ALL w dół
+                Serial.println("rolety jada w dol");
+            }
+            else if (rollers[j][6] == "0" && rollers[j][4] == "0")
+            {
+                kierunek_inicjujacej = "1"; // inicjująca jechała w dół, teraz ALL w górę
+                Serial.println("rolety jada w gore");
+            }
+            break;
+        }
+    }
+
+    // Teraz włączam wszystkie rolety w systemie w kierunku określonym przez inicjującą
+    for (byte k = 0; k < 17; k++)
+    {
+        if (match_table_output[k][3] == "1") // tylko aktywne MCP
+        {
+            String output_up_id = match_table_output[k][1];
+            String output_down_id = match_table_output[k][2];
+            String mcp_number_up = "";
+            String mcp_pin_up = "";
+            String mcp_number_down = "";
+            String mcp_pin_down = "";
+
+            // Szukam MCP i pinów dla wyjść
+            for (byte s = 0; s < 32; s++)
+            {
+                if (output_id[s][0] == output_up_id)
+                {
+                    mcp_number_up = output_id[s][1].toInt() - 1;
+                    mcp_pin_up = output_id[s][2];
+                }
+                if (output_id[s][0] == output_down_id)
+                {
+                    mcp_number_down = output_id[s][1].toInt() - 1;
+                    mcp_pin_down = output_id[s][2];
+                }
+            }
+
+            // Dla każdej rolety w rollers dopasowuję i włączam przekaźniki
+            for (byte r = 0; r < 17; r++)
+            {
+                if (rollers[r][0] == match_table_output[k][0] && rollers[r][4] == "0") // nie w ruchu
+                {
+                    rollers[r][4] = "1"; // ustawiam że pracuje
+                    if (kierunek_inicjujacej == "1")
+                    {
+                        Serial.print("ROLETA ");
+                        Serial.print(rollers[r][0]);
+                        Serial.println(" JEDZIE W GORE");
+                        lcdShowTopTextAdd("JAZDA W GORE: " + rollers[r][0]);
+                        rollers[r][6] = "1"; // nowy kierunek w górę
+
+                        // włączam pin w górę i wyłączam w dół (zabezpieczenie)
+                        Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
+                        mcp_up->digitalWrite(mcp_pin_up.toInt(), HIGH);
+                        Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
+                        mcp_down->digitalWrite(mcp_pin_down.toInt(), LOW);
+                    }
+                    else if (kierunek_inicjujacej == "0")
+                    {
+                        Serial.print("ROLETA ");
+                        Serial.print(rollers[r][0]);
+                        Serial.println(" JEDZIE W DOL");
+                        lcdShowTopTextAdd("JAZDA W DOL: " + rollers[r][0]);
+                        rollers[r][6] = "0"; // nowy kierunek w dół
+
+                        // włączam pin w dół i wyłączam w górę (zabezpieczenie)
+                        Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
+                        mcp_up->digitalWrite(mcp_pin_up.toInt(), LOW);
+                        Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
+                        mcp_down->digitalWrite(mcp_pin_down.toInt(), HIGH);
+                    }
+
+                    // ustawiam czas startu
+                    time_start_f0r_work[r][0] = millis();
+                }
+            }
+        }
+    }
+
+    match_table[i][2] = ""; // czyszczenie akcji po uruchomieniu
+}
+
 void writeOutputStates()
 {
     // Tutaj dodaj kod do obsługi wyjść (przekaźników) na MCP23008
 
-    for (byte i = 0; i < 17; i++)
+    for (byte i = 0; i < 17; i++) // petla dla match_table[i][]
     {
+        // szukam czy dla danej rolety jest przypisana jakaś akcja
         if (match_table[i][2] != "")
         {
             String messageToLcd2 = "";
             switch (match_table[i][2].toInt())
             {
             case 1:
-                messageToLcd2 = "AKCJA: PRACA POJEDYNCZA";
+                Serial.println("AKCJA 1: PRACA POJEDYNCZA");
+                messageToLcd2 = "AKCJA 1: PRACA POJEDYNCZA";
                 break;
             case 2:
-                messageToLcd2 = "AKCJA: PRACA GRUPOWA";
+                Serial.println("AKCJA 2: PRACA GRUPOWA");
+                messageToLcd2 = "AKCJA 2: PRACA GRUPOWA";
                 break;
             case 3:
-                messageToLcd2 = "AKCJA: PRACA WSZYSTKIE";
+                Serial.println("AKCJA 3: PRACA WSZYSTKIE");
+                messageToLcd2 = "AKCJA 3: PRACA WSZYSTKIE";
                 break;
             }
             lcdShowTopTextAdd(messageToLcd2);
-            if (match_table[i][2] == "1")
-                output_start_single(i);
-
-            else if (match_table[i][2] == "2")
+            if (match_table[i][2] == "1") // praca pojedyncza
             {
-                output_start_areas(i);
+                output_start_single(i);
+            }
+            else if (match_table[i][2] == "2") // praca grupowa
+            {
+                // output_start_areas(i);
+                output_start_all(i);
+            }
+            else if (match_table[i][2] == "3") // praca wszystkich
+            {
+                // output_start_all(i);
             }
         }
     }
-    for (byte i = 0; i < 17; i++)
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    // koniec pracy rolet
+    for (byte i = 0; i < 17; i++) // petla dla rollers[i][]
     {
         if (rollers[i][4] == "1")
         {
             if (millis() - time_start_f0r_work[i][0] >= rollers[i][3].toInt())
             {
-                Serial.print("ZATRZYMANIE AUTOMATYCZNE");
+                Serial.print("ZATRZYMANIE AUTOMATYCZNE ROLETY ");
+                Serial.println(rollers[i][0]);
                 lcdShowTopTextAdd("ZATRZYMANIE AUTOMATYCZNE");
                 output_stop(i);
             }
         }
-
-        if (match_table[i][2] != "" && match_table[i][2] == "1" && millis() - time_start_f0r_work[i][0] < rollers[i][3].toInt())
-        { // ponowne wcisniecie przycisku podczas pracy tylko dla trybu podstawowego
-            Serial.print("ZATRZYMANIE RECZNE");
-            lcdShowTopTextAdd("ZATRZYMANIE RECZNE");
-            output_stop(i);
-            match_table[i][2] = ""; // zerowanie akcji
+        if (millis() - time_start_f0r_work[i][0] < rollers[i][3].toInt() && rollers[i][4] == "1")
+        {
+            // warunek ze czas pracy jeszcze nie minał i roleta pracuje
+            for (byte j = 0; j < 17; j++) // petla dla match_table[j][]
+            {
+                if (match_table[j][2] != "" && match_table[j][2] == "1")
+                {
+                    Serial.print("ZATRZYMANIE RECZNE ROLETY ");
+                    Serial.println(match_table[j][0]);
+                    lcdShowTopTextAdd("ZATRZYMANIE RECZNE");
+                    match_table[j][2] = ""; // zerowanie akcji
+                    output_stop(j);         // przekazuje do stop argument i z rollers[i][]
+                }
+            }
         }
     }
 }

@@ -49,7 +49,7 @@ void inputstateReadTest()
                                 input_id[(mcp_index * 4) + 7 - 4][1] = "1";
                             else
                                 input_id[(mcp_index * 4) + pin - 4][1] = "1";
-
+                            Serial.println();
                             Serial.print("MCP 0x2");
                             Serial.print(mcp_index);
                             Serial.print(" Pin");

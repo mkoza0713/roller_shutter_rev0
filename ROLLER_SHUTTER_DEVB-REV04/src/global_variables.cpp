@@ -177,24 +177,25 @@ String match_table[17][3] = {
 //id rolety;
 //id wyjscia 1 - otwieranie
 //id wyjscia 2 - zamykanie
-String match_table_output[17][3] = {
-  {"id0", "", ""},
-  {"id1", "out1_1", "out1_2"},
-  {"id2", "out1_3", "out1_4"},
-  {"id3", "out2_1", "out2_2"},
-  {"id4", "out2_3", "out2_4"},
-  {"id5", "out3_1", "out3_2"},
-  {"id6", "out3_3", "out3_4"},
-  {"id7", "out4_1", "out4_2"},
-  {"id8", "out4_3", "out4_4"},
-  {"id9", "out5_1", "out5_2"},
-  {"id10", "out5_3", "out5_4"},
-  {"id11", "out6_1", "out6_2"},
-  {"id12", "out6_3", "out6_4"},
-  {"id13", "out7_1", "out7_2"},
-  {"id14", "out7_3", "out7_4"},
-  {"id15", "out8_1", "out8_2"},
-  {"id16", "out8_3", "out8_4"}
+//info czy podpiete mcp
+String match_table_output[17][4] = {
+  {"id0", "", "",""},
+  {"id1", "out1_1", "out1_2",""},
+  {"id2", "out1_3", "out1_4",""},
+  {"id3", "out2_1", "out2_2",""},
+  {"id4", "out2_3", "out2_4",""},
+  {"id5", "out3_1", "out3_2",""},
+  {"id6", "out3_3", "out3_4",""},
+  {"id7", "out4_1", "out4_2",""},
+  {"id8", "out4_3", "out4_4",""},
+  {"id9", "out5_1", "out5_2",""},
+  {"id10", "out5_3", "out5_4",""},
+  {"id11", "out6_1", "out6_2",""},
+  {"id12", "out6_3", "out6_4",""},
+  {"id13", "out7_1", "out7_2",""},
+  {"id14", "out7_3", "out7_4",""},
+  {"id15", "out8_1", "out8_2",""},
+  {"id16", "out8_3", "out8_4",""}
 };
 
 // ---------------------------
