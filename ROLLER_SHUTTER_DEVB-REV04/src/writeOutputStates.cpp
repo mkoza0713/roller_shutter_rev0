@@ -352,12 +352,11 @@ void writeOutputStates()
             }
             else if (match_table[i][2] == "2") // praca grupowa
             {
-                // output_start_areas(i);
-                output_start_all(i);
+                output_start_areas(i);
             }
             else if (match_table[i][2] == "3") // praca wszystkich
             {
-                // output_start_all(i);
+                output_start_all(i);
             }
         }
     }
