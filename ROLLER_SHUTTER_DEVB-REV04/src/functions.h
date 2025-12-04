@@ -9,5 +9,7 @@ void lcdShowTopTextAdd(String message);
 void lcd_clear();
 void writeOutputStates();
 void input_interpretation();
+String createJSON();
+void postRequest_loop();
 
 #endif

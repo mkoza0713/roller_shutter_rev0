@@ -4,6 +4,9 @@
 #include <Arduino.h>
 #include "Adafruit_MCP23008.h"
 
+#define DEVICE_ID "ESP32_0YQ4X"//serial urzadzenia
+
+
 extern Adafruit_MCP23008 MCP_1;
 extern Adafruit_MCP23008 MCP_2;
 extern Adafruit_MCP23008 MCP_3;
@@ -68,5 +71,8 @@ extern unsigned long lcd_clear_timeout;
 /****WIFI****/
 extern const char ssid[];
 extern const char password[];
+extern String HOST_NAME;
+extern String PHP_FILE_NAME;
+extern String server;
 
 #endif
