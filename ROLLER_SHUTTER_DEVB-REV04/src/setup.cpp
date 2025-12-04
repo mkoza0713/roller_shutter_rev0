@@ -3,18 +3,21 @@
 #include "global_variables.h"
 
 /*TFT_eSPI file to change drom folder*/
-#define XPT2046_IRQ 36   // T_IRQ
-#define XPT2046_MOSI 32  // T_DIN
-#define XPT2046_MISO 39  // T_OUT
-#define XPT2046_CLK 25   // T_CLK
-#define XPT2046_CS 33    // T_CS
-
+#define XPT2046_IRQ 36  // T_IRQ
+#define XPT2046_MOSI 32 // T_DIN
+#define XPT2046_MISO 39 // T_OUT
+#define XPT2046_CLK 25  // T_CLK
+#define XPT2046_CS 33   // T_CS
 
 #include <TFT_eSPI.h>
 TFT_eSPI tft = TFT_eSPI();
 #include <XPT2046_Touchscreen.h>
 SPIClass touchscreenSPI = SPIClass(VSPI);
 XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
+
+/***********WIFI**************/
+#include "WiFi.h"
+#include "HTTPClient.h"
 
 void psetup()
 {
@@ -23,6 +26,7 @@ void psetup()
     Serial.println("Start programu");
 
     /***********LCD+TFT**************/
+
     // Start the SPI for the touchscreen and init the touchscreen
     touchscreenSPI.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
     touchscreen.begin(touchscreenSPI);
@@ -43,5 +47,35 @@ void psetup()
 
     int centerX = SCREEN_WIDTH / 2;
     int centerY = SCREEN_HEIGHT / 2;
+
     /***********LCD+TFT**************/
+
+    /***********WIFI**************/
+    byte timeout = 0;
+    WiFi.begin(ssid, password);
+    lcdShowCenterText("WIFI connecting");
+    Serial.println("WIFI connecting");
+    while (WiFi.status() != WL_CONNECTED && timeout < 10)
+    {
+        delay(500);
+        lcdShowTopTextAdd(".");
+        Serial.print(".");
+        timeout++;
+    }
+
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        String messageToLcd = "\nConnected, IP:" + WiFi.localIP().toString() + "\n SSID:" +ssid;
+        lcdShowTopTextAdd(messageToLcd);
+        Serial.print("Polaczono! IP:");
+        Serial.println(WiFi.localIP());
+        delay(5000);
+    }
+    else
+    {
+        String messageToLcd = "\nBrak polaczenia z siecia WIFI";
+        lcdShowCenterText(messageToLcd);
+        Serial.println("Nie polaczono z WIFI");
+        delay(5000);
+    }
 }

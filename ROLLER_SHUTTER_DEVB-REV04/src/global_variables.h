@@ -62,5 +62,11 @@ extern unsigned long buttonPressTime[32];
 #define SCREEN_HEIGHT 240
 #include <TFT_eSPI.h>
 extern TFT_eSPI tft;
+extern unsigned long last_action_time;
+extern unsigned long lcd_clear_timeout;
+
+/****WIFI****/
+extern const char ssid[];
+extern const char password[];
 
 #endif

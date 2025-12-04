@@ -6,6 +6,8 @@ int lcd_current_y = 0;  // zapamiętuje, gdzie ma się pojawić następny wiersz
 
 void lcdShowCenterText(String message) {
     // Czyszczenie ekranu i reset pozycji
+    
+    digitalWrite(TFT_BL, HIGH); // Turn on the backlight
     tft.fillScreen(TFT_BLACK);
     tft.setTextColor(TFT_WHITE);
 
@@ -28,9 +30,11 @@ void lcdShowCenterText(String message) {
             start = i + 1;
         }
     }
+    last_action_time = millis(); // aktualizacja czasu ostatniej akcji
 }
 
 void lcdShowTopTextAdd(String message) {
+    digitalWrite(TFT_BL, HIGH); // Turn on the backlight
     tft.setTextColor(TFT_WHITE);
     int lineHeight = tft.fontHeight();
 
@@ -48,5 +52,17 @@ void lcdShowTopTextAdd(String message) {
             lcd_current_y += lineHeight;
             start = i + 1;
         }
+    }
+    last_action_time = millis(); // aktualizacja czasu ostatniej akcji
+}
+
+
+void lcd_clear(){
+    unsigned long now = millis();
+    if(now - last_action_time > lcd_clear_timeout && last_action_time != 0){
+        tft.fillScreen(TFT_BLACK);
+        last_action_time = 0;
+        digitalWrite(TFT_BL, LOW); // Turn on the backlight
+        Serial.println("LCD cleared due to inactivity.");
     }
 }

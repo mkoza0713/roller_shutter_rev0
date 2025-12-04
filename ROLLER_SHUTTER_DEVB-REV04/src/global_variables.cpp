@@ -208,3 +208,26 @@ unsigned long startTimeForShutter[17] = {0};
 // odmierzanie czasu przyciskow (inicjalizacja 0)
 // ---------------------------
 unsigned long buttonPressTime[32] = {0};
+
+
+
+/***********WIFI**************/
+const char ssid[] = "UPC7AA1BAF";
+const char password[] = "Ra5xvvsxcpdj";
+String server = "";
+String tempQuery1 = "?temperature=";
+String tempQuery2 = "trybPracy=";
+String tempValue2 = "0";
+
+
+
+
+// const char ssid[] = "T-Mobile-ZTE MF286-83954E";
+// const char password[] = "Maniek104";
+
+/***********WIFI**************/
+
+/***********LCD**************/
+unsigned long last_action_time;
+unsigned long lcd_clear_timeout = 30000; // czas w s po którym ekran się wyczyści
+/***********LCD**************/

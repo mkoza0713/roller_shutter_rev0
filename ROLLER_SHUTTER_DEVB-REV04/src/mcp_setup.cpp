@@ -3,6 +3,10 @@
 #include "functions.h"
 #include "global_variables.h"
 
+#include <Wire.h>
+#define I2C_SDA 27
+#define I2C_SCL 22
+
 // funkcja pomocnicza
 void out_id_active(String mpc_id)
 {
@@ -27,7 +31,8 @@ void out_id_active(String mpc_id)
 
 void mcp_setup()
 {
-
+    Wire.begin(I2C_SDA, I2C_SCL);  // teraz MCP będzie korzystał z właściwych pinów
+    
     // Inicjalizacja tablic stanów i czasów zmian dla debouncae
     for (byte mcp = 0; mcp < 8; mcp++)
     {
