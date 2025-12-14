@@ -16,7 +16,7 @@ extern Adafruit_MCP23008 MCP_7;
 extern Adafruit_MCP23008 MCP_8;
 
 // Definicje pinów i adresów I2C MCP23008
-#define int_pin_esp 35
+// #define int_pin_esp 35
 #define MCP1_ADDRESS 0x20
 #define MCP2_ADDRESS 0x21
 #define MCP3_ADDRESS 0x22

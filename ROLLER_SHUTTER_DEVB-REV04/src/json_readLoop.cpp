@@ -49,6 +49,7 @@ void json_readLoop()
                 //         }
                 //     }
                 // }
+                // delay(10000); // opóźnienie między kolejnymi odczytami
             }
         }
         else
@@ -58,7 +59,5 @@ void json_readLoop()
 
         http_1.end(); // zamyka połączenie
         /*******************************************JSON_1***************************************** */
-
-        delay(10000); // opóźnienie między kolejnymi odczytami
     }
 }

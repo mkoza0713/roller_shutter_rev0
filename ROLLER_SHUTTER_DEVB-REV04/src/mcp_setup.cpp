@@ -32,6 +32,7 @@ void out_id_active(String mpc_id)
 void mcp_setup()
 {
     Wire.begin(I2C_SDA, I2C_SCL);  // teraz MCP będzie korzystał z właściwych pinów
+    Wire.setClock(100000);
     
     // Inicjalizacja tablic stanów i czasów zmian dla debouncae
     for (byte mcp = 0; mcp < 8; mcp++)

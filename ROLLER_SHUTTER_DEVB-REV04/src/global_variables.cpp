@@ -212,10 +212,10 @@ unsigned long buttonPressTime[32] = {0};
 
 
 /***********WIFI**************/
-const char ssid[] = "UPC7AA1BAF";
-const char password[] = "Ra5xvvsxcpdj";
-// const char ssid[] = "T-Mobile-ZTE MF286-83954E";
-// const char password[] = "Maniek104";
+// const char ssid[] = "UPC7AA1BAF";
+// const char password[] = "Ra5xvvsxcpdj";
+const char ssid[] = "T-Mobile-ZTE MF286-83954E";
+const char password[] = "Maniek104";
 
 
 String HOST_NAME = "https://srv97872.seohost.com.pl";  // REPLACE WITH YOUR PC's IP ADDRESS
