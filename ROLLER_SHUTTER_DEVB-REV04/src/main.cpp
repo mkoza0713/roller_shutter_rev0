@@ -14,5 +14,6 @@ void loop()
   input_interpretation(); // Funkcja do interpretacji wejść. Zapis działań w match_table[][]
   writeOutputStates();    // Funkcja do obsługi wyjść (przekaźników). Wykonuje działania zapisane w match_table[][]
   lcd_clear();            // Funkcja do czyszczenia ekranu LCD po określonym czasie braku aktywności
-  postRequest_loop();
+  postRequest_loop();     //Funkcja do wysyłania danych na serwer do plików json
+  json_readLoop();        //Funkcja do odczytu danych z plików json na serwerze
 }

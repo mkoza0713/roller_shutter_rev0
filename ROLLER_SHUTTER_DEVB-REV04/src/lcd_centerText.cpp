@@ -63,6 +63,6 @@ void lcd_clear(){
         tft.fillScreen(TFT_BLACK);
         last_action_time = 0;
         digitalWrite(TFT_BL, LOW); // Turn on the backlight
-        Serial.println("LCD cleared due to inactivity.");
+        Serial.println("LCD wyczyszczone, standby.");
     }
 }

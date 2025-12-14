@@ -122,13 +122,13 @@ void output_start_single(byte i) // funkcja pomocnicza do pracy single
                             rollers[s][6] = "1";
                             rollers[s][4] = "1"; // ustawiam ze pracuje
 
-                            Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
-                            mcp_down->digitalWrite(mcp_pin_down.toInt(), HIGH);
-
                             /*************ZABEZPIECZENIE--------->***************/
+                            Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
+                            mcp_down->digitalWrite(mcp_pin_down.toInt(), LOW);
+                            /*************<---------------ZABEZPIECZENIE***************/
+
                             Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
                             mcp_up->digitalWrite(mcp_pin_up.toInt(), HIGH);
-                            /*************<---------------ZABEZPIECZENIE***************/
 
                             time_start_f0r_work[s][0] = millis(); // ustawiam czas startu
                         }
@@ -201,16 +201,21 @@ void output_start_areas(byte i)
                     if (kierunek_inicjujacej == "1")
                     {
                         rollers[j][6] = "1"; // nowy kierunek w górę
-                        Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
-                        mcp_up->digitalWrite(mcp_pin_up.toInt(), HIGH);
+                        
+                            /*************ZABEZPIECZENIE--------->***************/
                         Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
                         mcp_down->digitalWrite(mcp_pin_down.toInt(), LOW);
+                            /*************ZABEZPIECZENIE--------->***************/
+                        Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
+                        mcp_up->digitalWrite(mcp_pin_up.toInt(), HIGH);
                     }
                     else
                     {
                         rollers[j][6] = "0"; // nowy kierunek w dół
+                            /*************ZABEZPIECZENIE--------->***************/
                         Adafruit_MCP23008 *mcp_up = MCPs[mcp_number_up.toInt()];
                         mcp_up->digitalWrite(mcp_pin_up.toInt(), LOW);
+                            /*************ZABEZPIECZENIE--------->***************/
                         Adafruit_MCP23008 *mcp_down = MCPs[mcp_number_down.toInt()];
                         mcp_down->digitalWrite(mcp_pin_down.toInt(), HIGH);
                     }

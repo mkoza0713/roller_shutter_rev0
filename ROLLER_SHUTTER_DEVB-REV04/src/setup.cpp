@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "functions.h"
 #include "global_variables.h"
+#include "time.h" //do pobrania timestampa z serwera NTP
 
 /*TFT_eSPI file to change drom folder*/
 #define XPT2046_IRQ 36  // T_IRQ
@@ -18,6 +19,20 @@ XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
 /***********WIFI**************/
 #include "WiFi.h"
 #include "HTTPClient.h"
+const char *ntpServer = "pool.ntp.org"; // serwer NTP
+const long gmtOffset_sec = 3600;        // Polska = +1h
+const int daylightOffset_sec = 0;       // zmiana czasu letniego
+
+// funkcja do pobierania aktualnego czasu z serwera NTP
+time_t getCurrentTimestamp()
+{
+    time_t now  =time(nullptr);// zwraca epoch (sekundy od 1970)
+    if(now < 1000000000){
+        return 0; // błąd pobierania czasu
+    }else{
+        return now;
+    }
+}
 
 void psetup()
 {
@@ -65,11 +80,37 @@ void psetup()
 
     if (WiFi.status() == WL_CONNECTED)
     {
-        String messageToLcd = "\nConnected, IP:" + WiFi.localIP().toString() + "\n SSID:" +ssid;
+        String messageToLcd = "\nConnected, IP:" + WiFi.localIP().toString() + "\n SSID:" + ssid;
         lcdShowTopTextAdd(messageToLcd);
         Serial.print("Polaczono! IP:");
         Serial.println(WiFi.localIP());
         delay(5000);
+
+        /***********NTP**************/
+        configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
+        // Czekamy na synchronizację NTP
+        time_t nowTime = 0;
+        int attempts = 0;
+        Serial.println("NTP connecting");
+        while ((nowTime = time(nullptr)) < 1000000000 && attempts < 20)
+        { // max 10 sekund
+            delay(500);
+            Serial.print(".");
+            attempts++;
+        }
+        Serial.println();
+        if (nowTime < 1000000000)
+        {
+            Serial.println("Nie udało się zsynchronizować NTP");
+        }
+        else
+        {
+            Serial.print("NTP Polaczono! epoch:");
+            Serial.println(nowTime);
+        }
+
+        /***********NTP**************/
     }
     else
     {
@@ -78,4 +119,5 @@ void psetup()
         Serial.println("Nie polaczono z WIFI");
         delay(5000);
     }
+    /***********WIFI**************/
 }

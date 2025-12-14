@@ -6,7 +6,6 @@
 
 #define DEVICE_ID "ESP32_0YQ4X"//serial urzadzenia
 
-
 extern Adafruit_MCP23008 MCP_1;
 extern Adafruit_MCP23008 MCP_2;
 extern Adafruit_MCP23008 MCP_3;
@@ -73,6 +72,7 @@ extern const char ssid[];
 extern const char password[];
 extern String HOST_NAME;
 extern String PHP_FILE_NAME;
+extern String JSON_FILE_1;
 extern String server;
 
 #endif

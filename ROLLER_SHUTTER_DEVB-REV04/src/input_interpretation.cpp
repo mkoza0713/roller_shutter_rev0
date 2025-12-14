@@ -29,7 +29,7 @@ void input_interpretation()
             if (buttonPressTime[i] != 0)
             {
                 unsigned long pressDuration = millis() - buttonPressTime[i];
-                if (pressDuration >= 2000 && pressDuration < 3000)
+                if (pressDuration >= 5000 && pressDuration < 10000)
                 {
                     // Serial.println(": VERY LONG PRESS");
                     for (byte j = 0; j < 17; j++)
@@ -41,7 +41,7 @@ void input_interpretation()
                         }
                     }
                 }
-                else if (pressDuration >= 500 && pressDuration < 2000)
+                else if (pressDuration >= 2000 && pressDuration < 5000)
                 {
                     // Serial.println(": LONG PRESS");
                     for (byte j = 0; j < 17; j++)
@@ -53,7 +53,7 @@ void input_interpretation()
                         }
                     }
                 }
-                else if (pressDuration >= 50 && pressDuration < 500)
+                else if (pressDuration >= 50 && pressDuration < 2000)
                 {
                     // Serial.println(": SHORT PRESS");
                     for (byte j = 0; j < 17; j++)

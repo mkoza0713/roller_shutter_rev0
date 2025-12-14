@@ -11,5 +11,7 @@ void writeOutputStates();
 void input_interpretation();
 String createJSON();
 void postRequest_loop();
+void json_readLoop();
+time_t getCurrentTimestamp();
 
 #endif

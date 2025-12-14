@@ -7,7 +7,9 @@
 #include "HTTPClient.h"
 #include <ArduinoJson.h>
 
-String createJSON() {
+// Funkcja tworząca JSON do wysłania na serwer
+String createJSON()
+{
     StaticJsonDocument<8192> doc;
 
     // Tworzymy obiekt główny z DEVICE_ID jako kluczem
@@ -16,22 +18,25 @@ String createJSON() {
 
     // Rollers
     JsonObject rollersObj = deviceObj.createNestedObject("rollers");
-    for (int i = 0; i < 17; i++) {
+    for (int i = 0; i < 17; i++)
+    {
         JsonObject roller = rollersObj.createNestedObject(rollers[i][0]);
-        roller["name"]     = rollers[i][1];
-        roller["area"]     = rollers[i][2];
+        roller["timestamp"] = getCurrentTimestamp();
+        roller["name"] = rollers[i][1];
+        roller["area"] = rollers[i][2];
         roller["position"] = rollers[i][3].toInt();
-        roller["min"]      = rollers[i][4].toInt();
-        roller["max"]      = rollers[i][5].toInt();
-        roller["status"]   = rollers[i][6].toInt();
+        roller["min"] = rollers[i][4].toInt();
+        roller["max"] = rollers[i][5].toInt();
+        roller["status"] = rollers[i][6].toInt();
     }
 
     // Job table
     JsonObject matchObj = deviceObj.createNestedObject("job_todo");
-    for (int i = 0; i < 17; i++) {
+    for (int i = 0; i < 17; i++)
+    {
         JsonObject match = matchObj.createNestedObject(match_table[i][0]);
         match["name"] = match_table[i][1];
-        match["job"]  = match_table[i][2].toInt();
+        match["job"] = match_table[i][2].toInt();
     }
 
     String jsonString;
@@ -39,7 +44,8 @@ String createJSON() {
     return jsonString;
 }
 
-void sendData()  //wysyła na serwer dane o stanie rolet w formacie JSON
+// Funkcja wysyłająca JSON na serwer
+void sendData()
 {
     if (WiFi.status() == WL_CONNECTED)
     {
@@ -54,7 +60,7 @@ void sendData()  //wysyła na serwer dane o stanie rolet w formacie JSON
         if (httpResponseCode > 0)
         {
             String response = http.getString();
-            //Serial.println("Response: " + response);
+            // Serial.println("Response: " + response);
         }
         else
         {
@@ -69,11 +75,12 @@ void sendData()  //wysyła na serwer dane o stanie rolet w formacie JSON
     }
 }
 
+// Funkcja loop wysyłająca dane co określony interwał
 void postRequest_loop()
 {
     static unsigned long lastTime = 0;
     unsigned long currentTime = millis();
-    const unsigned long interval = 60000; // co 60 sekund
+    const unsigned long interval = 10000; // co 10 sekund
 
     if (currentTime - lastTime >= interval)
     {
