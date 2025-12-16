@@ -62,9 +62,9 @@ String rollers[17][7] = {
   {"id5", "Salon 2", "AREA_1", "5000", "0", "100", "1"},
   {"id6", "Lazienka dol", "AREA_2", "2000", "0", "100", "1"},
   {"id7", "Gabinet", "AREA_3", "12000", "0", "100", "1"},
-  {"id8", "Kotlownia", "AREA_4", "10000", "0", "100", "1"},
-  {"id9", "Garaz", "AREA_4", "10000", "0", "100", "1"},
-  {"id10", "Strych", "AREA_4", "5000", "0", "100", "1"},
+  {"id8", "Kotlownia", "AREA_4", "20000", "0", "100", "1"},
+  {"id9", "Garaz", "AREA_4", "20000", "0", "100", "1"},
+  {"id10", "Strych", "AREA_4", "20000", "0", "100", "1"},
   {"id11", "Lazienka gora", "AREA_5", "12000", "0", "100", "1"},
   {"id12", "Pokoj Oskara", "AREA_5", "12000", "0", "100", "1"},
   {"id13", "Pokoj roddzicow", "AREA_5", "12000", "0", "100", "1"},
@@ -215,7 +215,7 @@ unsigned long buttonPressTime[32] = {0};
 // const char ssid[] = "UPC7AA1BAF";
 // const char password[] = "Ra5xvvsxcpdj";
 const char ssid[] = "T-Mobile-ZTE MF286-83954E";
-const char password[] = "Maniek104";
+const char password[] = "Maniek104_";
 
 
 String HOST_NAME = "https://srv97872.seohost.com.pl";  // REPLACE WITH YOUR PC's IP ADDRESS

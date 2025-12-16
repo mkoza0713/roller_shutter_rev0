@@ -5,7 +5,7 @@
 /***********WIFI**************/
 #include "WiFi.h"
 #include "HTTPClient.h"
-#include <ArduinoJson.h>
+#include "ArduinoJson.h"
 
 // Funkcja tworząca JSON do wysłania na serwer
 String createJSON()
@@ -78,13 +78,17 @@ void sendData()
 // Funkcja loop wysyłająca dane co określony interwał
 void postRequest_loop()
 {
-    static unsigned long lastTime = 0;
-    unsigned long currentTime = millis();
-    const unsigned long interval = 10000; // co 10 sekund
-
-    if (currentTime - lastTime >= interval)
+    if (WiFi.status() == WL_CONNECTED)
     {
-        lastTime = currentTime;
-        sendData();
+        Serial.println("Wyslanie zapytania, punkt kontrolny");
+        static unsigned long lastTime = 0;
+        unsigned long currentTime = millis();
+        const unsigned long interval = 10000; // co 10 sekund
+
+        if (currentTime - lastTime >= interval)
+        {
+            lastTime = currentTime;
+            sendData();
+        }
     }
 }

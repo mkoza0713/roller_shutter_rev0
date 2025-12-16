@@ -16,4 +16,5 @@ void loop()
   lcd_clear();            // Funkcja do czyszczenia ekranu LCD po określonym czasie braku aktywności
   postRequest_loop();     //Funkcja do wysyłania danych na serwer do plików json
   json_readLoop();        //Funkcja do odczytu danych z plików json na serwerze
+  monitorI2CBus(1000);   // Monitorowanie magistrali I2C co 1000 ms
 }
