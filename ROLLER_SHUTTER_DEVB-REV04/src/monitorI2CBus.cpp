@@ -3,7 +3,7 @@
 #include "global_variables.h"
 #include <Wire.h>
 
-#define I2C_SDA 21
+#define I2C_SDA 27
 #define I2C_SCL 22
 #define I2C_FREQ 100000
 
@@ -52,34 +52,14 @@ void monitorI2CBus(uint32_t timeoutMs)
         return;
     }
 
-    if (millis() - i2cBusySince >= timeoutMs)
-    {
-        Serial.println("MAGISTRALA I2C ZAJETA - ROZPOCZYNAM RESET");
-        lcdShowTopTextAdd("RESET MAGISTRALI I2C");
+    // if (millis() - i2cBusySince >= timeoutMs)
+    // {
+    //     Serial.println("MAGISTRALA I2C ZAJETA - ROZPOCZYNAM RESET");
+    //     lcdShowTopTextAdd("RESET MAGISTRALI I2C");
 
-        i2cRecover();
-        i2cBusySince = 0;
-    }
+    //     i2cRecover();
+    //     i2cBusySince = 0;
+    // }
 }
 
-// bezpieczny zapis do MCP23008 z monitorowaniem magistrali I2C
-bool safeMcpWrite(Adafruit_MCP23008 *mcp, uint8_t pin, bool state)
-{
-    const uint32_t TIMEOUT_MS = 2000; // stała lokalna w funkcji
-    uint32_t startTime = millis();
 
-    while (!i2cBusFree())
-    {
-        monitorI2CBus(TIMEOUT_MS);
-        if (millis() - startTime > TIMEOUT_MS)
-        {
-            Serial.println("ERROR: I2C busy too long, write skipped");
-            lcdShowTopTextAdd("BLAD ZAPISU DO I2C");
-            return false;
-        }
-        delayMicroseconds(100);
-    }
-
-    mcp->digitalWrite(pin, state);
-    return true;
-}
