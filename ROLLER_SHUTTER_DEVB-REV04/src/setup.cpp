@@ -67,17 +67,17 @@ void psetup()
     /***********LCD+TFT**************/
 
     /***********WIFI**************/
-    byte timeout = 0;
-    WiFi.begin(ssid, password);
-    lcdShowCenterText("WIFI connecting");
-    Serial.println("WIFI connecting");
-    while (WiFi.status() != WL_CONNECTED && timeout < 10)
-    {
-        delay(500);
-        lcdShowTopTextAdd(".");
-        Serial.print(".");
-        timeout++;
-    }
+    // byte timeout = 0;
+    // WiFi.begin(ssid, password);
+    // lcdShowCenterText("WIFI connecting");
+    // Serial.println("WIFI connecting");
+    // while (WiFi.status() != WL_CONNECTED && timeout < 10)
+    // {
+    //     delay(500);
+    //     lcdShowTopTextAdd(".");
+    //     Serial.print(".");
+    //     timeout++;
+    // }
 
     if (WiFi.status() == WL_CONNECTED)
     {

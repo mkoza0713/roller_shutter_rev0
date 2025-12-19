@@ -87,8 +87,8 @@ void output_start_single(byte i) // funkcja pomocnicza do pracy single
                 }
             }
 
-            String messageToLcd = "WYJSCIA: " + match_table[i][0] + " \nGORA MCP: 0x2" + mcp_number_up + " Pin: " + mcp_pin_up + " \nDOL MCP: 0x2" + mcp_number_down + " Pin: " + mcp_pin_down;
-            lcdShowTopTextAdd(messageToLcd);
+            // String messageToLcd = "WYJSCIA: " + match_table[i][0] + " \nGORA MCP: 0x2" + mcp_number_up + " Pin: " + mcp_pin_up + " \nDOL MCP: 0x2" + mcp_number_down + " Pin: " + mcp_pin_down;
+            // lcdShowTopTextAdd(messageToLcd);
 
             for (byte s = 0; s < 17; s++)
             {
@@ -102,9 +102,9 @@ void output_start_single(byte i) // funkcja pomocnicza do pracy single
                     {
                         if (rollers[s][6] == "1")
                         { // jechała w gore
-                            Serial.print("ROLETA JEDZIE W DOL ");
-                            Serial.println(rollers[s][0]);
-                            lcdShowTopTextAdd("JAZDA W DOL");
+                            String data_to_print = "DOL: " + rollers[s][1];
+                            Serial.print(data_to_print);
+                            lcdShowTopTextAdd(data_to_print);
                             rollers[s][6] = "0"; // zmieniam poprzedni kieunek
                             rollers[s][4] = "1"; // ustawiam ze pracuje
                             /*************ZABEZPIECZENIE--------->***************/
@@ -120,9 +120,9 @@ void output_start_single(byte i) // funkcja pomocnicza do pracy single
                         }
                         else if (rollers[s][6] == "0")
                         { // jechała w dol
-                            Serial.print("ROLETA JEDZIE W GORE ");
-                            Serial.println(rollers[s][0]);
-                            lcdShowTopTextAdd("JAZDA W GORE");
+                            String data_to_print = "GORA: " + rollers[s][1];
+                            Serial.print(data_to_print);
+                            lcdShowTopTextAdd(data_to_print);
                             rollers[s][6] = "1";
                             rollers[s][4] = "1"; // ustawiam ze pracuje
 
@@ -352,16 +352,16 @@ void writeOutputStates()
             switch (match_table[i][2].toInt())
             {
             case 1:
-                Serial.println("AKCJA 1: PRACA POJEDYNCZA");
                 messageToLcd2 = "AKCJA 1: PRACA POJEDYNCZA";
+                Serial.println(messageToLcd2);
                 break;
             case 2:
-                Serial.println("AKCJA 2: PRACA GRUPOWA");
                 messageToLcd2 = "AKCJA 2: PRACA GRUPOWA";
+                Serial.println(messageToLcd2);
                 break;
             case 3:
-                Serial.println("AKCJA 3: PRACA WSZYSTKIE");
                 messageToLcd2 = "AKCJA 3: PRACA WSZYSTKIE";
+                Serial.println(messageToLcd2);
                 break;
             }
             lcdShowTopTextAdd(messageToLcd2);
@@ -387,9 +387,9 @@ void writeOutputStates()
         {
             if (millis() - time_start_f0r_work[i][0] >= rollers[i][3].toInt())
             {
-                Serial.print("ZATRZYMANIE AUTOMATYCZNE ROLETY ");
-                Serial.println(rollers[i][0]);
-                lcdShowTopTextAdd("ZATRZYMANIE AUTOMATYCZNE");
+                String data_to_print = "STOP AUTO: " + rollers[i][1];
+                Serial.println(data_to_print);
+                lcdShowTopTextAdd(data_to_print);
                 output_stop(i);
             }
         }
@@ -400,9 +400,9 @@ void writeOutputStates()
             {
                 if (match_table[j][2] != "" && match_table[j][2] == "1")
                 {
-                    Serial.print("ZATRZYMANIE RECZNE ROLETY ");
-                    Serial.println(match_table[j][0]);
-                    lcdShowTopTextAdd("ZATRZYMANIE RECZNE");
+                    String data_to_print = "STOP RECZNE: " + rollers[i][1];
+                    Serial.println(data_to_print);
+                    lcdShowTopTextAdd(data_to_print);
                     match_table[j][2] = ""; // zerowanie akcji
                     output_stop(j);         // przekazuje do stop argument i z rollers[i][]
                 }

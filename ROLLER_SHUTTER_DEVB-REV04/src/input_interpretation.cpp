@@ -22,69 +22,28 @@ void input_interpretation()
 
         if (input_id[i][1] == "1")
         {
-            // jeśli przycisk jest wciśnięty, start odmierzania czasu
-            if (buttonPressTime[i] == 0)
-                buttonPressTime[i] = millis();
-
-            if (buttonPressTime[i] != 0)
-            {
-                unsigned long pressDuration = millis() - buttonPressTime[i];
-                if (pressDuration >= 5000 && pressDuration < 10000)
-                {
-                    // Serial.println(": VERY LONG PRESS");
-                    for (byte j = 0; j < 17; j++)
-                    {
-                        if (match_table[j][1] == input_id[i][0])
-                        {                            // indetyfikacja roleta - wejscie
-                            matched=3;
-                            matched_index=j;
-                        }
-                    }
-                }
-                else if (pressDuration >= 2000 && pressDuration < 5000)
-                {
-                    // Serial.println(": LONG PRESS");
-                    for (byte j = 0; j < 17; j++)
-                    {
-                        if (match_table[j][1] == input_id[i][0])
-                        {          
-                            matched=2;  
-                            matched_index=j;              
-                        }
-                    }
-                }
-                else if (pressDuration >= 50 && pressDuration < 2000)
-                {
-                    // Serial.println(": SHORT PRESS");
-                    for (byte j = 0; j < 17; j++)
-                    {
-                        if (match_table[j][1] == input_id[i][0])
-                        {   
-                            matched=1;
-                            matched_index=j;                         
-                        }
-                    }
-                }
-            }
-        }else if(input_id[i][1] == "0"){  //dzialania dopiero po puszczeniu przycisku
-            if(matched>0){
-                match_table[matched_index][2]=String(matched);
-            }
-            
-            //resetowanie akcji powiązanej z tym wejściem
-            matched=0;
-            matched_index=0;
-            for (byte j = 0; j < 32; j++)
-            {
-                input_id[j][1] = ""; // resetujemy stan wejścia powiązanego z tą roletą
-            }
-
+            // brak akcji przy wcisnietym przycisku
         }
-        else
-        {
-            // Resetowanie czasu przycisku po puszczeniu
-            buttonPressTime[i] = 0;
-
+        else if (input_id[i][1] == "0")
+        { // dzialania dopiero po puszczeniu przycisku
+            for (byte j = 0; j < 17; j++)
+            {
+                // indentyfikuje ktorej rolety dotyczy akcja
+                if (match_table[j][1] == input_id[i][0])
+                {
+                    match_table[j][2] = "1"; // ustawiam akcje do wykonania - krótkie wcisniecie
+                }
+            }
+            input_id[i][1] = ""; // resetujemy stan wejścia powiązanego z tą roletą
+            for (byte j = 0; j < 17; j++)
+            {
+                if (match_table[j][2] == "1")
+                {
+                    String data_to_print = "Roleta: " + match_table[j][0] + " WE: " + match_table[j][1] + " A: " + match_table[j][2];
+                    Serial.println(data_to_print);
+                    lcdShowCenterText(data_to_print);
+                }
+            }
         }
     }
 }

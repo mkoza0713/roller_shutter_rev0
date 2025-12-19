@@ -5,6 +5,7 @@
 void psetup(); 
 void mcp_setup();
 void inputstateReadTest();
+void inputstateRead();
 void lcdShowCenterText(String message);
 void lcdShowTopTextAdd(String message);
 void lcd_clear();

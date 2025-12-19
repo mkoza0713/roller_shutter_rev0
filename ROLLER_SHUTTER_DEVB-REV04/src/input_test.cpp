@@ -1,101 +1,70 @@
-/*Funkcja odczytuje wejścia z MCP oraz zapisuje aktualne stany w tablicy value_of_input[][] */
+/* Funkcja odczytuje wejścia z MCP oraz zapisuje aktualne stany w tablicy input_id[][] */
 
 #include "Arduino.h"
-#include "Adafruit_MCP23008.h"
+#include <Wire.h>
+#include <Adafruit_MCP23008.h>
 #include "global_variables.h"
 #include "functions.h"
 
 void inputstateReadTest()
 {
+    static byte blokada_1 = 1;
+    // 1. Przechodzimy po wszystkich 8 modułach MCP
     for (byte mcp_index = 0; mcp_index < 8; mcp_index++)
     {
+
+        // Sprawdzamy flagę obecności (używamy Twojej tablicy wskaźników)
         if (*test_mpc_flags[mcp_index])
         {
             Adafruit_MCP23008 *mcp = MCPs[mcp_index];
 
-            for (byte pin = 0; pin < 8; pin++)
+            // SZYBKOŚĆ: Pobieramy stan wszystkich 8 pinów jednym zapytaniem I2C.
+            // Odczyt rejestru GPIO automatycznie czyści przerwanie (INT) w module.
+            uint8_t gpioState = mcp->readGPIO();
+
+            if (blokada_1)
             {
-                int state = 1; // domyślnie HIGH = nie wciśnięty
-                bool valid_pin = false;
-
-                // MCP 0–3 -> piny 4–7
-                if (mcp_index <= 3 && pin >= 4 && pin <= 7)
+                for (byte pin = 0; pin < 8; pin++)
                 {
-                    state = mcp->digitalRead(pin);
-                    valid_pin = true;
-                }
-
-                // MCP 4–7 -> piny 0,4,5,6
-                if (mcp_index >= 4 && (pin == 0 || pin == 4 || pin == 5 || pin == 6))
-                {
-                    state = mcp->digitalRead(pin);
-                    valid_pin = true;
-                }
-
-                if (valid_pin)
-                {
-                    unsigned long now = millis();
-
-                    // sprawdzamy, czy minął debounce i stan się zmienił
-                    if (state != last_state[mcp_index][pin] &&
-                        (now - last_change_time[mcp_index][pin] >= debonuce_time))
+                    bool isInput = false;
+                    // Logika PCB: Adresy 0-3 (0x20-23) vs 4-7 (0x24-27)
+                    if (mcp_index >= 0 && mcp_index <= 3)
                     {
-                        last_change_time[mcp_index][pin] = now;
-                        last_state[mcp_index][pin] = state;
+                        if (pin >= 4 && pin <= 7)
+                            isInput = true;
+                    }
+                    else if (mcp_index >= 4 && mcp_index <= 7)
+                    {
+                        // Zamiana pinu 7 na pin 0 zgodnie z Twoim PCB
+                        if (pin == 0 || pin == 4 || pin == 5 || pin == 6)
+                            isInput = true;
+                    }
 
-                        if (state == 0) // wciśnięty
+                    if (isInput)
+                    {
+                        byte pin_correct = 0;
+                        int state = (gpioState >> pin) & 0x01;
+                        if (state == 0)
                         {
-                            if (pin == 0)
-                                input_id[(mcp_index * 4) + 7 - 4][1] = "1";
-                            else
-                                input_id[(mcp_index * 4) + pin - 4][1] = "1";
-                            Serial.println();
-                            Serial.print("MCP 0x2");
-                            Serial.print(mcp_index);
-                            Serial.print(" Pin");
-                            Serial.print(pin);
-                            Serial.print(": PRESSED");
-                            Serial.print(" INPUT ID: ");
-                            String messageToLcd;
-                            for (byte i = 0; i < 32; i++)
+                            if (mcp_index >= 0 && mcp_index <= 3)
                             {
-                                if (input_id[i][1] != "")
-                                {
-                                    Serial.println(input_id[i][0]);
-                                    messageToLcd = "WCISNIETY PRZYCISK\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
-                                }
+                                pin_correct = pin - 4;
                             }
-
-                            lcdShowCenterText(messageToLcd);
-                        }
-                        else // puszczony
-                        {
-                            Serial.print("MCP 0x2");
-                            Serial.print(mcp_index);
-                            Serial.print(" Pin");
-                            Serial.print(pin);
-                            Serial.print(": RELEASED");
-                            Serial.print(" INPUT ID: ");
-                            String messageToLcd;
-                            for (byte i = 0; i < 32; i++)
+                            else if (mcp_index >= 4 && mcp_index <= 7)
                             {
-                                if (input_id[i][1] != "")
-                                {
-                                    Serial.println(input_id[i][0]);
-                                    messageToLcd = "PUSZCZONY PRZYCISK\nMCP 0x2" + String(mcp_index) + " Pin" + String(pin) + " ID: " + String(input_id[i][0]) + "\n";
-                                }
+                                if (pin == 0)
+                                    pin_correct = 3;
+                                else
+                                    pin_correct = pin - 4;
                             }
-
-                            if (pin == 0)
-                                input_id[(mcp_index * 4) + 7 - 4][1] = "0";
-                            else
-                                input_id[(mcp_index * 4) + pin - 4][1] = "0";
-
-                            lcdShowCenterText(messageToLcd);
+                            input_id[mcp_index * 4 + pin_correct][1] = "0"; // Wciśnięty, mapuję tak jak powinno byc
+                            blokada_1 = 0;
+                            delay(200);
                         }
                     }
                 }
             }
         }
     }
+    blokada_1=1;
 }
